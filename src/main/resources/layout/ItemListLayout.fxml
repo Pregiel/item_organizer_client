@@ -19,7 +19,7 @@
    <children>
       <SplitPane fx:id="splitPane" layoutX="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0">
                <content>
                   <TableView fx:id="itemTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                       <columns>
@@ -54,9 +54,6 @@
                               </cellValueFactory>
                           </TableColumn>
                       </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
                   </TableView>
                </content>
             </ScrollPane>

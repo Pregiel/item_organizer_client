@@ -18,6 +18,7 @@ import item_organizer_client.model.ItemTableItem;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class ItemListController implements Initializable {
     private static final String SVG_RIGHT_ARROW = "M 25.06914,17.008679 14.65855,6.2618267 11.045713,9.8438848 " +
@@ -39,17 +40,23 @@ public class ItemListController implements Initializable {
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
     public SplitPane splitPane;
 
-    private ObservableList<ItemTableItem> itemList;
-
     private Node currentNode;
 
     private MenuView currentView;
 
+    private Preferences preferences;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        itemList = itemTableView.getItems();
-        itemList.addAll(ItemList.getItemListAsTableItems());
+        preferences = Preferences.userRoot().node(this.getClass().getName());
+
+        itemTableView.getItems().addAll(ItemList.getItemListAsTableItems());
+
+        ItemList.addListener(() -> {
+            itemTableView.getItems().clear();
+            itemTableView.getItems().addAll(ItemList.getItemListAsTableItems());
+        });
     }
 
     public void goHome(ActionEvent event) {
@@ -85,8 +92,9 @@ public class ItemListController implements Initializable {
 
     private void showView(MenuView menuView) {
         FXMLLoader loader = null;
+        hideView();
+
         currentView = menuView;
-        untoggleAllButtons();
 
         switch (menuView) {
             case SEARCH:
@@ -114,14 +122,19 @@ public class ItemListController implements Initializable {
 
         if (loader != null) {
             try {
-                if (currentNode != null) {
-                    splitPane.getItems().remove(currentNode);
-                }
                 currentNode = loader.load();
                 splitPane.getItems().add(0, currentNode);
 
-                double position = ((Pane) currentNode).getPrefWidth() / splitPane.getWidth();
+                double position = preferences.getDouble(currentView.toString().toLowerCase() + "_divider", 0);
+                if (position <= 0) {
+                    position = ((Pane) currentNode).getPrefWidth() / splitPane.getWidth();
+                }
+
                 splitPane.getDividers().get(0).setPosition(position);
+
+                splitPane.getDividers().get(0).positionProperty().addListener((observable, oldValue, newValue) -> {
+                    preferences.putDouble(currentView.toString().toLowerCase() + "_divider", (Double) newValue);
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }

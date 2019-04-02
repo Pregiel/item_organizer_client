@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
-//    private static List<Item> itemList;
-
     public BorderPane mainPane;
 
     private Node currentNode;
@@ -27,23 +25,10 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        itemList = new ArrayList<>();
         ItemList.init();
 
         showItemList(null);
     }
-
-//    public static List<Item> getItemList() {
-//        return itemList;
-//    }
-//
-//
-//    public static List<ItemTableItem> getItemListAsTableItems() {
-//        return itemList
-//                .stream()
-//                .map(ItemTableItem::new)
-//                .collect(Collectors.toList());
-//    }
 
     public void showItemList(ActionEvent event) {
         setupStage("/layout/ItemListLayout.fxml");

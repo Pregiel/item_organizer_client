@@ -1,6 +1,7 @@
 package item_organizer_client.controller;
 
 import item_organizer_client.ItemList;
+import item_organizer_client.model.ItemTableItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
@@ -38,12 +39,14 @@ public class AddItemController implements Initializable {
     }
 
     public void submit(ActionEvent event) {
-        ItemList.add(new Item(
+        Item item = new Item(
                 idText.getText(),
                 nameText.getText(),
                 categoryText.getText(),
                 amountText.getText(),
-                sellPriceText.getText()));
+                sellPriceText.getText());
+
+        ItemList.add(new ItemTableItem(item));
 
         clearAll(null);
     }
