@@ -1,0 +1,77 @@
+* {
+	-background-color: #eeeeee;
+
+	-separator-color: #cacaca;
+
+	-icon-color: #3b4e7c;
+	-icon-front-hover-color: #e2e2e2;
+	-icon-back-hover-color: -icon-color;
+	-icon-pressed-color: #657cb5;
+	-icon-toggled-hover-color: #556896;
+	-icon-toggled-pressed-color: #6981bc;
+
+	-icon-hover-background-color: rgba(220,220,220,5);
+
+    -menu-separator: #dbdbdb;
+}
+
+.background {
+    -fx-background-color: -background-color;
+}
+
+.right-border-serparator {
+    -fx-border-color: -separator-color;
+    -fx-border-width: 0px 2px 0px 0px;
+}
+
+.icon-button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 4px 6px 2px 6px;
+    -fx-margin: 0px;
+}
+
+.icon-button .icon-front,
+ .icon-button .icon-back{
+    -fx-stroke: -icon-color;
+    -fx-stroke-width: 2px;
+}
+
+.icon-button:hover .icon-back{
+    -fx-fill: -icon-back-hover-color;
+    -fx-stroke: -icon-back-hover-color;
+}
+
+.icon-button:hover .icon-front{
+    -fx-stroke: -icon-front-hover-color;
+}
+
+.icon-button:pressed .icon-back{
+    -fx-fill: -icon-pressed-color;
+    -fx-stroke: -icon-pressed-color;
+}
+
+.toggled-icon-button .icon-back {
+    -fx-fill: -icon-back-hover-color;
+    -fx-stroke: -icon-back-hover-color;
+}
+
+.toggled-icon-button .icon-front {
+    -fx-stroke: -icon-front-hover-color;
+}
+
+.toggled-icon-button:hover .icon-back {
+    -fx-fill: -icon-toggled-hover-color;
+    -fx-stroke: -icon-toggled-hover-color;
+}
+
+.toggled-icon-button:pressed .icon-back {
+    -fx-fill: -icon-toggled-pressed-color;
+    -fx-stroke: -icon-toggled-pressed-color;
+}
+
+.menu-separator {
+    -fx-background-color: -menu-separator;
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="mainPane" minHeight="200.0" minWidth="500.0" prefHeight="500.0" prefWidth="800.0" stylesheets="@style/MainFXMLStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.MainController">
+   <top>
+      <HBox styleClass="top-menu" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#showItemList" text="Produkty" />
+            <Button mnemonicParsing="false" onAction="#showTransactionList" text="Transakcje" />
+            <Button mnemonicParsing="false" onAction="#showSummary" text="Podsumowanie" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
