@@ -23,7 +23,9 @@ public class ItemList {
     public static List<ItemTableItem> getItemListAsTableItems() {
         return itemList
                 .stream()
-                .map(ItemTableItem::new)
+                .map(item -> {
+                    return new ItemTableItem(item);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -35,11 +37,6 @@ public class ItemList {
         itemList.clear();
         itemList.addAll(ItemRepository.getAll());
     }
-
-//    public static void add(Item item) {
-//        itemList.add(item);
-//    }
-
     public static void addListener(Runnable runnable) {
         removeListener();
         listChangeListener = c -> runnable.run();
@@ -52,22 +49,4 @@ public class ItemList {
         }
         listChangeListener = null;
     }
-
-//    public static Item findById(String id) {
-//        for (Item item : itemList) {
-//            if (item.getId().equals(id)) {
-//                return item;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public static Item findByName(String name) {
-//        for (Item item : itemList) {
-//            if (item.getName().equals(name)) {
-//                return item;
-//            }
-//        }
-//        return null;
-//    }
 }

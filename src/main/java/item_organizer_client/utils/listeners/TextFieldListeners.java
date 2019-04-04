@@ -1,20 +1,15 @@
-package item_organizer_client.utils;
+package item_organizer_client.utils.listeners;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Control;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-import java.time.LocalDate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-public class TextFieldUtils {
+public class TextFieldListeners extends ControlListeners {
     public static ChangeListener<String> onlyNumericListener(TextField textField) {
         return (observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -70,25 +65,13 @@ public class TextFieldUtils {
     public static ChangeListener<Boolean> minCharsAmountListener(TextField textField, int min, Label alertLabel) {
         return (observable, oldValue, newValue) -> {
             if (!newValue) {
+                textField.setText(textField.getText().trim());
                 if (textField.getText().length() < min && textField.getText().length() > 0) {
                     ((Pane) textField.getParent()).getChildren().add(alertLabel);
                 }
             } else {
                 ((Pane) textField.getParent()).getChildren().remove(alertLabel);
             }
-        };
-    }
-
-    public static ChangeListener<Boolean> autoFillDateListener(DatePicker datePicker) {
-        return (observable, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                if (!newValue) {
-                    if (datePicker.getValue() == null) {
-                        datePicker.setValue(LocalDate.now());
-                    }
-                }
-
-            });
         };
     }
 
@@ -111,20 +94,20 @@ public class TextFieldUtils {
         };
     }
 
-    public static ChangeListener<Boolean> removeAlertsListener(Control control, Label... labels) {
-        return (observable, oldValue, newValue) -> {
-            if (newValue) {
-                ((Pane) control.getParent()).getChildren().removeAll(labels);
-            }
-        };
-    }
-
     public static ChangeListener<Boolean> isNullListener(TextField textField, Label alertLabel) {
         return (observable, oldValue, newValue) -> {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
                     ((Pane) textField.getParent()).getChildren().add(alertLabel);
                 }
+            }
+        };
+    }
+
+    public static ChangeListener<Boolean> autoTrimListener(TextField textField) {
+        return (observable, oldValue, newValue) -> {
+            if (!newValue) {
+                textField.setText(textField.getText().trim());
             }
         };
     }

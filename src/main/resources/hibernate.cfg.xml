@@ -15,5 +15,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="item_organizer_client.model.Item"/>
+        <mapping class="item_organizer_client.model.Category"/>
     </session-factory>
 </hibernate-configuration>

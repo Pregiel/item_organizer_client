@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -41,6 +42,7 @@
                         <TextField fx:id="idText" />
                         <Label fx:id="idNullAlert" styleClass="alert-label" text="Wprowadź ID produktu" />
                         <Label fx:id="idDuplicateAlert" styleClass="alert-label" text="Istnieje już produkt o tym ID" />
+                        <Label fx:id="idMaxAlert" styleClass="alert-label" text="ID produktu może mieć co najwyżej 4 cyfry" />
                      </children>
                      <GridPane.margin>
                         <Insets />
@@ -62,7 +64,7 @@
                   <VBox spacing="2.0" GridPane.rowIndex="3">
                      <children>
                         <Label styleClass="property-label" text="Kategoria" />
-                        <TextField fx:id="categoryText" />
+                        <ComboBox fx:id="categoryText" editable="true" maxWidth="1.7976931348623157E308" />
                         <Label fx:id="categoryMinAlert" styleClass="alert-label" text="Nazwa kategorii musi mieć co najmniej 3 znaki" />
                         <Label fx:id="categoryMaxAlert" styleClass="alert-label" text="Nazwa kategorii musi mieć mniej niż 250 znaków" />
                         <Label fx:id="categoryNullAlert" styleClass="alert-label" text="Wprowadź kategorie" />

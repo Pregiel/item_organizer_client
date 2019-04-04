@@ -1,23 +1,21 @@
 package item_organizer_client.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
 public class Item {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "category")
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "amount")
     private Integer amount;
@@ -28,7 +26,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer id, String name, String category, Integer amount, String price) {
+    public Item(Integer id, String name, Category category, Integer amount, String price) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -52,11 +50,11 @@ public class Item {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
