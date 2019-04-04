@@ -28,6 +28,8 @@
 	-scroll-color: #626262;
 
 	-player-text-color: #ffffff;
+
+	-primary-color: #3b4e7c;
 }
 
 .background {
@@ -54,4 +56,9 @@
 /***.top-menu > .button:focused ***/
 .top-menu > .button:hover {
 	-fx-background-color: -background-hover-color;
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-text-color: -primary-color;
 }

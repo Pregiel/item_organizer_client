@@ -1,5 +1,6 @@
 package item_organizer_client;
 
+import item_organizer_client.database.repository.ItemRepository;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.ItemTableItem;
 import javafx.collections.FXCollections;
@@ -27,12 +28,17 @@ public class ItemList {
     }
 
     public static void init() {
-        itemList = FXCollections.observableList(new ArrayList<>());
+        itemList = FXCollections.observableList(ItemRepository.getAll());
     }
 
-    public static void add(Item item) {
-        itemList.add(item);
+    public static void refresh() {
+        itemList.clear();
+        itemList.addAll(ItemRepository.getAll());
     }
+
+//    public static void add(Item item) {
+//        itemList.add(item);
+//    }
 
     public static void addListener(Runnable runnable) {
         removeListener();
@@ -40,10 +46,28 @@ public class ItemList {
         itemList.addListener(listChangeListener);
     }
 
-    public static void removeListener() {
+    private static void removeListener() {
         if (listChangeListener != null) {
             itemList.removeListener(listChangeListener);
         }
         listChangeListener = null;
     }
+
+//    public static Item findById(String id) {
+//        for (Item item : itemList) {
+//            if (item.getId().equals(id)) {
+//                return item;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public static Item findByName(String name) {
+//        for (Item item : itemList) {
+//            if (item.getName().equals(name)) {
+//                return item;
+//            }
+//        }
+//        return null;
+//    }
 }

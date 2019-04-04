@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -57,6 +58,21 @@ public class ItemListController implements Initializable {
             itemTableView.getItems().clear();
             itemTableView.getItems().addAll(ItemList.getItemListAsTableItems());
         });
+
+        int i = 0;
+        for (TableColumn<ItemTableItem, ?> itemTableItemTableColumn : itemTableView.getColumns()) {
+            double width = preferences.getDouble(
+                    "column" + i + "_width",
+                    itemTableItemTableColumn.getPrefWidth());
+
+            itemTableItemTableColumn.setPrefWidth(width);
+
+            int finalI = i;
+            itemTableItemTableColumn.widthProperty().addListener((observable, oldValue, newValue) -> {
+                preferences.putDouble("column" + finalI + "_width", (Double) newValue);
+            });
+            i++;
+        }
     }
 
     public void goHome(ActionEvent event) {

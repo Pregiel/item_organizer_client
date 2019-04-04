@@ -23,32 +23,32 @@
                <content>
                   <TableView fx:id="itemTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                       <columns>
-                          <TableColumn prefWidth="75.0" text="ID">
+                          <TableColumn minWidth="40.0" prefWidth="75.0" text="ID">
                               <cellValueFactory>
                                   <PropertyValueFactory property="id" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Nazwa">
+                          <TableColumn minWidth="40.0" prefWidth="200.0" text="Nazwa">
                               <cellValueFactory>
                                   <PropertyValueFactory property="name" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Kategoria">
+                          <TableColumn minWidth="40.0" prefWidth="120.0" text="Kategoria">
                               <cellValueFactory>
                                   <PropertyValueFactory property="category" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Sztuk">
+                          <TableColumn minWidth="40.0" prefWidth="75.0" text="Sztuk">
                               <cellValueFactory>
                                   <PropertyValueFactory property="amount" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Cena">
+                          <TableColumn minWidth="40.0" prefWidth="75.0" text="Cena">
                               <cellValueFactory>
                                   <PropertyValueFactory property="price" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Akcja">
+                          <TableColumn minWidth="40.0" prefWidth="100.0" text="Akcja">
                               <cellValueFactory>
                                   <PropertyValueFactory property="actionButtons" />
                               </cellValueFactory>

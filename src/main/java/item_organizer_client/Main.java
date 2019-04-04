@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.util.prefs.Preferences;
@@ -20,11 +21,11 @@ public class Main extends Application {
         primaryStage.setTitle("Item organizer");
         primaryStage.setScene(new Scene(
                 root,
-                preferences.getDouble("width", 800),
-                preferences.getDouble("height", 500)));
+                preferences.getDouble("width", ((Pane) root).getPrefWidth()),
+                preferences.getDouble("height", ((Pane) root).getPrefHeight())));
 
-        primaryStage.setMinWidth(500);
-        primaryStage.setMinHeight(300);
+        primaryStage.setMinWidth(((Pane) root).getMinWidth());
+        primaryStage.setMinHeight(((Pane) root).getMinHeight());
         primaryStage.show();
 
         primaryStage.widthProperty().addListener(((observable, oldValue, newValue) -> {

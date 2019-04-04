@@ -1,20 +1,18 @@
 package item_organizer_client.controller;
 
 import item_organizer_client.ItemList;
+import item_organizer_client.database.ItemOrganizerDatabase;
+import item_organizer_client.database.repository.ItemRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import item_organizer_client.model.Item;
-import item_organizer_client.model.ItemTableItem;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -25,6 +23,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ItemOrganizerDatabase.configureSessionFactory();
         ItemList.init();
 
         showItemList(null);
@@ -39,7 +38,7 @@ public class MainController implements Initializable {
     }
 
     public void showSummary(ActionEvent event) {
-
+        System.out.println(ItemRepository.findByName("as"));
     }
 
     private void setupStage(String fxml) {
