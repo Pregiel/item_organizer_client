@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class BuyItemController implements Initializable {
     private static final String BUY_ELEMENT_FXML = "/layout/BuyItemElementLayout.fxml";
 
     public VBox newItemPane;
-    private List<Node> newItemList;
+    private List<TitledPane> newItemList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,7 +40,7 @@ public class BuyItemController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(BUY_ELEMENT_FXML));
 
         try {
-            Node newElement = loader.load();
+            TitledPane newElement = loader.load();
 
             BuyItemElementController controller = loader.getController();
 
@@ -47,9 +49,18 @@ public class BuyItemController implements Initializable {
 
             controller.setElementId(newItemList.size());
             controller.setItemTitle();
+            controller.setBuyItemController(this);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<TitledPane> getNewItemList() {
+        return newItemList;
+    }
+
+    public VBox getNewItemPane() {
+        return newItemPane;
     }
 }

@@ -64,13 +64,36 @@
                   </GridPane>
                   <VBox fx:id="searchPane">
                       <children>
-                          <Label styleClass="property-label" text="Wybrany produkt:" />
-                          <HBox>
-                              <children>
-                                  <Label fx:id="selectedItemTitle" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="0012. Kubek czarny 330ml" />
+                  <HBox>
+                     <children>
+                                <Label styleClass="title-top-secondary" text="Wybrany produkt">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin>
+                        </Label>
                                   <Hyperlink maxHeight="1.7976931348623157E308" onAction="#changeSelectedItem" text="Zmień" />
-                              </children>
-                          </HBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label styleClass="property-label" text="ID produktu: ">
+                           <padding>
+                              <Insets right="4.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="selectedItemId" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="4" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label styleClass="property-label" text="Nazwa produktu:">
+                           <padding>
+                              <Insets right="4.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="selectedItemName" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
+                     </children>
+                  </HBox>
                       </children>
                   </VBox>
                   <GridPane fx:id="detailsInputPane" alignment="TOP_CENTER" hgap="18.0" layoutX="24.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="grid-pane" vgap="6.0">
@@ -129,7 +152,10 @@
                       <children>
                           <HBox>
                               <children>
-                                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Informacje" />
+                                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Informacje">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin></Label>
                                   <Hyperlink maxHeight="1.7976931348623157E308" onAction="#changeSelectedDetails" text="Zmień" />
                               </children>
                           </HBox>

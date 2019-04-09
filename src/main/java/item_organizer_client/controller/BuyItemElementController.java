@@ -12,6 +12,8 @@ import item_organizer_client.utils.listeners.TextFieldListeners;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
@@ -35,9 +37,9 @@ public class BuyItemElementController implements Initializable {
     public ToggleGroup searchGroup;
     public TextField buyPriceText, sellPriceText;
     public ComboBox<String> buyPriceType, searchText;
-    public Label idNotExistAlert, nameNotExistAlert, selectedItemTitle, buyPricePerItemText, buyNullAlert,
-            amountNullAlert, sellNullAlert, selectedItemAmount, selectedItemBuy, selectedItemBuyPerItem,
-            selectedItemSell, itemTitle;
+    public Label idNotExistAlert, nameNotExistAlert, buyPricePerItemText, buyNullAlert,
+            amountNullAlert, sellNullAlert, selectedItemId, selectedItemName, selectedItemAmount, selectedItemBuy,
+            selectedItemBuyPerItem, selectedItemSell, itemTitle;
     public Button removeItem;
     public BorderPane titlePane;
 
@@ -50,6 +52,8 @@ public class BuyItemElementController implements Initializable {
     private ChangeListener<String> onlyNumericListener, maxIdCharsAmountListener, maxNameCharsAmountListener;
     private ChangeListener<Boolean> fillWithZerosListener, autoTrimListener, removeAlertsListener;
 
+    private BuyItemController buyItemController;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         preferences = Preferences.userRoot().node(this.getClass().getName());
@@ -59,6 +63,23 @@ public class BuyItemElementController implements Initializable {
         int selectedSearchType = preferences.getInt("search_type", 1);
         searchGroup.selectToggle((selectedSearchType == 0 ? idRadioButton : nameRadioButton));
 
+        searchText.getItems().addAll((selectedSearchType == 0 ? ItemRepository.getAllIDs() : ItemRepository.getAllNames()));
+
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
+        amountText.setValueFactory(valueFactory);
+
+        buyPriceType.getItems().addAll("za sztukę", "za wszystko");
+        buyPriceType.getSelectionModel().select(0);
+
+        initListeners();
+
+        refreshSearchTextListeners();
+        goToStep(0);
+
+        clearAlerts();
+    }
+
+    private void initListeners() {
         searchGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             searchText.getItems().clear();
 
@@ -77,7 +98,6 @@ public class BuyItemElementController implements Initializable {
             refreshSearchTextListeners();
         });
 
-        searchText.getItems().addAll((selectedSearchType == 0 ? ItemRepository.getAllIDs() : ItemRepository.getAllNames()));
         autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
 
         onlyNumericListener = ComboBoxListeners.onlyNumericListener(searchText);
@@ -88,16 +108,11 @@ public class BuyItemElementController implements Initializable {
         searchText.focusedProperty().addListener(ComboBoxListeners.autoTrimListener(searchText));
         searchText.focusedProperty().addListener(ComboBoxListeners.removeAlertsListener(searchText.getParent(), idNotExistAlert, nameNotExistAlert));
 
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
-        amountText.setValueFactory(valueFactory);
         amountText.getEditor().textProperty().addListener(SpinnerListeners.onlyNumericListener(amountText));
         amountText.focusedProperty().addListener(SpinnerListeners.autoFillListener(amountText, 1));
         amountText.getEditor().textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
                 buyPricePerItemText, amountText, buyPriceType));
 
-
-        buyPriceType.getItems().addAll("za sztukę", "za wszystko");
-        buyPriceType.getSelectionModel().select(0);
         ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
         buyPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() == 0) {
@@ -119,17 +134,11 @@ public class BuyItemElementController implements Initializable {
         buyPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(
                 buyPriceText.getParent().getParent(), buyNullAlert));
 
-
         sellPriceText.textProperty().addListener(TextFieldListeners.priceListener(sellPriceText));
         sellPriceText.focusedProperty().addListener(TextFieldListeners.autoFillPriceListener(sellPriceText, "0.00"));
         sellPriceText.focusedProperty().addListener(TextFieldListeners.isNullListener(sellPriceText, sellNullAlert));
         sellPriceText.focusedProperty().addListener(TextFieldListeners.autoTrimListener(sellPriceText));
         sellPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(sellPriceText.getParent(), sellNullAlert));
-
-        refreshSearchTextListeners();
-        goToStep(0);
-
-        clearAlerts();
     }
 
     private void refreshSearchTextListeners() {
@@ -177,15 +186,39 @@ public class BuyItemElementController implements Initializable {
                 sellPriceText.setText(lastedSellPrice.getValue().toString());
             }
 
+            if (checkIfItemIsAlreadyAdded(selectedItem)) {
+                if (!showConfirmationDialog("Powtórzenie produktu", "Wybrany produkt znajduję się już na liście. Chcesz kontynuować?"))
+                    return;
+            }
+
             goToStep(1);
 
         } catch (IndexOutOfBoundsException | NullPointerException ex) {
+            ex.printStackTrace();
             if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
                 ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
             } else {
                 ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
             }
         }
+    }
+
+    private boolean checkIfItemIsAlreadyAdded(Item item) {
+        for (TitledPane titledPane : buyItemController.getNewItemList()) {
+            Label titleLabel = (Label) titledPane.lookup("#itemTitle");
+
+            if (titleLabel.getText().contains(".")) {
+                int id = Integer.parseInt(titleLabel.getText().substring(0, titleLabel.getText().indexOf(".")));
+                String name = titleLabel.getText().substring(titleLabel.getText().indexOf(".") + 2);
+
+                if (item.getId() == id) {
+                    if (item.getName().equals(name)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void changeSelectedItem(ActionEvent event) {
@@ -261,11 +294,14 @@ public class BuyItemElementController implements Initializable {
         switch (step) {
             case 0:
                 buyItemPane.getChildren().addAll(searchInputPane);
+                selectedItemId.setText("");
+                selectedItemName.setText("");
                 setItemTitle();
                 break;
             case 1:
                 buyItemPane.getChildren().addAll(searchPane, detailsInputPane);
-                selectedItemTitle.setText(selectedItem.getId() + ". " + selectedItem.getName());
+                selectedItemId.setText(String.valueOf(selectedItem.getId()));
+                selectedItemName.setText(String.valueOf(selectedItem.getName()));
                 itemTitle.setText(selectedItem.getId() + ". " + selectedItem.getName());
 
                 if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
@@ -275,8 +311,6 @@ public class BuyItemElementController implements Initializable {
 
             case 2:
                 buyItemPane.getChildren().addAll(searchPane, detailsPane);
-                itemTitle.setText(selectedItem.getId() + ". " + selectedItem.getName() + " " +
-                        selectedItemAmount.getText() + " sztuk");
                 break;
         }
     }
@@ -287,5 +321,9 @@ public class BuyItemElementController implements Initializable {
 
     public void setItemTitle() {
         itemTitle.setText("Produkt " + elementId);
+    }
+
+    public void setBuyItemController(BuyItemController buyItemController) {
+        this.buyItemController = buyItemController;
     }
 }
