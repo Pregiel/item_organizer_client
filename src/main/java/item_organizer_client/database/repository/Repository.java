@@ -1,5 +1,6 @@
 package item_organizer_client.database.repository;
 
+import item_organizer_client.database.repository.parameter.QueryParameter;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -77,6 +78,32 @@ abstract class Repository {
 
         return list;
     }
+
+    static <T> List<T> findByQuery(String query, QueryParameter... parameters) {
+        configureSessionFactory();
+
+        List<T> list = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            Query result = session.createQuery(query);
+            for (QueryParameter parameter : parameters) {
+                result.setParameter(parameter.getKey(), parameter.getValue());
+            }
+
+            list = result.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
+        return list;
+    }
+
+
 
     static <T> List<T> getAll(Class<T> tClass) {
         configureSessionFactory();

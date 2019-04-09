@@ -1,8 +1,8 @@
 package item_organizer_client.controller;
 
-import item_organizer_client.ItemList;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.MenuView;
-import javafx.collections.ObservableList;
+import item_organizer_client.model.table_item.ItemTableItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +14,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import item_organizer_client.model.ItemTableItem;
 
 import java.io.IOException;
 import java.net.URL;

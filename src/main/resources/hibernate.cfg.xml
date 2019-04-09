@@ -16,5 +16,8 @@
 
         <mapping class="item_organizer_client.model.Item"/>
         <mapping class="item_organizer_client.model.Category"/>
+        <mapping class="item_organizer_client.model.Price"/>
+        <mapping class="item_organizer_client.model.Transaction"/>
+        <mapping class="item_organizer_client.model.TransactionItem"/>
     </session-factory>
 </hibernate-configuration>

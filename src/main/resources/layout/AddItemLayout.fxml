@@ -3,15 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import tornadofx.control.DateTimePicker?>
 
 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="200.0" prefWidth="300.0" styleClass="background" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.AddItemController">
    <content>
@@ -76,7 +77,7 @@
                   <VBox spacing="2.0" GridPane.rowIndex="4">
                      <children>
                         <Label styleClass="property-label" text="Sztuk" />
-                        <TextField fx:id="amountText" />
+                        <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" />
                         <Label fx:id="amountNullAlert" styleClass="alert-label" text="Wprowadź liczbę sztuk" />
                      </children>
                      <GridPane.margin>
@@ -86,7 +87,7 @@
                   <VBox spacing="2.0" GridPane.rowIndex="5">
                      <children>
                         <Label styleClass="property-label" text="Data zakupu" />
-                        <DatePicker fx:id="dateText" maxWidth="1.7976931348623157E308" />
+                        <DateTimePicker fx:id="dateText" format="dd.MM.yyyy HH:mm" maxWidth="1.7976931348623157E308" />
                      </children>
                      <GridPane.margin>
                         <Insets />
@@ -94,8 +95,23 @@
                   </VBox>
                   <VBox spacing="2.0" GridPane.rowIndex="6">
                      <children>
-                        <Label styleClass="property-label" text="Cena zakupu (PLN)" />
-                        <TextField fx:id="buyPriceText" text="0,00" />
+                        <Label styleClass="property-label" text="Cena zakupu" />
+                        <HBox maxWidth="1.7976931348623157E308" minWidth="-Infinity">
+                           <children>
+                              <TextField fx:id="buyPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" HBox.hgrow="SOMETIMES" />
+                              <ComboBox fx:id="buyPriceType" minWidth="20.0" HBox.hgrow="SOMETIMES" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="buyPricePerItemPane">
+                           <children>
+                              <Label styleClass="info-label" text="Cena za sztukę:">
+                                 <padding>
+                                    <Insets right="4.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="buyPricePerItemText" style="-fx-font-weight: bold;" styleClass="info-label" text="0.00 zł" />
+                           </children>
+                        </HBox>
                         <Label fx:id="buyNullAlert" styleClass="alert-label" text="Wprowadź cene zakupu" />
                      </children>
                      <GridPane.margin>
@@ -104,8 +120,8 @@
                   </VBox>
                   <VBox spacing="2.0" GridPane.rowIndex="7">
                      <children>
-                        <Label styleClass="property-label" text="Cena sprzedaży (PLN)" />
-                        <TextField fx:id="sellPriceText" text="0,00" />
+                        <Label styleClass="property-label" text="Cena sprzedaży (za sztukę)" />
+                        <TextField fx:id="sellPriceText" text="0.00" />
                         <Label fx:id="sellPriceSmallerInfo" styleClass="info-label" text="Cena sprzedaży jest mniejsza lub równa cenie zakupu" />
                         <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene sprzedaży" />
                      </children>

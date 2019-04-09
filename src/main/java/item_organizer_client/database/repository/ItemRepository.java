@@ -1,11 +1,11 @@
 package item_organizer_client.database.repository;
 
 import item_organizer_client.model.Item;
+
 import java.util.List;
 
 
-public class ItemRepository extends Repository{
-
+public class ItemRepository extends Repository {
     public static Item add(Item item) {
         return Repository.add(item);
     }

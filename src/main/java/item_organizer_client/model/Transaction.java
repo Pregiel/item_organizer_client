@@ -1,89 +1,77 @@
 package item_organizer_client.model;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+import item_organizer_client.model.type.TransactionType;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Set;
+
+@Entity
+@Table(name = "transaction_table")
 public class Transaction {
-    private String id;
-    private String type;
-    private String date;
-    private String pricePerItem;
-    private String amount;
-    private String price;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_transaction")
+    @SequenceGenerator(name = "id_transaction", sequenceName = "ID_TRA")
+    @Column(name = "id")
+    private Integer id;
 
-    private HBox actionButtons;
+    @CreationTimestamp
+    @Column(name = "date", nullable = false)
+    private Timestamp date;
 
-    public Transaction(String id, String type, String date, String pricePerItem, String amount, String price) {
-        this.id = id;
-        this.type = type;
-        this.date = date;
-        this.pricePerItem = pricePerItem;
-        this.amount = amount;
-        this.price = price;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 5)
+    private TransactionType type;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transaction")
+    private Set<TransactionItem> transactionItems;
 
-        Button moreInfoButton = new Button("I");
-        moreInfoButton.setOnAction((event) -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.setContentText(toString());
-            alert.showAndWait();
-        });
-
-        actionButtons = new HBox(moreInfoButton);
+    public Transaction() {
     }
 
-    public String getId() {
+    public Transaction(Timestamp date, TransactionType type) {
+        this.date = date;
+        this.type = type;
+    }
+
+    public Transaction(Transaction transaction) {
+        this.id = transaction.getId();
+        this.date = transaction.getDate();
+        this.type = transaction.getType();
+        this.transactionItems = transaction.getTransactionItems();
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
-    public String getPricePerItem() {
-        return pricePerItem;
+    public TransactionType getType() {
+        return type;
     }
 
-    public void setPricePerItem(String pricePerItem) {
-        this.pricePerItem = pricePerItem;
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
-    public String getAmount() {
-        return amount;
+    public Set<TransactionItem> getTransactionItems() {
+        return transactionItems;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public HBox getActionButtons() {
-        return actionButtons;
+    public void setTransactionItems(Set<TransactionItem> transactionItems) {
+        this.transactionItems = transactionItems;
     }
 }

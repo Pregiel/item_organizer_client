@@ -1,6 +1,6 @@
 package item_organizer_client.controller;
 
-import item_organizer_client.ItemList;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.database.ItemOrganizerDatabase;
 import item_organizer_client.database.repository.ItemRepository;
 import javafx.event.ActionEvent;
@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
-import item_organizer_client.model.Item;
 
 import java.io.IOException;
 import java.net.URL;

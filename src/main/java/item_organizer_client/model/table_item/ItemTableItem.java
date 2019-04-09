@@ -1,5 +1,8 @@
-package item_organizer_client.model;
+package item_organizer_client.model.table_item;
 
+import item_organizer_client.database.repository.PriceRepository;
+import item_organizer_client.model.Item;
+import item_organizer_client.model.Price;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -8,13 +11,12 @@ import javafx.scene.layout.HBox;
 
 public class ItemTableItem extends Item {
     private HBox actionButtons;
+    private Price price;
 
     public ItemTableItem(Item item) {
-        super(item.getId(),
-                item.getName(),
-                item.getCategory(),
-                item.getAmount(),
-                item.getPrice());
+        super(item);
+
+        price = PriceRepository.getLastedForItem(item);
 
         Button editButton = new Button("E");
         editButton.setOnAction((event) -> {
@@ -61,5 +63,17 @@ public class ItemTableItem extends Item {
 
     public HBox getActionButtons() {
         return actionButtons;
+    }
+
+    public void setActionButtons(HBox actionButtons) {
+        this.actionButtons = actionButtons;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
     }
 }

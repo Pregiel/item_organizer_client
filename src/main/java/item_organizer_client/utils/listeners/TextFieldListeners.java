@@ -22,19 +22,19 @@ public class TextFieldListeners extends ControlListeners {
         return (observable, oldValue, newValue) -> {
             String newText = newValue;
 
-            if (newText.contains(".")) {
-                newText = newText.replace(".", ",");
+            if (newText.contains(",")) {
+                newText = newText.replace(",", ".");
             }
 
             if (!newText.matches("[\\d]*[,.]?[\\d]{0,2}")) {
                 newText = newText.replaceAll("[^\\d,.]", "");
 
                 if (newText.matches("[\\d]*[,.]?[\\d][\\d]+")) {
-                    newText = newText.substring(0, newValue.indexOf(",") + 3);
+                    newText = newText.substring(0, newValue.indexOf(".") + 3);
                 }
 
-                if (newText.indexOf(",") != newValue.lastIndexOf(",")) {
-                    newText = newText.substring(0, newText.lastIndexOf(","));
+                if (newText.indexOf(",") != newValue.lastIndexOf(".")) {
+                    newText = newText.substring(0, newText.lastIndexOf("."));
                 }
             }
             textField.setText(newText);
@@ -80,12 +80,12 @@ public class TextFieldListeners extends ControlListeners {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
                     textField.setText(text);
-                } else if (!textField.getText().matches(".*(,)\\d{2}")) {
+                } else if (!textField.getText().matches(".*(.)\\d{2}")) {
                     if (!textField.getText().contains(",")) {
                         textField.setText(textField.getText() + ",00");
                     } else {
                         textField.setText(textField.getText() + 0);
-                        if (!textField.getText().matches(".*(,)\\d{2}")) {
+                        if (!textField.getText().matches(".*(.)\\d{2}")) {
                             textField.setText(textField.getText() + 0);
                         }
                     }
@@ -95,10 +95,14 @@ public class TextFieldListeners extends ControlListeners {
     }
 
     public static ChangeListener<Boolean> isNullListener(TextField textField, Label alertLabel) {
+        return isNullListener(textField, alertLabel, (Pane) textField.getParent());
+    }
+
+    public static ChangeListener<Boolean> isNullListener(TextField textField, Label alertLabel, Pane parent) {
         return (observable, oldValue, newValue) -> {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
-                    ((Pane) textField.getParent()).getChildren().add(alertLabel);
+                    parent.getChildren().add(alertLabel);
                 }
             }
         };

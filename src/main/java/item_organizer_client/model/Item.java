@@ -2,6 +2,7 @@ package item_organizer_client.model;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
@@ -20,18 +21,29 @@ public class Item {
     @Column(name = "amount")
     private Integer amount;
 
-    @Column(name = "price")
-    private String price;
+    @OneToMany(mappedBy = "item")
+    private Set<Price> prices;
+
+    @OneToMany(mappedBy = "item")
+    private Set<TransactionItem> transactionItems;
 
     public Item() {
     }
 
-    public Item(Integer id, String name, Category category, Integer amount, String price) {
+    public Item(Integer id, String name, Category category, Integer amount) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.amount = amount;
-        this.price = price;
+    }
+
+    public Item(Item item) {
+        this.id = item.id;
+        this.name = item.name;
+        this.category = item.category;
+        this.amount = item.amount;
+        this.prices = item.prices;
+        this.transactionItems = item.transactionItems;
     }
 
     public Integer getId() {
@@ -66,22 +78,19 @@ public class Item {
         this.amount = amount;
     }
 
-    public String getPrice() {
-        return price;
+    public Set<Price> getPrices() {
+        return prices;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPrices(Set<Price> prices) {
+        this.prices = prices;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", amount='" + amount + '\'' +
-                ", price='" + price + '\'' +
-                '}';
+    public Set<TransactionItem> getTransactionItems() {
+        return transactionItems;
+    }
+
+    public void setTransactionItems(Set<TransactionItem> transactionItems) {
+        this.transactionItems = transactionItems;
     }
 }

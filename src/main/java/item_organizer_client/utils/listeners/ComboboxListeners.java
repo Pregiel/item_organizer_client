@@ -1,11 +1,9 @@
 package item_organizer_client.utils.listeners;
 
-import item_organizer_client.utils.listeners.ControlListeners;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-
-import java.io.Serializable;
 
 
 public class ComboboxListeners extends ControlListeners {
