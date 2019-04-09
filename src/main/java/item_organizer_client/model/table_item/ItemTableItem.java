@@ -3,6 +3,7 @@ package item_organizer_client.model.table_item;
 import item_organizer_client.database.repository.PriceRepository;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
+import item_organizer_client.model.type.PriceType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -16,7 +17,7 @@ public class ItemTableItem extends Item {
     public ItemTableItem(Item item) {
         super(item);
 
-        price = PriceRepository.getLastedForItem(item);
+        price = PriceRepository.getLastedForItem(item, PriceType.SELL);
 
         Button editButton = new Button("E");
         editButton.setOnAction((event) -> {

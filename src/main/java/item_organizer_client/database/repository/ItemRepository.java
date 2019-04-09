@@ -21,4 +21,11 @@ public class ItemRepository extends Repository {
     public static List<Item> getAll() {
         return getAll(Item.class);
     }
+
+    public static List<String> getAllIDs() {
+        return getAllColumn(Item.class, "id");
+    }
+    public static List<String> getAllNames() {
+        return getAllColumn(Item.class, "name");
+    }
 }

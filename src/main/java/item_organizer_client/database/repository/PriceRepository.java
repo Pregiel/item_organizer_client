@@ -21,13 +21,13 @@ public class PriceRepository extends Repository {
         return findBy(Price.class, "value", value);
     }
 
-    public static Price getLastedForItem(Item item) {
+    public static Price getLastedForItem(Item item, PriceType priceType) {
         List<Price> list = findByQuery(
                 "FROM Price p " +
                         "WHERE p.item = :item_id AND p.type = :type " +
                         "ORDER BY p.date DESC, p.id ASC",
                 new QueryParameter<>("item_id", item),
-                new QueryParameter<>("type", PriceType.SELL));
+                new QueryParameter<>("type", priceType));
 
         return list.size() > 0 ? list.get(0) : null;
     }

@@ -29,7 +29,7 @@ public class ItemListController implements Initializable {
             "18.802968,6.2618267 22.410264,9.8438848 15.408927,17.008 l 7.001337,7.164117 -3.607296,3.582058 z";
 
     private static final String ADD_FXML = "/layout/AddItemLayout.fxml";
-    private static final String BUY_FXML = "";
+    private static final String BUY_FXML = "/layout/BuyItemLayout.fxml";
     private static final String SELL_FXML = "";
     private static final String SEARCH_FXML = "/layout/SearchItemLayout.fxml";
     private static final String INFO_FXML = "";

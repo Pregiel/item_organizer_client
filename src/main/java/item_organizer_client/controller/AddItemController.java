@@ -6,7 +6,7 @@ import item_organizer_client.model.*;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.Utils;
-import item_organizer_client.utils.listeners.ComboboxListeners;
+import item_organizer_client.utils.listeners.ComboBoxListeners;
 import item_organizer_client.utils.listeners.DatePickerListeners;
 import item_organizer_client.utils.listeners.SpinnerListeners;
 import item_organizer_client.utils.listeners.TextFieldListeners;
@@ -47,6 +47,8 @@ public class AddItemController implements Initializable {
                 ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
             } else {
                 ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
+                buyPricePerItemText.setText(Utils.round(
+                        Double.valueOf(buyPriceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2) + " zł");
             }
         });
 
@@ -67,17 +69,17 @@ public class AddItemController implements Initializable {
         categoryText.getItems().addAll(CategoryRepository.getAll()
                 .stream().map(Category::getName).collect(Collectors.toList()));
         TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
-        categoryText.valueProperty().addListener(ComboboxListeners.maxCharsAmountListener(categoryText, 250));
-        categoryText.focusedProperty().addListener(ComboboxListeners.isNullListener(categoryText, categoryNullAlert));
-        categoryText.focusedProperty().addListener(ComboboxListeners.minCharsAmountListener(categoryText, 3, categoryMinAlert));
-        categoryText.focusedProperty().addListener(ComboboxListeners.autoTrimListener(categoryText));
-        categoryText.focusedProperty().addListener(ComboboxListeners.removeAlertsListener(categoryText.getParent(), categoryNullAlert, categoryMinAlert, categoryMaxAlert));
+        categoryText.valueProperty().addListener(ComboBoxListeners.maxCharsAmountListener(categoryText, 250));
+        categoryText.focusedProperty().addListener(ComboBoxListeners.isNullListener(categoryText, categoryNullAlert));
+        categoryText.focusedProperty().addListener(ComboBoxListeners.minCharsAmountListener(categoryText, 3, categoryMinAlert));
+        categoryText.focusedProperty().addListener(ComboBoxListeners.autoTrimListener(categoryText));
+        categoryText.focusedProperty().addListener(ComboBoxListeners.removeAlertsListener(categoryText.getParent(), categoryNullAlert, categoryMinAlert, categoryMaxAlert));
 
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
         amountText.setValueFactory(valueFactory);
         amountText.getEditor().textProperty().addListener(SpinnerListeners.onlyNumericListener(amountText));
-        amountText.focusedProperty().addListener(SpinnerListeners.isNullListener(amountText, amountNullAlert));
-        amountText.focusedProperty().addListener(SpinnerListeners.autoFillListener(amountText, 0));
+//        amountText.focusedProperty().addListener(SpinnerListeners.isNullListener(amountText, amountNullAlert));
+        amountText.focusedProperty().addListener(SpinnerListeners.autoFillListener(amountText, 1));
         amountText.getEditor().textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
                 buyPricePerItemText, amountText, buyPriceType));
         amountText.focusedProperty().addListener(SpinnerListeners.removeAlertsListener(amountText.getParent(),
@@ -108,7 +110,7 @@ public class AddItemController implements Initializable {
         idText.setText("");
         nameText.setText("");
         categoryText.setValue("");
-        amountText.getEditor().setText("0");
+        amountText.getEditor().setText("1");
         dateText.setValue(LocalDate.now());
         buyPriceText.setText("0.00");
         sellPriceText.setText("0.00");

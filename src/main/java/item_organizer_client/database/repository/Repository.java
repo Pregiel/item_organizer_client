@@ -103,8 +103,6 @@ abstract class Repository {
         return list;
     }
 
-
-
     static <T> List<T> getAll(Class<T> tClass) {
         configureSessionFactory();
 
@@ -114,6 +112,26 @@ abstract class Repository {
             session = getSessionFactory().openSession();
 
             list = session.createQuery("FROM " + tClass.getName()).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
+        return list;
+    }
+
+    static <T, U> List<U> getAllColumn(Class<T> tClass, String column) {
+        configureSessionFactory();
+
+        List<U> list = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+
+            list = session.createQuery("SELECT " + column + " FROM " + tClass.getName()).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

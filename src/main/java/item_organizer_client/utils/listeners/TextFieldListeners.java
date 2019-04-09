@@ -31,7 +31,7 @@ public class TextFieldListeners extends ControlListeners {
             if (!newText.matches("[\\d]*[.]?[\\d]{0,2}")) {
                 if (newText.indexOf(".") != newText.lastIndexOf(".")) {
                     newText = newText.substring(0, newText.indexOf("."))
-                            + newText.substring(newText.indexOf(".")+1);
+                            + newText.substring(newText.indexOf(".") + 1);
                 }
 
                 if (newText.matches("[\\d]*[.][\\d][\\d][\\d]+")) {
@@ -96,12 +96,12 @@ public class TextFieldListeners extends ControlListeners {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
                     textField.setText(text);
-                } else if (!textField.getText().matches(".*(.)\\d{2}")) {
-                    if (!textField.getText().contains(",")) {
-                        textField.setText(textField.getText() + ",00");
+                } else if (!textField.getText().matches(".*[.]\\d{2}")) {
+                    if (!textField.getText().contains(".")) {
+                        textField.setText(textField.getText() + ".00");
                     } else {
                         textField.setText(textField.getText() + 0);
-                        if (!textField.getText().matches(".*(.)\\d{2}")) {
+                        if (!textField.getText().matches(".*[.]\\d{2}")) {
                             textField.setText(textField.getText() + 0);
                         }
                     }

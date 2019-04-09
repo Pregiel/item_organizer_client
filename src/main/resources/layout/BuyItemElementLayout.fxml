@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<TitledPane fx:id="itemPane" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.BuyItemElementController">
+    <content>
+          <VBox fx:id="buyItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="18.0">
+              <padding>
+                  <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
+              </padding>
+              <children>
+                  <GridPane fx:id="searchInputPane" alignment="TOP_CENTER" hgap="18.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="grid-pane" vgap="6.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="150.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints valignment="CENTER" />
+                      </rowConstraints>
+                      <children>
+                          <VBox spacing="2.0" GridPane.rowIndex="2">
+                              <children>
+                        <ComboBox fx:id="searchText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                  <Label fx:id="idNotExistAlert" styleClass="alert-label" text="Produkt o podanym ID nie istnieje" />
+                                  <Label fx:id="nameNotExistAlert" styleClass="alert-label" text="Produkt o podanej nazwie nie istnieje" />
+                              </children>
+                              <GridPane.margin>
+                                  <Insets />
+                              </GridPane.margin>
+                          </VBox>
+                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Wybierz produkt" />
+                          <HBox alignment="CENTER" spacing="12.0" GridPane.rowIndex="1">
+                              <children>
+                                  <RadioButton fx:id="idRadioButton" mnemonicParsing="false" styleClass="property-label" text="ID">
+                                      <toggleGroup>
+                                          <ToggleGroup fx:id="searchGroup" />
+                                      </toggleGroup>
+                                  </RadioButton>
+                                  <RadioButton fx:id="nameRadioButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" selected="true" styleClass="property-label" text="Nazwa" toggleGroup="$searchGroup" />
+                              </children>
+                     <padding>
+                        <Insets bottom="4.0" top="4.0" />
+                     </padding>
+                          </HBox>
+                          <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                      </children>
+                  </GridPane>
+                  <VBox fx:id="searchPane">
+                      <children>
+                          <Label styleClass="property-label" text="Wybrany produkt:" />
+                          <HBox>
+                              <children>
+                                  <Label fx:id="selectedItemTitle" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="0012. Kubek czarny 330ml" />
+                                  <Hyperlink maxHeight="1.7976931348623157E308" onAction="#changeSelectedItem" text="Zmień" />
+                              </children>
+                          </HBox>
+                      </children>
+                  </VBox>
+                  <GridPane fx:id="detailsInputPane" alignment="TOP_CENTER" hgap="18.0" layoutX="24.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="grid-pane" vgap="6.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="150.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints vgrow="SOMETIMES" />
+                          <RowConstraints valignment="CENTER" />
+                      </rowConstraints>
+                      <children>
+                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Wprowadź dane" GridPane.rowIndex="1" />
+                          <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                          <VBox spacing="2.0" GridPane.rowIndex="3">
+                              <children>
+                                  <Label styleClass="property-label" text="Cena zakupu" />
+                                  <HBox maxWidth="1.7976931348623157E308" minWidth="-Infinity">
+                                      <children>
+                                          <TextField fx:id="buyPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" HBox.hgrow="SOMETIMES" />
+                                          <ComboBox fx:id="buyPriceType" minWidth="20.0" HBox.hgrow="SOMETIMES" />
+                                      </children>
+                                  </HBox>
+                                  <HBox fx:id="buyPricePerItemPane">
+                                      <children>
+                                          <Label styleClass="info-label" text="Cena za sztukę:">
+                                              <padding>
+                                                  <Insets right="4.0" />
+                                              </padding>
+                                          </Label>
+                                          <Label fx:id="buyPricePerItemText" style="-fx-font-weight: bold;" styleClass="info-label" text="0.00 zł" />
+                                      </children>
+                                  </HBox>
+                                  <Label fx:id="buyNullAlert" styleClass="alert-label" text="Wprowadź cene zakupu" />
+                              </children>
+                          </VBox>
+                          <VBox spacing="2.0" GridPane.rowIndex="2">
+                              <children>
+                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk" />
+                                  <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                              </children>
+                          </VBox>
+                          <VBox spacing="2.0" GridPane.rowIndex="4">
+                              <children>
+                                  <Label styleClass="property-label" text="Cena sprzedaży (za sztukę)" />
+                                  <TextField fx:id="sellPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" />
+                                  <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene sprzedaży" />
+                              </children>
+                          </VBox>
+                      </children>
+                  </GridPane>
+                  <VBox fx:id="detailsPane" layoutX="24.0" layoutY="205.0">
+                      <children>
+                          <HBox>
+                              <children>
+                                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Informacje" />
+                                  <Hyperlink maxHeight="1.7976931348623157E308" onAction="#changeSelectedDetails" text="Zmień" />
+                              </children>
+                          </HBox>
+                          <HBox>
+                              <children>
+                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk:">
+                                      <padding>
+                                          <Insets right="4.0" />
+                                      </padding>
+                                  </Label>
+                                  <Label fx:id="selectedItemAmount" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="4" />
+                              </children>
+                          </HBox>
+                          <HBox>
+                              <children>
+                                  <Label styleClass="property-label" text="Cena zakupu za wszystko:">
+                                      <padding>
+                                          <Insets right="4.0" />
+                                      </padding>
+                                  </Label>
+                                  <Label fx:id="selectedItemBuy" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
+                              </children>
+                          </HBox>
+                          <HBox layoutX="10.0" layoutY="10.0">
+                              <children>
+                                  <Label styleClass="property-label" text="Cena zakupu za sztukę:">
+                                      <padding>
+                                          <Insets right="4.0" />
+                                      </padding>
+                                  </Label>
+                                  <Label fx:id="selectedItemBuyPerItem" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="6 zł" />
+                              </children>
+                          </HBox>
+                          <HBox>
+                              <children>
+                                  <Label styleClass="property-label" text="Cena sprzedaży za sztukę:">
+                                      <padding>
+                                          <Insets right="4.0" />
+                                      </padding>
+                                  </Label>
+                                  <Label fx:id="selectedItemSell" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="9 zł" />
+                              </children>
+                          </HBox>
+                      </children>
+                  </VBox>
+              </children>
+          </VBox>
+    </content>
+    <graphic>
+        <BorderPane fx:id="titlePane">
+            <center>
+                <Label fx:id="itemTitle" styleClass="title-element" text="Produkt 1" BorderPane.alignment="CENTER" />
+            </center>
+            <right>
+                <Button fx:id="removeItem" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" style="-fx-font-size: 9;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="8.0" right="8.0" />
+               </BorderPane.margin></Button>
+            </right>
+        </BorderPane>
+    </graphic>
+</TitledPane>
