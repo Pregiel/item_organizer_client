@@ -1,7 +1,10 @@
 package item_organizer_client.utils.listeners;
 
+import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
@@ -22,19 +25,17 @@ public class TextFieldListeners extends ControlListeners {
         return (observable, oldValue, newValue) -> {
             String newText = newValue;
 
-            if (newText.contains(",")) {
-                newText = newText.replace(",", ".");
-            }
+            newText = newText.replaceAll(",", ".")
+                    .replaceAll("[^\\d.]", "");
 
-            if (!newText.matches("[\\d]*[,.]?[\\d]{0,2}")) {
-                newText = newText.replaceAll("[^\\d,.]", "");
-
-                if (newText.matches("[\\d]*[,.]?[\\d][\\d]+")) {
-                    newText = newText.substring(0, newValue.indexOf(".") + 3);
+            if (!newText.matches("[\\d]*[.]?[\\d]{0,2}")) {
+                if (newText.indexOf(".") != newText.lastIndexOf(".")) {
+                    newText = newText.substring(0, newText.indexOf("."))
+                            + newText.substring(newText.indexOf(".")+1);
                 }
 
-                if (newText.indexOf(",") != newValue.lastIndexOf(".")) {
-                    newText = newText.substring(0, newText.lastIndexOf("."));
+                if (newText.matches("[\\d]*[.][\\d][\\d][\\d]+")) {
+                    newText = newText.substring(0, newText.indexOf(".") + 3);
                 }
             }
             textField.setText(newText);
@@ -45,6 +46,21 @@ public class TextFieldListeners extends ControlListeners {
         return (observable, oldValue, newValue) -> {
             if (newValue.length() > max) {
                 textField.setText(newValue.substring(0, max));
+            }
+        };
+    }
+
+    public static ChangeListener<String> setBuyPriceDependOnTypeListener(TextField textField, Label infoLabel, Spinner<Integer> amount, ComboBox type) {
+        return (observable, oldValue, newValue) -> {
+            if (type.getSelectionModel().getSelectedIndex() != 0) {
+                if (textField.getText().length() > 0) {
+                    if (amount.getValue() > 0) {
+                        infoLabel.setText(Utils.round(
+                                Double.valueOf(textField.getText()) / amount.getValue(), 2) + " zł");
+                    } else {
+                        infoLabel.setText("0.0 zł");
+                    }
+                }
             }
         };
     }

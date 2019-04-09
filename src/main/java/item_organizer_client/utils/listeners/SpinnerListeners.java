@@ -1,5 +1,6 @@
 package item_organizer_client.utils.listeners;
 
+import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;

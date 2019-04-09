@@ -78,37 +78,20 @@ public class AddItemController implements Initializable {
         amountText.getEditor().textProperty().addListener(SpinnerListeners.onlyNumericListener(amountText));
         amountText.focusedProperty().addListener(SpinnerListeners.isNullListener(amountText, amountNullAlert));
         amountText.focusedProperty().addListener(SpinnerListeners.autoFillListener(amountText, 0));
-        amountText.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
-                if (buyPriceText.getText().length() > 0) {
-                    if (amountText.getValue() > 0) {
-                        buyPricePerItemText.setText(Utils.round(Double.valueOf(buyPriceText.getText()) / amountText.getValue(), 2) + " zł");
-                    } else {
-                        buyPricePerItemText.setText("0.0 zł");
-                    }
-                } else {
-                    buyPricePerItemText.setText("0.0 zł");
-                }
-            }
-        });
-        amountText.focusedProperty().addListener(SpinnerListeners.removeAlertsListener(amountText.getParent(), amountNullAlert));
+        amountText.getEditor().textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
+                buyPricePerItemText, amountText, buyPriceType));
+        amountText.focusedProperty().addListener(SpinnerListeners.removeAlertsListener(amountText.getParent(),
+                amountNullAlert));
 
         buyPriceText.textProperty().addListener(TextFieldListeners.priceListener(buyPriceText));
+        buyPriceText.textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
+                buyPricePerItemText, amountText, buyPriceType));
         buyPriceText.focusedProperty().addListener(TextFieldListeners.autoFillPriceListener(buyPriceText, "0.00"));
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.isNullListener(buyPriceText, buyNullAlert, (Pane) buyPriceText.getParent().getParent()));
+        buyPriceText.focusedProperty().addListener(TextFieldListeners.isNullListener(buyPriceText, buyNullAlert,
+                (Pane) buyPriceText.getParent().getParent()));
         buyPriceText.focusedProperty().addListener(TextFieldListeners.autoTrimListener(buyPriceText));
-        buyPriceText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
-                if (buyPriceText.getText().length() > 0) {
-                    if (amountText.getValue() > 0) {
-                        buyPricePerItemText.setText(Utils.round(Double.valueOf(buyPriceText.getText()) / amountText.getValue(), 2) + " zł");
-                    } else {
-                        buyPricePerItemText.setText("0.0 zł");
-                    }
-                }
-            }
-        });
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo));
+        buyPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(
+                buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo));
 
         sellPriceText.textProperty().addListener(TextFieldListeners.priceListener(sellPriceText));
         sellPriceText.focusedProperty().addListener(TextFieldListeners.autoFillPriceListener(sellPriceText, "0.00"));

@@ -77,7 +77,7 @@
                   <VBox spacing="2.0" GridPane.rowIndex="4">
                      <children>
                         <Label styleClass="property-label" text="Sztuk" />
-                        <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" />
+                        <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                         <Label fx:id="amountNullAlert" styleClass="alert-label" text="Wprowadź liczbę sztuk" />
                      </children>
                      <GridPane.margin>
