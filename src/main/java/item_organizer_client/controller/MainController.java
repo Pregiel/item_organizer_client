@@ -1,19 +1,23 @@
 package item_organizer_client.controller;
 
-import item_organizer_client.model.list.ItemList;
+import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.ItemOrganizerDatabase;
-import item_organizer_client.database.repository.ItemRepository;
+import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@Component
 public class MainController implements Initializable {
+    @Autowired
+    private ItemService itemService;
 
     public BorderPane mainPane;
 
@@ -23,8 +27,6 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ItemOrganizerDatabase.configureSessionFactory();
-        ItemList.init();
-
         showItemList(null);
     }
 
@@ -37,17 +39,15 @@ public class MainController implements Initializable {
     }
 
     public void showSummary(ActionEvent event) {
-        System.out.println(ItemRepository.findByName("as"));
+        System.out.println(itemService.findByName("as"));
     }
 
     private void setupStage(String fxml) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-
         try {
-            currentNode = loader.load();
-            mainPane.setCenter(currentNode);
+            currentNode = new SpringFXMLLoader(getClass().getResource(fxml)).load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mainPane.setCenter(currentNode);
     }
 }

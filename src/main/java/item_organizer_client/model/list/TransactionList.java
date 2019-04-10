@@ -1,48 +1,66 @@
 package item_organizer_client.model.list;
 
-import item_organizer_client.database.repository.ItemRepository;
-import item_organizer_client.database.repository.TransactionRepository;
+import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.model.Transaction;
-import item_organizer_client.model.table_item.ItemTableItem;
 import item_organizer_client.model.table_item.TransactionTableItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class TransactionList {
-    private static ObservableList<Transaction> transactionList;
-    private static ListChangeListener<Transaction> listChangeListener;
+    @Autowired
+    private TransactionService transactionService;
 
-    public static List<Transaction> getTransactionList() {
+    private ObservableList<Transaction> transactionList;
+    private ListChangeListener<Transaction> listChangeListener;
+
+    public List<Transaction> getTransactionList() {
         return transactionList;
     }
 
-    public static List<TransactionTableItem> getItemListAsTableItems() {
+    private static TransactionList instance;
+
+    public static TransactionList getInstance() {
+        if (instance == null) {
+            instance = new TransactionList();
+            instance.init();
+        }
+        return instance;
+    }
+
+    public TransactionList() {
+        instance = this;
+    }
+
+    public List<TransactionTableItem> getItemListAsTableItems() {
         return transactionList
                 .stream()
                 .map(TransactionTableItem::new)
                 .collect(Collectors.toList());
     }
 
-    public static void init() {
-        transactionList = FXCollections.observableList(TransactionRepository.getAll());
+    public void init() {
+        transactionList = FXCollections.observableList(transactionService.getAll());
     }
 
-    public static void refresh() {
+    public void refresh() {
         transactionList.clear();
-        transactionList.addAll(TransactionRepository.getAll());
+        transactionList.addAll(transactionService.getAll());
     }
 
-    public static void addListener(Runnable runnable) {
+    public void addListener(Runnable runnable) {
         removeListener();
         listChangeListener = c -> runnable.run();
         transactionList.addListener(listChangeListener);
     }
 
-    private static void removeListener() {
+    private void removeListener() {
         if (listChangeListener != null) {
             transactionList.removeListener(listChangeListener);
         }

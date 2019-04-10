@@ -1,17 +1,18 @@
-package item_organizer_client.database.repository;
+package item_organizer_client.database;
 
-import item_organizer_client.database.repository.parameter.QueryParameter;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static item_organizer_client.database.ItemOrganizerDatabase.configureSessionFactory;
 import static item_organizer_client.database.ItemOrganizerDatabase.getSessionFactory;
 
-abstract class Repository {
-    static <T> T add(T object) {
+@org.springframework.stereotype.Repository
+public class Repository<T> {
+    public T add(T object) {
         configureSessionFactory();
 
         Transaction transaction = null;
@@ -36,7 +37,14 @@ abstract class Repository {
         return object;
     }
 
-    static <T> T findById(Class<T> tClass, int id) {
+    public List<T> addAll(T... objects) {
+        for (T object : objects) {
+            add(object);
+        }
+        return Arrays.asList(objects);
+    }
+
+    public T findById(Class<T> tClass, int id) {
         configureSessionFactory();
 
         T object = null;
@@ -57,7 +65,7 @@ abstract class Repository {
         return object;
     }
 
-    static <T> List<T> findBy(Class<T> tClass, String fieldName, String fieldValue) {
+    public List<T> findBy(Class<T> tClass, String fieldName, String fieldValue) {
         configureSessionFactory();
 
         List<T> list = null;
@@ -79,7 +87,7 @@ abstract class Repository {
         return list;
     }
 
-    static <T> List<T> findByQuery(String query, QueryParameter... parameters) {
+    public List<T> findByQuery(String query, QueryParameter... parameters) {
         configureSessionFactory();
 
         List<T> list = null;
@@ -103,7 +111,7 @@ abstract class Repository {
         return list;
     }
 
-    static <T> List<T> getAll(Class<T> tClass) {
+    public List<T> getAll(Class<T> tClass) {
         configureSessionFactory();
 
         List<T> list = null;
@@ -123,7 +131,7 @@ abstract class Repository {
         return list;
     }
 
-    static <T, U> List<U> getAllColumn(Class<T> tClass, String column) {
+    public <U> List<U> getAllColumn(Class<T> tClass, String column) {
         configureSessionFactory();
 
         List<U> list = null;
@@ -142,6 +150,4 @@ abstract class Repository {
 
         return list;
     }
-
-
 }

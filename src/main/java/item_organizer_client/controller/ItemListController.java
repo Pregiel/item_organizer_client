@@ -3,8 +3,9 @@ package item_organizer_client.controller;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.MenuView;
 import item_organizer_client.model.table_item.ItemTableItem;
+import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -14,12 +15,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+@Component
 public class ItemListController implements Initializable {
     private static final String SVG_RIGHT_ARROW = "M 25.06914,17.008679 14.65855,6.2618267 11.045713,9.8438848 " +
             "18.057804,17.008 11.045713,24.172117 14.65855,27.754175 Z M 16.899,0 C 7.566,0 0,7.566 0,16.9 c 0,9.333 " +
@@ -46,16 +49,22 @@ public class ItemListController implements Initializable {
 
     private Preferences preferences;
 
+    private ItemList itemList;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         preferences = Preferences.userRoot().node(this.getClass().getName());
 
-        itemTableView.getItems().addAll(ItemList.getItemListAsTableItems());
+        itemList = ItemList.getInstance();
 
-        ItemList.addListener(() -> {
+        itemList.init();
+
+        itemTableView.getItems().addAll(itemList.getItemListAsTableItems());
+
+        itemList.addListener(() -> {
             itemTableView.getItems().clear();
-            itemTableView.getItems().addAll(ItemList.getItemListAsTableItems());
+            itemTableView.getItems().addAll(itemList.getItemListAsTableItems());
         });
 
         int i = 0;
@@ -106,30 +115,30 @@ public class ItemListController implements Initializable {
     }
 
     private void showView(MenuView menuView) {
-        FXMLLoader loader = null;
+        SpringFXMLLoader loader = null;
         hideView();
 
         currentView = menuView;
 
         switch (menuView) {
             case SEARCH:
-                loader = new FXMLLoader(getClass().getResource(SEARCH_FXML));
+                loader = new SpringFXMLLoader(getClass().getResource(SEARCH_FXML));
                 toggleButton(searchButton);
                 break;
             case ADD:
-                loader = new FXMLLoader(getClass().getResource(ADD_FXML));
+                loader = new SpringFXMLLoader(getClass().getResource(ADD_FXML));
                 toggleButton(addButton);
                 break;
             case BUY:
-                loader = new FXMLLoader(getClass().getResource(BUY_FXML));
+                loader = new SpringFXMLLoader(getClass().getResource(BUY_FXML));
                 toggleButton(buyButton);
                 break;
             case SELL:
-                loader = new FXMLLoader(getClass().getResource(SELL_FXML));
+                loader = new SpringFXMLLoader(getClass().getResource(SELL_FXML));
                 toggleButton(sellButton);
                 break;
             case INFO:
-                loader = new FXMLLoader(getClass().getResource(INFO_FXML));
+                loader = new SpringFXMLLoader(getClass().getResource(INFO_FXML));
                 toggleButton(infoButton);
                 break;
             default:

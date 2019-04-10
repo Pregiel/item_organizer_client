@@ -1,4 +1,4 @@
-package item_organizer_client.database.repository.parameter;
+package item_organizer_client.database;
 
 public class QueryParameter<T> {
     private String key;

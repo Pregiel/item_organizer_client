@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import tornadofx.control.DateTimePicker?>
 
 <BorderPane maxHeight="1.7976931348623157E308" minWidth="220.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.BuyItemController">
    <center>
@@ -20,11 +21,24 @@
       </ScrollPane>
    </center>
    <top>
-      <Label alignment="CENTER" styleClass="title-top" text="Dokup produkt" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="8.0" left="14.0" right="14.0" />
          </BorderPane.margin>
-      </Label>
+         <children>
+            <Label alignment="CENTER" styleClass="title-top" text="Dokup produkt">
+               <VBox.margin>
+                  <Insets bottom="8.0" />
+               </VBox.margin>
+            </Label>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="property-label" text="Data transakcji" />
+                  <DateTimePicker fx:id="dateText" format="dd.MM.yyyy HH:mm" maxWidth="1.7976931348623157E308" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
    </top>
    <bottom>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" spacing="12.0" BorderPane.alignment="CENTER">

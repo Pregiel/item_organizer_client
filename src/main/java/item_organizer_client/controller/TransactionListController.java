@@ -6,31 +6,37 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+@Component
 public class TransactionListController implements Initializable {
     public TableView<TransactionTableItem> transactionTableView;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public TableColumn<TransactionTableItem, String> dateColumn;
     public TableColumn priceColumn;
 
     private Preferences preferences;
 
+    private TransactionList transactionList;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         preferences = Preferences.userRoot().node(this.getClass().getName());
 
-        TransactionList.init();
+        transactionList = TransactionList.getInstance();
 
-        transactionTableView.getItems().addAll(TransactionList.getItemListAsTableItems());
+        transactionList.init();
 
-        TransactionList.addListener(() -> {
+        transactionTableView.getItems().addAll(transactionList.getItemListAsTableItems());
+
+        transactionList.addListener(() -> {
             transactionTableView.getItems().clear();
-            transactionTableView.getItems().addAll(TransactionList.getItemListAsTableItems());
+            transactionTableView.getItems().addAll(transactionList.getItemListAsTableItems());
         });
 
         dateColumn.setCellValueFactory(param ->

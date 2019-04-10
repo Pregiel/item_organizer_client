@@ -21,7 +21,7 @@ public class Item {
     @Column(name = "amount")
     private Integer amount;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
     @OneToMany(mappedBy = "item")

@@ -1,6 +1,6 @@
 package item_organizer_client.model.table_item;
 
-import item_organizer_client.database.repository.PriceRepository;
+import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
@@ -9,15 +9,27 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 public class ItemTableItem extends Item {
+
     private HBox actionButtons;
     private Price price;
 
     public ItemTableItem(Item item) {
         super(item);
 
-        price = PriceRepository.getLastedForItem(item, PriceType.SELL);
+        for (Price itemPrice : getPrices()) {
+            if (price == null) {
+                price = itemPrice;
+            } else if (itemPrice.getDate().after(price.getDate())) {
+                price = itemPrice;
+            }
+
+        }
 
         Button editButton = new Button("E");
         editButton.setOnAction((event) -> {

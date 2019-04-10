@@ -1,46 +1,66 @@
 package item_organizer_client.model.list;
 
-import item_organizer_client.database.repository.ItemRepository;
+import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.table_item.ItemTableItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ItemList {
-    private static ObservableList<Item> itemList;
-    private static ListChangeListener<Item> listChangeListener;
+    @Autowired
+    private ItemService itemService;
 
-    public static List<Item> getItemList() {
+    private ObservableList<Item> itemList;
+    private ListChangeListener<Item> listChangeListener;
+
+    private static ItemList instance;
+
+    public static ItemList getInstance() {
+        if (instance == null) {
+            instance = new ItemList();
+            instance.init();
+        }
+        return instance;
+    }
+
+    public ItemList() {
+        instance = this;
+    }
+
+    public List<Item> getItemList() {
         return itemList;
     }
 
-    public static List<ItemTableItem> getItemListAsTableItems() {
+    public List<ItemTableItem> getItemListAsTableItems() {
         return itemList
                 .stream()
-                .map(ItemTableItem::new)
+                .map((Item item) -> new ItemTableItem(item))
                 .collect(Collectors.toList());
     }
 
-    public static void init() {
-        itemList = FXCollections.observableList(ItemRepository.getAll());
+    public void init() {
+        itemList = FXCollections.observableList(itemService.getAll());
     }
 
-    public static void refresh() {
+    public void refresh() {
         itemList.clear();
-        itemList.addAll(ItemRepository.getAll());
+        itemList.addAll(itemService.getAll());
     }
 
-    public static void addListener(Runnable runnable) {
+    public void addListener(Runnable runnable) {
         removeListener();
         listChangeListener = c -> runnable.run();
         itemList.addListener(listChangeListener);
     }
 
-    private static void removeListener() {
+    private void removeListener() {
         if (listChangeListener != null) {
             itemList.removeListener(listChangeListener);
         }

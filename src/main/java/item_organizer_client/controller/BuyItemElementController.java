@@ -1,10 +1,11 @@
 package item_organizer_client.controller;
 
-import item_organizer_client.database.repository.ItemRepository;
-import item_organizer_client.database.repository.PriceRepository;
+import item_organizer_client.database.service.ItemService;
+import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
+import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
 import item_organizer_client.utils.listeners.ComboBoxListeners;
 import item_organizer_client.utils.listeners.SpinnerListeners;
@@ -16,13 +17,23 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class BuyItemElementController implements Initializable {
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private PriceService priceService;
 
     private int elementId;
 
@@ -52,6 +63,8 @@ public class BuyItemElementController implements Initializable {
 
     private BuyItemController buyItemController;
 
+    private int step = 0;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         preferences = Preferences.userRoot().node(this.getClass().getName());
@@ -61,7 +74,7 @@ public class BuyItemElementController implements Initializable {
         int selectedSearchType = preferences.getInt("search_type", 1);
         searchGroup.selectToggle((selectedSearchType == 0 ? idRadioButton : nameRadioButton));
 
-        searchText.getItems().addAll((selectedSearchType == 0 ? ItemRepository.getAllIDs() : ItemRepository.getAllNames()));
+        searchText.getItems().addAll((selectedSearchType == 0 ? itemService.getAllIDs() : itemService.getAllNames()));
 
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
         amountText.setValueFactory(valueFactory);
@@ -83,11 +96,11 @@ public class BuyItemElementController implements Initializable {
 
             if (newValue.equals(idRadioButton)) {
                 preferences.putInt("search_type", 0);
-                searchText.getItems().addAll(ItemRepository.getAllIDs());
+                searchText.getItems().addAll(itemService.getAllIDs());
 
             } else {
                 preferences.putInt("search_type", 1);
-                searchText.getItems().addAll(ItemRepository.getAllNames());
+                searchText.getItems().addAll(itemService.getAllNames());
             }
 
             if (autoCompletionSearch != null)
@@ -167,25 +180,25 @@ public class BuyItemElementController implements Initializable {
     public void nextStepSearch(ActionEvent event) {
         try {
             if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                selectedItem = ItemRepository.findById(Integer.parseInt(searchText.getEditor().getText()));
+                selectedItem = itemService.findById(Integer.parseInt(searchText.getEditor().getText()));
             } else {
-                selectedItem = ItemRepository.findByName(searchText.getEditor().getText()).get(0);
+                selectedItem = itemService.findByName(searchText.getEditor().getText()).get(0);
             }
             if (selectedItem == null)
                 throw new NullPointerException();
 
-            Price lastedBuyPrice = PriceRepository.getLastedForItem(selectedItem, PriceType.BUY);
+            Price lastedBuyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
             if (lastedBuyPrice != null) {
                 buyPriceText.setText(lastedBuyPrice.getValue().toString());
             }
 
-            Price lastedSellPrice = PriceRepository.getLastedForItem(selectedItem, PriceType.SELL);
+            Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
             if (lastedSellPrice != null) {
                 sellPriceText.setText(lastedSellPrice.getValue().toString());
             }
 
             if (checkIfItemIsAlreadyAdded(selectedItem)) {
-                if (!showConfirmationDialog("Powtórzenie produktu", "Wybrany produkt znajduję się już na liście. Chcesz kontynuować?"))
+                if (!MyAlerts.showConfirmationDialog("Powtórzenie produktu", "Wybrany produkt znajduję się już na liście. Chcesz kontynuować?"))
                     return;
             }
 
@@ -227,15 +240,15 @@ public class BuyItemElementController implements Initializable {
             amountText.getEditor().setText("0.00");
 
         if (Integer.valueOf(amountText.getEditor().getText()) == 0)
-            if (!showConfirmationDialog("Liczba sztuk równa zero", "Zakupiona liczba sztuk jest równa 0. Chcesz kontynuować?"))
+            if (!MyAlerts.showConfirmationDialog("Liczba sztuk równa zero", "Zakupiona liczba sztuk jest równa 0. Chcesz kontynuować?"))
                 return;
 
         if (Double.valueOf(buyPriceText.getText()) == 0.0)
-            if (!showConfirmationDialog("Cena kupna równa zero", "Cena kupna jest równa 0.00zł. Chcesz kontynuować?"))
+            if (!MyAlerts.showConfirmationDialog("Cena kupna równa zero", "Cena kupna jest równa 0.00zł. Chcesz kontynuować?"))
                 return;
 
         if (Double.valueOf(sellPriceText.getText()) == 0.0)
-            if (!showConfirmationDialog("Cena sprzedaży równa zero", "Cena sprzedaży jest równa 0.00zł. Chcesz kontynuować?"))
+            if (!MyAlerts.showConfirmationDialog("Cena sprzedaży równa zero", "Cena sprzedaży jest równa 0.00zł. Chcesz kontynuować?"))
                 return;
 
 
@@ -257,21 +270,6 @@ public class BuyItemElementController implements Initializable {
         goToStep(2);
     }
 
-    private boolean showConfirmationDialog(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
     public void changeSelectedDetails(ActionEvent event) {
         goToStep(1);
     }
@@ -280,6 +278,7 @@ public class BuyItemElementController implements Initializable {
      * @param step 0 - search item, 1 - insert details, 2 - summary
      */
     private void goToStep(int step) {
+        this.step = step;
         clearAlerts();
         buyItemPane.getChildren().removeAll(searchInputPane, searchPane, detailsInputPane, detailsPane);
         switch (step) {
@@ -287,13 +286,11 @@ public class BuyItemElementController implements Initializable {
                 buyItemPane.getChildren().addAll(searchInputPane);
                 selectedItemId.setText("");
                 selectedItemName.setText("");
-                setItemTitle();
                 break;
             case 1:
                 buyItemPane.getChildren().addAll(searchPane, detailsInputPane);
                 selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
-                itemTitle.setText(selectedItemId.getText() + ". " + selectedItemName.getText());
 
                 if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
                     ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
@@ -304,17 +301,22 @@ public class BuyItemElementController implements Initializable {
                 buyItemPane.getChildren().addAll(searchPane, detailsPane);
                 break;
         }
+        setItemTitle();
     }
 
     public void setElementId(int elementId) {
         this.elementId = elementId;
-        if (itemTitle.getText().matches("Produkt [\\d]+")) {
+        if (step == 0) {
             setItemTitle();
         }
     }
 
     public void setItemTitle() {
-        itemTitle.setText("Produkt " + elementId);
+        if (step == 0) {
+            itemTitle.setText("Produkt " + elementId);
+        } else {
+            itemTitle.setText(selectedItemId.getText() + ". " + selectedItemName.getText());
+        }
     }
 
     public void setBuyItemController(BuyItemController buyItemController) {
@@ -325,12 +327,32 @@ public class BuyItemElementController implements Initializable {
         buyItemController.removeItem(this);
     }
 
+    public int getStep() {
+        return step;
+    }
+
     public int getSelectedId() {
         return Integer.valueOf((selectedItemId.getText().equals("") ? "0" : selectedItemId.getText()));
     }
 
     public String getSelectedName() {
         return selectedItemName.getText();
+    }
+
+    public int getSelectedAmount() {
+        return Integer.valueOf(selectedItemAmount.getText());
+    }
+
+    public double getSelectedBuyPrice() {
+        return Double.valueOf(selectedItemBuyPerItem.getText().substring(0, selectedItemBuyPerItem.getText().length() - 3));
+    }
+
+    public double getSelectedSellPrice() {
+        return Double.valueOf(selectedItemSell.getText().substring(0, selectedItemSell.getText().length() - 3));
+    }
+
+    public Item getSelectedItem() {
+        return selectedItem;
     }
 
     public TitledPane getItemPane() {

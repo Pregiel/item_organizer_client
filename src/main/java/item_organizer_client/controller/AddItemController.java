@@ -1,7 +1,7 @@
 package item_organizer_client.controller;
 
+import item_organizer_client.database.service.*;
 import item_organizer_client.model.list.ItemList;
-import item_organizer_client.database.repository.*;
 import item_organizer_client.model.*;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
@@ -17,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.TextFields;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import tornadofx.control.DateTimePicker;
 
 import java.net.URL;
@@ -25,7 +27,23 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+@Component
 public class AddItemController implements Initializable {
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private PriceService priceService;
+
+    @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
+    private TransactionItemService transactionItemService;
+
     public TextField idText, nameText, buyPriceText, sellPriceText;
     public Spinner<Integer> amountText;
     public DateTimePicker dateText;
@@ -66,7 +84,7 @@ public class AddItemController implements Initializable {
         nameText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(nameText.getParent(), nameNullAlert,
                 nameMinAlert, nameMaxAlert, nameDuplicateAlert));
 
-        categoryText.getItems().addAll(CategoryRepository.getAll()
+        categoryText.getItems().addAll(categoryService.getAll()
                 .stream().map(Category::getName).collect(Collectors.toList()));
         TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
         categoryText.valueProperty().addListener(ComboBoxListeners.maxCharsAmountListener(categoryText, 250));
@@ -146,17 +164,17 @@ public class AddItemController implements Initializable {
             }
 
             Item item = new Item(Integer.valueOf(idText.getText()), nameText.getText(),
-                    CategoryRepository.findOrAdd(new Category(categoryText.getValue())), amountValue);
+                    categoryService.findOrAdd(new Category(categoryText.getValue())), amountValue);
             Price sellPrice = new Price(sellPriceValue, PriceType.SELL, item, date);
             Price buyPrice = new Price(buyPriceValue, PriceType.BUY, item, date);
             Transaction transaction = new Transaction(date, TransactionType.BUY);
             TransactionItem transactionItem = new TransactionItem(item, transaction, buyPrice, amountValue);
 
-            ItemRepository.add(item);
-            PriceRepository.add(sellPrice);
-            PriceRepository.add(buyPrice);
-            TransactionRepository.add(transaction);
-            TransactionItemRepository.add(transactionItem);
+            itemService.add(item);
+            priceService.add(sellPrice);
+            priceService.add(buyPrice);
+            transactionService.add(transaction);
+            transactionItemService.add(transactionItem);
 
             refresh();
             clearAll(null);
@@ -164,10 +182,10 @@ public class AddItemController implements Initializable {
     }
 
     private void refresh() {
-        ItemList.refresh();
+        ItemList.getInstance().refresh();
 
         categoryText.getItems().clear();
-        categoryText.getItems().addAll(CategoryRepository.getAll()
+        categoryText.getItems().addAll(categoryService.getAll()
                 .stream().map(Category::getName).collect(Collectors.toList()));
         TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
     }
@@ -180,7 +198,7 @@ public class AddItemController implements Initializable {
         } else if (idText.getText().length() > 4) {
             showAlert(idText, idMaxAlert);
             success = false;
-        } else if (ItemRepository.findById(Integer.parseInt(idText.getText())) != null) {
+        } else if (itemService.findById(Integer.parseInt(idText.getText())) != null) {
             showAlert(idText, idDuplicateAlert);
             success = false;
         }
@@ -194,7 +212,7 @@ public class AddItemController implements Initializable {
         } else if (nameText.getText().length() > 250) {
             showAlert(nameText, nameMaxAlert);
             success = false;
-        } else if (ItemRepository.findByName(nameText.getText()).size() > 0) {
+        } else if (itemService.findByName(nameText.getText()).size() > 0) {
             showAlert(nameText, nameDuplicateAlert);
             success = false;
         }
