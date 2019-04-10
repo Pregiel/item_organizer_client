@@ -210,7 +210,7 @@
                 <Label fx:id="itemTitle" styleClass="title-element" text="Produkt 1" BorderPane.alignment="CENTER" />
             </center>
             <right>
-                <Button fx:id="removeItem" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" style="-fx-font-size: 9;" BorderPane.alignment="CENTER">
+                <Button fx:id="removeItem" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#removeItem" prefHeight="30.0" style="-fx-font-size: 9;" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="8.0" right="8.0" />
                </BorderPane.margin></Button>

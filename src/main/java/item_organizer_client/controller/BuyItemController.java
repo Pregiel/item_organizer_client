@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
@@ -18,17 +17,17 @@ public class BuyItemController implements Initializable {
     private static final String BUY_ELEMENT_FXML = "/layout/BuyItemElementLayout.fxml";
 
     public VBox newItemPane;
-    private List<TitledPane> newItemList;
+    private List<BuyItemElementController> controllerList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        newItemList = new ArrayList<>();
+        controllerList = new ArrayList<>();
         addItem(null);
     }
 
     public void clearAll(ActionEvent event) {
-        newItemPane.getChildren().removeAll(newItemList);
-        newItemList.clear();
+        newItemPane.getChildren().removeAll(newItemPane.getChildren());
+        controllerList.clear();
         addItem(null);
     }
 
@@ -44,10 +43,10 @@ public class BuyItemController implements Initializable {
 
             BuyItemElementController controller = loader.getController();
 
-            newItemList.add(newElement);
+            controllerList.add(controller);
             newItemPane.getChildren().add(newElement);
 
-            controller.setElementId(newItemList.size());
+            controller.setElementId(controllerList.size());
             controller.setItemTitle();
             controller.setBuyItemController(this);
 
@@ -56,11 +55,24 @@ public class BuyItemController implements Initializable {
         }
     }
 
-    public List<TitledPane> getNewItemList() {
-        return newItemList;
+    public List<BuyItemElementController> getControllerList() {
+        return controllerList;
     }
 
     public VBox getNewItemPane() {
         return newItemPane;
+    }
+
+    public void removeItem(BuyItemElementController controller) {
+        newItemPane.getChildren().remove(controller.getItemPane());
+        controllerList.remove(controller);
+
+        if (controllerList.size() > 0) {
+            for (int i = 0; i < controllerList.size(); i++) {
+                controllerList.get(i).setElementId(i+1);
+            }
+        } else {
+            addItem(null);
+        }
     }
 }

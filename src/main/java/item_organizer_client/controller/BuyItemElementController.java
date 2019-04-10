@@ -12,8 +12,6 @@ import item_organizer_client.utils.listeners.TextFieldListeners;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
@@ -204,17 +202,10 @@ public class BuyItemElementController implements Initializable {
     }
 
     private boolean checkIfItemIsAlreadyAdded(Item item) {
-        for (TitledPane titledPane : buyItemController.getNewItemList()) {
-            Label titleLabel = (Label) titledPane.lookup("#itemTitle");
-
-            if (titleLabel.getText().contains(".")) {
-                int id = Integer.parseInt(titleLabel.getText().substring(0, titleLabel.getText().indexOf(".")));
-                String name = titleLabel.getText().substring(titleLabel.getText().indexOf(".") + 2);
-
-                if (item.getId() == id) {
-                    if (item.getName().equals(name)) {
-                        return true;
-                    }
+        for (BuyItemElementController controller : buyItemController.getControllerList()) {
+            if (item.getId() == controller.getSelectedId()) {
+                if (item.getName().equals(controller.getSelectedName())) {
+                    return true;
                 }
             }
         }
@@ -300,9 +291,9 @@ public class BuyItemElementController implements Initializable {
                 break;
             case 1:
                 buyItemPane.getChildren().addAll(searchPane, detailsInputPane);
-                selectedItemId.setText(String.valueOf(selectedItem.getId()));
+                selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
-                itemTitle.setText(selectedItem.getId() + ". " + selectedItem.getName());
+                itemTitle.setText(selectedItemId.getText() + ". " + selectedItemName.getText());
 
                 if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
                     ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
@@ -317,6 +308,9 @@ public class BuyItemElementController implements Initializable {
 
     public void setElementId(int elementId) {
         this.elementId = elementId;
+        if (itemTitle.getText().matches("Produkt [\\d]+")) {
+            setItemTitle();
+        }
     }
 
     public void setItemTitle() {
@@ -325,5 +319,21 @@ public class BuyItemElementController implements Initializable {
 
     public void setBuyItemController(BuyItemController buyItemController) {
         this.buyItemController = buyItemController;
+    }
+
+    public void removeItem(ActionEvent event) {
+        buyItemController.removeItem(this);
+    }
+
+    public int getSelectedId() {
+        return Integer.valueOf((selectedItemId.getText().equals("") ? "0" : selectedItemId.getText()));
+    }
+
+    public String getSelectedName() {
+        return selectedItemName.getText();
+    }
+
+    public TitledPane getItemPane() {
+        return itemPane;
     }
 }
