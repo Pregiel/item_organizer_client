@@ -27,6 +27,11 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
+    public List<Price> addAll(List<Price> priceList) {
+        return priceRepository.addAll(priceList);
+    }
+
+    @Override
     public Price findById(int id) {
         return priceRepository.findById(Price.class, id);
     }

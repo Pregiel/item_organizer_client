@@ -15,4 +15,8 @@ public class ItemOrganizerDatabase {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+
+    public static void setSessionFactory(SessionFactory sessionFactory) {
+        ItemOrganizerDatabase.sessionFactory = sessionFactory;
+    }
 }

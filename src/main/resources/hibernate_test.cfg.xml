@@ -5,14 +5,14 @@
 <hibernate-configuration>
     <session-factory>
         <property name="show_sql">false</property>
-        <property name="format_sql">true</property>
+        <property name="format_sql">false</property>
         <property name="dialect">item_organizer_client.database.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.url">jdbc:sqlite:database.db</property>
+        <property name="connection.url">jdbc:sqlite:database_test.db</property>
         <property name="connection.username">qweqwda</property>
         <property name="connection.password">12345</property>
 
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
         <mapping class="item_organizer_client.model.Item"/>
         <mapping class="item_organizer_client.model.Category"/>

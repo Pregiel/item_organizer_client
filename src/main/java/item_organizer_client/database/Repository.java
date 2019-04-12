@@ -44,6 +44,13 @@ public class Repository<T> {
         return Arrays.asList(objects);
     }
 
+    public List<T> addAll(List<T> objectList) {
+        for (T object : objectList) {
+            add(object);
+        }
+        return objectList;
+    }
+
     public T findById(Class<T> tClass, int id) {
         configureSessionFactory();
 
@@ -150,4 +157,37 @@ public class Repository<T> {
 
         return list;
     }
+
+    public T update(T object) {
+        configureSessionFactory();
+
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            session.update(object);
+            session.flush();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return object;
+    }
+
+    public List<T> updateAll(List<T> objectList) {
+        for (T object : objectList) {
+            update(object);
+        }
+        return objectList;
+    }
+
 }

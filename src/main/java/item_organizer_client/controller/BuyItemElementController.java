@@ -2,14 +2,15 @@ package item_organizer_client.controller;
 
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
+import item_organizer_client.listeners.CustomListener;
+import item_organizer_client.listeners.SpinnerListener;
+import item_organizer_client.listeners.TextFieldListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
-import item_organizer_client.utils.listeners.ComboBoxListeners;
-import item_organizer_client.utils.listeners.SpinnerListeners;
-import item_organizer_client.utils.listeners.TextFieldListeners;
+import item_organizer_client.listeners.ComboBoxListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -90,6 +91,7 @@ public class BuyItemElementController implements Initializable {
         clearAlerts();
     }
 
+    @SuppressWarnings({"AccessStaticViaInstance", "ConstantConditions"})
     private void initListeners() {
         searchGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             searchText.getItems().clear();
@@ -111,18 +113,16 @@ public class BuyItemElementController implements Initializable {
 
         autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
 
-        onlyNumericListener = ComboBoxListeners.onlyNumericListener(searchText);
-        maxIdCharsAmountListener = ComboBoxListeners.maxCharsAmountListener(searchText, 4);
-        maxNameCharsAmountListener = ComboBoxListeners.maxCharsAmountListener(searchText, 250);
-        fillWithZerosListener = ComboBoxListeners.fillWithZerosListener(searchText, 4);
+        onlyNumericListener = ComboBoxListener.onlyReturn().onlyNumericListener(searchText);
+        maxIdCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, 4);
+        maxNameCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, 250);
+        fillWithZerosListener = ComboBoxListener.onlyReturn().fillWithZerosListener(searchText, 4);
 
-        searchText.focusedProperty().addListener(ComboBoxListeners.autoTrimListener(searchText));
-        searchText.focusedProperty().addListener(ComboBoxListeners.removeAlertsListener(searchText.getParent(), idNotExistAlert, nameNotExistAlert));
+        ComboBoxListener.autoTrimListener(searchText);
+        ComboBoxListener.removeAlertsListener(searchText.getParent(), idNotExistAlert, nameNotExistAlert);
 
-        amountText.getEditor().textProperty().addListener(SpinnerListeners.onlyNumericListener(amountText));
-        amountText.focusedProperty().addListener(SpinnerListeners.autoFillListener(amountText, 1));
-        amountText.getEditor().textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
-                buyPricePerItemText, amountText, buyPriceType));
+        SpinnerListener.onlyNumericListener(amountText);
+        SpinnerListener.autoFillListener(amountText, 1);
 
         ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
         buyPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
@@ -135,21 +135,19 @@ public class BuyItemElementController implements Initializable {
             }
         });
 
-        buyPriceText.textProperty().addListener(TextFieldListeners.priceListener(buyPriceText));
-        buyPriceText.textProperty().addListener(TextFieldListeners.setBuyPriceDependOnTypeListener(buyPriceText,
-                buyPricePerItemText, amountText, buyPriceType));
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.autoFillPriceListener(buyPriceText, "0.00"));
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.isNullListener(buyPriceText, buyNullAlert,
-                (Pane) buyPriceText.getParent().getParent()));
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.autoTrimListener(buyPriceText));
-        buyPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(
-                buyPriceText.getParent().getParent(), buyNullAlert));
+        TextFieldListener.priceListener(buyPriceText);
+        TextFieldListener.autoFillPriceListener(buyPriceText, "0.00");
+        TextFieldListener.isNullListener(buyPriceText, buyNullAlert, (Pane) buyPriceText.getParent().getParent());
+        TextFieldListener.autoTrimListener(buyPriceText);
+        TextFieldListener.removeAlertsListener(buyPriceText.getParent().getParent(), buyNullAlert);
 
-        sellPriceText.textProperty().addListener(TextFieldListeners.priceListener(sellPriceText));
-        sellPriceText.focusedProperty().addListener(TextFieldListeners.autoFillPriceListener(sellPriceText, "0.00"));
-        sellPriceText.focusedProperty().addListener(TextFieldListeners.isNullListener(sellPriceText, sellNullAlert));
-        sellPriceText.focusedProperty().addListener(TextFieldListeners.autoTrimListener(sellPriceText));
-        sellPriceText.focusedProperty().addListener(TextFieldListeners.removeAlertsListener(sellPriceText.getParent(), sellNullAlert));
+        TextFieldListener.priceListener(sellPriceText);
+        TextFieldListener.autoFillPriceListener(sellPriceText, "0.00");
+        TextFieldListener.isNullListener(sellPriceText, sellNullAlert);
+        TextFieldListener.autoTrimListener(sellPriceText);
+        TextFieldListener.removeAlertsListener(sellPriceText.getParent(), sellNullAlert);
+
+        CustomListener.updateBuyPerItemLabelListener(buyPricePerItemText, buyPriceText, amountText, buyPriceType);
     }
 
     private void refreshSearchTextListeners() {

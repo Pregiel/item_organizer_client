@@ -24,6 +24,11 @@ public class TransactionItemServiceImpl implements TransactionItemService {
     }
 
     @Override
+    public List<TransactionItem> addAll(List<TransactionItem> transactionItemList) {
+        return transactionItemRepository.addAll(transactionItemList);
+    }
+
+    @Override
     public TransactionItem findById(int id) {
         return transactionItemRepository.findById(TransactionItem.class, id);
     }

@@ -6,6 +6,7 @@ import item_organizer_client.model.type.TransactionType;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 @Entity
@@ -94,6 +95,6 @@ public class Price {
 
     @Override
     public String toString() {
-        return value.toString();
+        return value.toString() + " " + ResourceBundle.getBundle("strings").getString("price.currency");
     }
 }

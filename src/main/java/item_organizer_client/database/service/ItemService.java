@@ -24,4 +24,8 @@ public interface ItemService {
     List<String> getAllIDs();
 
     List<String> getAllNames();
+
+    Item update(Item item);
+
+    List<Item> updateAll(List<Item> itemList);
 }

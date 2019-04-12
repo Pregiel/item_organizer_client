@@ -19,36 +19,16 @@ import java.util.prefs.Preferences;
 
 @SpringBootApplication
 public class Main extends Application {
-    private Preferences preferences;
-    private Parent root;
+    private ItemOrganizer itemOrganizer;
 
     @Override
     public void init() throws Exception {
         SpringFXMLLoader.setApplicationContext(SpringApplication.run(Main.class));
-        root = new SpringFXMLLoader(getClass().getResource("/layout/MainLayout.fxml")).load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        preferences = Preferences.userRoot().node(this.getClass().getName());
-
-        primaryStage.setTitle("Item organizer");
-        primaryStage.setScene(new Scene(
-                root,
-                preferences.getDouble("width", ((Pane) root).getPrefWidth()),
-                preferences.getDouble("height", ((Pane) root).getPrefHeight())));
-
-        primaryStage.setMinWidth(((Pane) root).getMinWidth());
-        primaryStage.setMinHeight(((Pane) root).getMinHeight());
-        primaryStage.show();
-
-        primaryStage.widthProperty().addListener(((observable, oldValue, newValue) -> {
-            preferences.putDouble("width", (Double) newValue);
-        }));
-
-        primaryStage.heightProperty().addListener(((observable, oldValue, newValue) -> {
-            preferences.putDouble("height", (Double) newValue);
-        }));
+    public void start(Stage stage) throws Exception {
+        itemOrganizer = new ItemOrganizer(stage);
     }
 
     public static void main(String[] args) {

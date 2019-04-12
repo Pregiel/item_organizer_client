@@ -23,12 +23,13 @@ public class ItemTableItem extends Item {
         super(item);
 
         for (Price itemPrice : getPrices()) {
-            if (price == null) {
-                price = itemPrice;
-            } else if (itemPrice.getDate().after(price.getDate())) {
-                price = itemPrice;
+            if (itemPrice.getType() == PriceType.SELL) {
+                if (price == null) {
+                    price = itemPrice;
+                } else if (itemPrice.getDate().after(price.getDate())) {
+                    price = itemPrice;
+                }
             }
-
         }
 
         Button editButton = new Button("E");

@@ -9,6 +9,8 @@ public interface TransactionItemService {
 
     List<TransactionItem> addAll(TransactionItem... transactionItems);
 
+    List<TransactionItem> addAll(List<TransactionItem> transactionItemList);
+
     TransactionItem findById(int id);
 
     List<TransactionItem> getAll();

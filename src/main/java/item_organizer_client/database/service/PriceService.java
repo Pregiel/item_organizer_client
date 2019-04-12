@@ -12,6 +12,8 @@ public interface PriceService {
 
     List<Price> addAll(Price... prices);
 
+    List<Price> addAll(List<Price> priceList);
+
     Price findById(int id);
 
     List<Price> findByValue(String value);

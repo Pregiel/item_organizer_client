@@ -1,16 +1,20 @@
 package item_organizer_client.controller;
 
+import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
+import item_organizer_client.database.service.TransactionItemService;
+import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.exception.ItemNotFinishedException;
+import item_organizer_client.listeners.DatePickerListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.TransactionItem;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.SpringFXMLLoader;
-import item_organizer_client.utils.listeners.DatePickerListeners;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TitledPane;
@@ -30,7 +34,13 @@ import java.util.ResourceBundle;
 @Component
 public class BuyItemController implements Initializable {
     @Autowired
+    private ItemService itemService;
+    @Autowired
     private PriceService priceService;
+    @Autowired
+    private TransactionService transactionService;
+    @Autowired
+    private TransactionItemService transactionItemService;
 
     private static final String BUY_ELEMENT_FXML = "/layout/BuyItemElementLayout.fxml";
 
@@ -43,9 +53,8 @@ public class BuyItemController implements Initializable {
         controllerList = new ArrayList<>();
         addItem(null);
 
-
         dateText.setValue(LocalDate.now());
-        dateText.focusedProperty().addListener(DatePickerListeners.autoFillDateListener(dateText));
+        DatePickerListener.autoFillDateListener(dateText);
     }
 
     public void clearAll(ActionEvent event) {
@@ -60,9 +69,11 @@ public class BuyItemController implements Initializable {
         List<Price> priceList = new ArrayList<>();
         List<TransactionItem> transactionItemList = new ArrayList<>();
 
+        Transaction transaction = null;
+
         try {
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
-            Transaction transaction = new Transaction(date, TransactionType.BUY);
+            transaction = new Transaction(date, TransactionType.BUY);
 
             for (BuyItemElementController controller : controllerList) {
                 if (controller.getStep() != 2) {
@@ -79,8 +90,8 @@ public class BuyItemController implements Initializable {
                     priceList.add(buyPrice);
                 }
 
-                Price sellPrice = priceService.getLastedForItem(item, PriceType.BUY);
-                if (sellPrice.getValue() != controller.getSelectedBuyPrice()) {
+                Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
+                if (sellPrice.getValue() != controller.getSelectedSellPrice()) {
                     sellPrice = priceService.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
                     priceList.add(sellPrice);
                 }
@@ -98,11 +109,12 @@ public class BuyItemController implements Initializable {
         }
 
 
-//        ItemServiceImpl.addAll(itemList);
-//        PriceRepository.add(sellPrice);
-//        PriceRepository.add(buyPrice);
-//        TransactionRepository.add(transaction);
-//        TransactionItemRepository.add(transactionItem);
+        transactionService.add(transaction);
+        priceService.addAll(priceList);
+        itemService.updateAll(itemList);
+        transactionItemService.addAll(transactionItemList);
+
+        ItemList.getInstance().refresh();
     }
 
     public void addItem(ActionEvent event) {

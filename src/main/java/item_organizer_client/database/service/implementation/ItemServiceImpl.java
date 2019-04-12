@@ -52,4 +52,14 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.getAllColumn(Item.class, "name");
     }
 
+    @Override
+    public Item update(Item item) {
+        return itemRepository.update(item);
+    }
+
+    @Override
+    public List<Item> updateAll(List<Item> itemList) {
+        return itemRepository.updateAll(itemList);
+    }
+
 }

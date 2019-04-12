@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import tornadofx.control.DateTimePicker?>
 
-
 <BorderPane maxHeight="1.7976931348623157E308" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.AddItemController">
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -148,7 +147,7 @@
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
             <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearAll" prefWidth="100.0" text="Wyczyść" />
-            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefWidth="150.0" text="Dodaj" />
+            <Button fx:id="submit" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefWidth="150.0" text="Dodaj" />
          </children>
          <BorderPane.margin>
             <Insets left="14.0" right="14.0" top="8.0" />
