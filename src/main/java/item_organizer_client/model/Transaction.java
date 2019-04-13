@@ -13,7 +13,7 @@ import java.util.Set;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_transaction")
-    @SequenceGenerator(name = "id_transaction", sequenceName = "ID_TRA")
+    @SequenceGenerator(name = "id_transaction", sequenceName = "ID_TRA", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

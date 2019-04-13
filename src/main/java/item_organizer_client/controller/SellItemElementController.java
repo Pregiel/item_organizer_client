@@ -2,6 +2,7 @@ package item_organizer_client.controller;
 
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
+import item_organizer_client.listeners.ComboBoxListener;
 import item_organizer_client.listeners.CustomListener;
 import item_organizer_client.listeners.SpinnerListener;
 import item_organizer_client.listeners.TextFieldListener;
@@ -10,7 +11,6 @@ import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
-import item_organizer_client.listeners.ComboBoxListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -29,7 +29,7 @@ import java.util.prefs.Preferences;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class BuyItemElementController implements Initializable {
+public class SellItemElementController implements Initializable {
     @Autowired
     private ItemService itemService;
 
@@ -40,16 +40,15 @@ public class BuyItemElementController implements Initializable {
 
     public TitledPane itemPane;
     public GridPane searchInputPane, detailsInputPane;
-    public VBox buyItemPane, searchPane, detailsPane;
-    public HBox buyPricePerItemPane;
+    public VBox sellItemPane, searchPane, detailsPane;
+    public HBox sellPricePerItemPane;
     public Spinner<Integer> amountText;
     public RadioButton idRadioButton, nameRadioButton;
     public ToggleGroup searchGroup;
-    public TextField buyPriceText, sellPriceText;
-    public ComboBox<String> buyPriceType, searchText;
-    public Label idNotExistAlert, nameNotExistAlert, buyPricePerItemText, buyNullAlert,
-            amountNullAlert, sellNullAlert, selectedItemId, selectedItemName, selectedItemAmount, selectedItemBuy,
-            selectedItemBuyPerItem, selectedItemSell, itemTitle;
+    public TextField sellPriceText;
+    public ComboBox<String> sellPriceType, searchText;
+    public Label idNotExistAlert, nameNotExistAlert, sellPricePerItemText, amountNullAlert, sellNullAlert,
+            selectedItemId, selectedItemName, selectedItemAmount, selectedItemSellPerItem, selectedItemSell, itemTitle;
     public Button removeItem;
     public BorderPane titlePane;
 
@@ -61,8 +60,6 @@ public class BuyItemElementController implements Initializable {
 
     private ChangeListener<String> onlyNumericListener, maxIdCharsAmountListener, maxNameCharsAmountListener;
     private ChangeListener<Boolean> fillWithZerosListener;
-
-    private BuyItemController buyItemController;
 
     private SellItemController sellItemController;
 
@@ -82,8 +79,8 @@ public class BuyItemElementController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
         amountText.setValueFactory(valueFactory);
 
-        buyPriceType.getItems().addAll("za sztukę", "za wszystko");
-        buyPriceType.getSelectionModel().select(0);
+        sellPriceType.getItems().addAll("za sztukę", "za wszystko");
+        sellPriceType.getSelectionModel().select(0);
 
         initListeners();
 
@@ -126,30 +123,24 @@ public class BuyItemElementController implements Initializable {
         SpinnerListener.onlyNumericListener(amountText);
         SpinnerListener.autoFillListener(amountText, 1);
 
-        ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
-        buyPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+        ((Pane) sellPriceText.getParent().getParent()).getChildren().remove(sellPricePerItemPane);
+        sellPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() == 0) {
-                ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
+                ((Pane) sellPriceText.getParent().getParent()).getChildren().remove(sellPricePerItemPane);
             } else {
-                ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
-                buyPricePerItemText.setText(Utils.round(
-                        Double.valueOf(buyPriceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2) + " zł");
+                ((Pane) sellPriceText.getParent().getParent()).getChildren().add(sellPricePerItemPane);
+                sellPricePerItemText.setText(Utils.round(
+                        Double.valueOf(sellPriceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2) + " zł");
             }
         });
-
-        TextFieldListener.priceListener(buyPriceText);
-        TextFieldListener.autoFillPriceListener(buyPriceText, "0.00");
-        TextFieldListener.isNullListener(buyPriceText, buyNullAlert, (Pane) buyPriceText.getParent().getParent());
-        TextFieldListener.autoTrimListener(buyPriceText);
-        TextFieldListener.removeAlertsListener(buyPriceText.getParent().getParent(), buyNullAlert);
 
         TextFieldListener.priceListener(sellPriceText);
         TextFieldListener.autoFillPriceListener(sellPriceText, "0.00");
         TextFieldListener.isNullListener(sellPriceText, sellNullAlert);
         TextFieldListener.autoTrimListener(sellPriceText);
-        TextFieldListener.removeAlertsListener(sellPriceText.getParent(), sellNullAlert);
+        TextFieldListener.removeAlertsListener(sellPriceText.getParent().getParent(), sellNullAlert);
 
-        CustomListener.updateBuyPerItemLabelListener(buyPricePerItemText, buyPriceText, amountText, buyPriceType);
+        CustomListener.updateBuyPerItemLabelListener(sellPricePerItemText, sellPriceText, amountText, sellPriceType);
     }
 
     private void refreshSearchTextListeners() {
@@ -173,8 +164,7 @@ public class BuyItemElementController implements Initializable {
     private void clearAlerts() {
         ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
         ((Pane) amountText.getParent()).getChildren().removeAll(amountNullAlert);
-        ((Pane) buyPriceText.getParent().getParent()).getChildren().removeAll(buyPricePerItemPane, buyNullAlert);
-        ((Pane) sellPriceText.getParent()).getChildren().removeAll(sellNullAlert);
+        ((Pane) sellPriceText.getParent().getParent()).getChildren().removeAll(sellPricePerItemPane, sellNullAlert);
     }
 
     public void nextStepSearch(ActionEvent event) {
@@ -186,11 +176,6 @@ public class BuyItemElementController implements Initializable {
             }
             if (selectedItem == null)
                 throw new NullPointerException();
-
-            Price lastedBuyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
-            if (lastedBuyPrice != null) {
-                buyPriceText.setText(lastedBuyPrice.getValue().toString());
-            }
 
             Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
             if (lastedSellPrice != null) {
@@ -215,7 +200,7 @@ public class BuyItemElementController implements Initializable {
     }
 
     private boolean checkIfItemIsAlreadyAdded(Item item) {
-        for (BuyItemElementController controller : buyItemController.getControllerList()) {
+        for (SellItemElementController controller : sellItemController.getControllerList()) {
             if (item.getId() == controller.getSelectedId()) {
                 if (item.getName().equals(controller.getSelectedName())) {
                     return true;
@@ -233,38 +218,33 @@ public class BuyItemElementController implements Initializable {
         if (amountText.getEditor().getText().equals(""))
             amountText.getEditor().setText("0");
 
-        if (buyPriceText.getText().equals(""))
-            amountText.getEditor().setText("0.00");
-
         if (sellPriceText.getText().equals(""))
             amountText.getEditor().setText("0.00");
 
         if (Integer.valueOf(amountText.getEditor().getText()) == 0) {
-            MyAlerts.showError("Liczba sztuk równa zero", "Zakupiona liczba sztuk musi być większa od 0.");
+            MyAlerts.showError("Liczba sztuk równa zero", "Sprzedana liczba sztuk musi być większa od 0.");
             return;
         }
 
-        if (Double.valueOf(buyPriceText.getText()) == 0.0)
-            if (!MyAlerts.showConfirmationDialog("Cena kupna równa zero", "Cena kupna jest równa 0.00zł. Chcesz kontynuować?"))
+        if (selectedItem.getAmount() - Integer.valueOf(amountText.getEditor().getText()) < 0)
+            if (!MyAlerts.showConfirmationDialog("Za mało sztuk w bazie", "Liczba sztuk w bazie jest mniejsza od podanej liczby sztuk. Chcesz kontynuować?"))
                 return;
+
 
         if (Double.valueOf(sellPriceText.getText()) == 0.0)
             if (!MyAlerts.showConfirmationDialog("Cena sprzedaży równa zero", "Cena sprzedaży jest równa 0.00zł. Chcesz kontynuować?"))
                 return;
 
-
         int amountValue = amountText.getValue();
         double sellPriceValue = Double.valueOf(sellPriceText.getText());
-        double buyPriceValue = Double.valueOf(buyPriceText.getText());
-
 
         selectedItemAmount.setText(String.valueOf(amountValue));
-        if (buyPriceType.getSelectionModel().getSelectedIndex() == 0) {
-            selectedItemBuy.setText(Utils.round(buyPriceValue * amountValue, 2) + " zł");
-            selectedItemBuyPerItem.setText(Utils.round(buyPriceValue, 2) + " zł");
+        if (sellPriceType.getSelectionModel().getSelectedIndex() == 0) {
+            selectedItemSell.setText(Utils.round(sellPriceValue * amountValue, 2) + " zł");
+            selectedItemSellPerItem.setText(Utils.round(sellPriceValue, 2) + " zł");
         } else {
-            selectedItemBuy.setText(Utils.round(buyPriceValue, 2) + " zł");
-            selectedItemBuyPerItem.setText(Utils.round(buyPriceValue / amountValue, 2) + " zł");
+            selectedItemSell.setText(Utils.round(sellPriceValue, 2) + " zł");
+            selectedItemSellPerItem.setText(Utils.round(sellPriceValue / amountValue, 2) + " zł");
         }
         selectedItemSell.setText(sellPriceValue + " zł");
 
@@ -281,25 +261,25 @@ public class BuyItemElementController implements Initializable {
     private void goToStep(int step) {
         this.step = step;
         clearAlerts();
-        buyItemPane.getChildren().removeAll(searchInputPane, searchPane, detailsInputPane, detailsPane);
+        sellItemPane.getChildren().removeAll(searchInputPane, searchPane, detailsInputPane, detailsPane);
         switch (step) {
             case 0:
-                buyItemPane.getChildren().addAll(searchInputPane);
+                sellItemPane.getChildren().addAll(searchInputPane);
                 selectedItemId.setText("");
                 selectedItemName.setText("");
                 break;
             case 1:
-                buyItemPane.getChildren().addAll(searchPane, detailsInputPane);
+                sellItemPane.getChildren().addAll(searchPane, detailsInputPane);
                 selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
 
-                if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
-                    ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
+                if (sellPriceType.getSelectionModel().getSelectedIndex() != 0) {
+                    ((Pane) sellPriceText.getParent().getParent()).getChildren().add(sellPricePerItemPane);
                 }
                 break;
 
             case 2:
-                buyItemPane.getChildren().addAll(searchPane, detailsPane);
+                sellItemPane.getChildren().addAll(searchPane, detailsPane);
                 break;
         }
         setItemTitle();
@@ -320,16 +300,12 @@ public class BuyItemElementController implements Initializable {
         }
     }
 
-    public void setBuyItemController(BuyItemController buyItemController) {
-        this.buyItemController = buyItemController;
-    }
-
     public void setSellItemController(SellItemController sellItemController) {
         this.sellItemController = sellItemController;
     }
 
     public void removeItem(ActionEvent event) {
-        buyItemController.removeItem(this);
+        sellItemController.removeItem(this);
     }
 
     public int getStep() {
@@ -349,7 +325,7 @@ public class BuyItemElementController implements Initializable {
     }
 
     public double getSelectedBuyPrice() {
-        return Double.valueOf(selectedItemBuyPerItem.getText().substring(0, selectedItemBuyPerItem.getText().length() - 3));
+        return Double.valueOf(selectedItemSellPerItem.getText().substring(0, selectedItemSellPerItem.getText().length() - 3));
     }
 
     public double getSelectedSellPrice() {

@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<TitledPane fx:id="itemPane" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.BuyItemElementController">
+<TitledPane fx:id="itemPane" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.SellItemElementController">
     <content>
-          <VBox fx:id="buyItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="18.0">
+          <VBox fx:id="sellItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="18.0">
               <padding>
                   <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
               </padding>
@@ -115,37 +115,30 @@
                           <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                           <VBox spacing="2.0" GridPane.rowIndex="3">
                               <children>
-                                  <Label styleClass="property-label" text="Cena zakupu" />
+                                  <Label styleClass="property-label" text="Cena" />
                                   <HBox maxWidth="1.7976931348623157E308" minWidth="-Infinity">
                                       <children>
-                                          <TextField fx:id="buyPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" HBox.hgrow="SOMETIMES" />
-                                          <ComboBox fx:id="buyPriceType" minWidth="20.0" HBox.hgrow="SOMETIMES" />
+                                          <TextField fx:id="sellPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" HBox.hgrow="SOMETIMES" />
+                                          <ComboBox fx:id="sellPriceType" minWidth="20.0" HBox.hgrow="SOMETIMES" />
                                       </children>
                                   </HBox>
-                                  <HBox fx:id="buyPricePerItemPane">
+                                  <HBox fx:id="sellPricePerItemPane">
                                       <children>
                                           <Label styleClass="info-label" text="Cena za sztukę:">
                                               <padding>
                                                   <Insets right="4.0" />
                                               </padding>
                                           </Label>
-                                          <Label fx:id="buyPricePerItemText" style="-fx-font-weight: bold;" styleClass="info-label" text="0.00 zł" />
+                                          <Label fx:id="sellPricePerItemText" style="-fx-font-weight: bold;" styleClass="info-label" text="0.00 zł" />
                                       </children>
                                   </HBox>
-                                  <Label fx:id="buyNullAlert" styleClass="alert-label" text="Wprowadź cene zakupu" />
+                                  <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene " />
                               </children>
                           </VBox>
                           <VBox spacing="2.0" GridPane.rowIndex="2">
                               <children>
-                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk" />
+                                  <Label styleClass="property-label" text="Sprzedana liczba sztuk" />
                                   <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                              </children>
-                          </VBox>
-                          <VBox spacing="2.0" GridPane.rowIndex="4">
-                              <children>
-                                  <Label styleClass="property-label" text="Cena sprzedaży (za sztukę)" />
-                                  <TextField fx:id="sellPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" />
-                                  <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene sprzedaży" />
                               </children>
                           </VBox>
                       </children>
@@ -163,7 +156,7 @@
                           </HBox>
                           <HBox>
                               <children>
-                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk:">
+                                  <Label styleClass="property-label" text="Sprzedana liczba sztuk:">
                                       <padding>
                                           <Insets right="4.0" />
                                       </padding>
@@ -173,32 +166,22 @@
                           </HBox>
                           <HBox>
                               <children>
-                                  <Label styleClass="property-label" text="Cena zakupu za wszystko:">
+                                  <Label styleClass="property-label" text="Cena za wszystko:">
                                       <padding>
                                           <Insets right="4.0" />
                                       </padding>
                                   </Label>
-                                  <Label fx:id="selectedItemBuy" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
+                                  <Label fx:id="selectedItemSell" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
                               </children>
                           </HBox>
                           <HBox layoutX="10.0" layoutY="10.0">
                               <children>
-                                  <Label styleClass="property-label" text="Cena zakupu za sztukę:">
+                                  <Label styleClass="property-label" text="Cena za sztukę:">
                                       <padding>
                                           <Insets right="4.0" />
                                       </padding>
                                   </Label>
-                                  <Label fx:id="selectedItemBuyPerItem" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="6 zł" />
-                              </children>
-                          </HBox>
-                          <HBox>
-                              <children>
-                                  <Label styleClass="property-label" text="Cena sprzedaży za sztukę:">
-                                      <padding>
-                                          <Insets right="4.0" />
-                                      </padding>
-                                  </Label>
-                                  <Label fx:id="selectedItemSell" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="9 zł" />
+                                  <Label fx:id="selectedItemSellPerItem" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="6 zł" />
                               </children>
                           </HBox>
                       </children>

@@ -33,7 +33,7 @@ public class ItemListController implements Initializable {
 
     private static final String ADD_FXML = "/layout/AddItemLayout.fxml";
     private static final String BUY_FXML = "/layout/BuyItemLayout.fxml";
-    private static final String SELL_FXML = "";
+    private static final String SELL_FXML = "/layout/SellItemLayout.fxml";
     private static final String SEARCH_FXML = "/layout/SearchItemLayout.fxml";
     private static final String INFO_FXML = "";
 
@@ -173,16 +173,18 @@ public class ItemListController implements Initializable {
         untoggleAllButtons();
     }
 
+    private static final String TOGGLED_SIDE_ICON_BUTTON_STYLECLASS = "toggled-side-icon-button";
+
     private void toggleButton(Button button) {
-        button.getStyleClass().add("toggled-icon-button");
+        button.getStyleClass().add(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
     }
 
     private void untoggleAllButtons() {
-        homeButton.getStyleClass().remove("toggled-icon-button");
-        searchButton.getStyleClass().remove("toggled-icon-button");
-        addButton.getStyleClass().remove("toggled-icon-button");
-        buyButton.getStyleClass().remove("toggled-icon-button");
-        sellButton.getStyleClass().remove("toggled-icon-button");
-        infoButton.getStyleClass().remove("toggled-icon-button");
+        homeButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
+        searchButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
+        addButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
+        buyButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
+        sellButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
+        infoButton.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS);
     }
 }

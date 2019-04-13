@@ -1,5 +1,14 @@
 * {
 	-primary-color: #3b4e7c;
+
+	-icon-color: #3b4e7c;
+	-icon-front-hover-color: #e2e2e2;
+	-icon-back-hover-color: -icon-color;
+	-icon-pressed-color: #657cb5;
+	-icon-toggled-hover-color: #556896;
+	-icon-toggled-pressed-color: #6981bc;
+
+	-icon-hover-background-color: rgba(220,220,220,5);
 }
 
 .title-top {
@@ -34,4 +43,45 @@
 
 .scroll-pane {
     -fx-background-color: transparent;
+}
+
+
+.icon-button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 4px 6px 2px 6px;
+    -fx-margin: 0px;
+}
+
+.icon-button .icon-front{
+    -fx-stroke: transparent;
+    -fx-fill: -icon-color;
+    -fx-stroke-width: 2px;
+}
+
+.icon-button:hover .icon-front{
+    -fx-stroke: -icon-color;
+}
+
+.icon-button:pressed .icon-front{
+    -fx-fill: -icon-pressed-color;
+    -fx-stroke: -icon-pressed-color;
+}
+
+.titled-pane > .title > .arrow-button .arrow {
+    -fx-background-color: -icon-color;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.35em 0.25em 0.35em;
+    -fx-shape: "M 25.666376,11.65405 16.975326,22.023259 8.3249769,11.702612 c 17.3413991,-0.04856 0,0 17.3413991,-0.04856 z";
+}
+
+.titled-pane > .title > .arrow-button:hover .arrow {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.titled-pane:focused > .title > .arrow-button .arrow {
+    -fx-effect: null;
 }

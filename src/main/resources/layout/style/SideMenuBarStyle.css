@@ -1,0 +1,77 @@
+* {
+	-background-color: #eeeeee;
+
+	-separator-color: #cacaca;
+
+	-side-icon-color: #3b4e7c;
+	-side-icon-front-hover-color: #e2e2e2;
+	-side-icon-back-hover-color: -icon-color;
+	-side-icon-pressed-color: #657cb5;
+	-side-icon-toggled-hover-color: #556896;
+	-side-icon-toggled-pressed-color: #6981bc;
+
+	-side-icon-hover-background-color: rgba(220,220,220,5);
+
+    -menu-separator: #dbdbdb;
+}
+
+.background {
+    -fx-background-color: -background-color;
+}
+
+.right-border-separator {
+    -fx-border-color: -separator-color;
+    -fx-border-width: 0px 2px 0px 0px;
+}
+
+.side-icon-button {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 4px 6px 2px 6px;
+    -fx-margin: 0px;
+}
+
+.side-icon-button .icon-front,
+ .side-icon-button .icon-back{
+    -fx-stroke: -side-icon-color;
+    -fx-stroke-width: 2px;
+}
+
+.side-icon-button:hover .icon-back{
+    -fx-fill: -side-icon-back-hover-color;
+    -fx-stroke: -side-icon-back-hover-color;
+}
+
+.side-icon-button:hover .icon-front{
+    -fx-stroke: -side-icon-front-hover-color;
+}
+
+.side-icon-button:pressed .icon-back{
+    -fx-fill: -side-icon-pressed-color;
+    -fx-stroke: -side-icon-pressed-color;
+}
+
+.toggled-side-icon-button .icon-back {
+    -fx-fill: -side-icon-back-hover-color;
+    -fx-stroke: -side-icon-back-hover-color;
+}
+
+.toggled-side-icon-button .icon-front {
+    -fx-stroke: -side-icon-front-hover-color;
+}
+
+.toggled-side-icon-button:hover .icon-back {
+    -fx-fill: -side-icon-toggled-hover-color;
+    -fx-stroke: -side-icon-toggled-hover-color;
+}
+
+.toggled-side-icon-button:pressed .icon-back {
+    -fx-fill: -side-icon-toggled-pressed-color;
+    -fx-stroke: -side-icon-toggled-pressed-color;
+}
+
+.menu-separator {
+    -fx-background-color: -menu-separator;
+}

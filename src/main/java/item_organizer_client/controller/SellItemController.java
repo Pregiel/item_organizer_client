@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class BuyItemController implements Initializable {
+public class SellItemController implements Initializable {
     @Autowired
     private ItemService itemService;
     @Autowired
@@ -42,11 +42,11 @@ public class BuyItemController implements Initializable {
     @Autowired
     private TransactionItemService transactionItemService;
 
-    private static final String BUY_ELEMENT_FXML = "/layout/BuyItemElementLayout.fxml";
+    private static final String SELL_ELEMENT_FXML = "/layout/SellItemElementLayout.fxml";
 
     public VBox newItemPane;
     public DateTimePicker dateText;
-    private List<BuyItemElementController> controllerList;
+    private List<SellItemElementController> controllerList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,28 +73,23 @@ public class BuyItemController implements Initializable {
 
         try {
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
-            transaction = new Transaction(date, TransactionType.BUY);
+            transaction = new Transaction(date, TransactionType.SELL);
 
-            for (BuyItemElementController controller : controllerList) {
+            for (SellItemElementController controller : controllerList) {
                 if (controller.getStep() != 2) {
                     throw new ItemNotFinishedException();
                 }
                 Item item = controller.getSelectedItem();
                 int amount = controller.getSelectedAmount();
 
-                item.setAmount(item.getAmount() + amount);
-
-                Price buyPrice = priceService.getLastedForItem(item, PriceType.BUY);
-                if (buyPrice.getValue() != controller.getSelectedBuyPrice()) {
-                    priceList.add(new Price(controller.getSelectedBuyPrice(), PriceType.BUY, item, date));
-                }
+                item.setAmount(item.getAmount() - amount);
 
                 Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
                 if (sellPrice.getValue() != controller.getSelectedSellPrice()) {
                     priceList.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
                 }
 
-                TransactionItem transactionItem = new TransactionItem(item, transaction, buyPrice, amount);
+                TransactionItem transactionItem = new TransactionItem(item, transaction, sellPrice, amount);
 
                 itemList.add(item);
                 transactionItemList.add(transactionItem);
@@ -115,26 +110,26 @@ public class BuyItemController implements Initializable {
     }
 
     public void addItem(ActionEvent event) {
-        SpringFXMLLoader loader = new SpringFXMLLoader(getClass().getResource(BUY_ELEMENT_FXML));
+        SpringFXMLLoader loader = new SpringFXMLLoader(getClass().getResource(SELL_ELEMENT_FXML));
 
         try {
             TitledPane newElement = loader.load();
 
-            BuyItemElementController controller = loader.getController();
+            SellItemElementController controller = loader.getController();
 
             controllerList.add(controller);
             newItemPane.getChildren().add(newElement);
 
             controller.setElementId(controllerList.size());
             controller.setItemTitle();
-            controller.setBuyItemController(this);
+            controller.setSellItemController(this);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public List<BuyItemElementController> getControllerList() {
+    public List<SellItemElementController> getControllerList() {
         return controllerList;
     }
 
@@ -142,7 +137,7 @@ public class BuyItemController implements Initializable {
         return newItemPane;
     }
 
-    public void removeItem(BuyItemElementController controller) {
+    public void removeItem(SellItemElementController controller) {
         newItemPane.getChildren().remove(controller.getItemPane());
         controllerList.remove(controller);
 
