@@ -93,7 +93,7 @@ public class SellItemController extends SideBarMenuViewController implements Ini
                 item.setAmount(item.getAmount() - amount);
 
                 Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
-                if (sellPrice.getValue() != controller.getSelectedSellPrice()) {
+                if (!sellPrice.getValue().equals(controller.getSelectedSellPrice())) {
                     priceList.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
                 }
 

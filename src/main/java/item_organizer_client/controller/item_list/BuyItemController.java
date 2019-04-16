@@ -93,12 +93,12 @@ public class BuyItemController extends SideBarMenuViewController implements Init
                 item.setAmount(item.getAmount() + amount);
 
                 Price buyPrice = priceService.getLastedForItem(item, PriceType.BUY);
-                if (buyPrice.getValue() != controller.getSelectedBuyPrice()) {
+                if (!buyPrice.getValue().equals(controller.getSelectedBuyPrice())) {
                     priceList.add(new Price(controller.getSelectedBuyPrice(), PriceType.BUY, item, date));
                 }
 
                 Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
-                if (sellPrice.getValue() != controller.getSelectedSellPrice()) {
+                if (!sellPrice.getValue().equals(controller.getSelectedSellPrice())) {
                     priceList.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
                 }
 

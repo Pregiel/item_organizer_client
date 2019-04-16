@@ -18,6 +18,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -156,34 +158,33 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
         if (sellPriceText.getText().equals(""))
             amountText.getEditor().setText("0.00");
 
-        if (Integer.valueOf(amountText.getEditor().getText()) == 0) {
+
+        BigDecimal amountValue = new BigDecimal(amountText.getEditor().getText());
+        BigDecimal sellPriceValue = new BigDecimal(sellPriceText.getText());
+        BigDecimal buyPriceValue = new BigDecimal(buyPriceText.getText());
+
+        if (amountValue.compareTo(BigDecimal.ZERO) == 0) {
             MyAlerts.showError("Liczba sztuk równa zero", "Zakupiona liczba sztuk musi być większa od 0.");
             return;
         }
 
-        if (Double.valueOf(buyPriceText.getText()) == 0.0)
+        if (buyPriceValue.compareTo(BigDecimal.ZERO) == 0)
             if (!MyAlerts.showConfirmationDialog("Cena kupna równa zero", "Cena kupna jest równa 0.00zł. Chcesz kontynuować?"))
                 return;
 
-        if (Double.valueOf(sellPriceText.getText()) == 0.0)
+        if (sellPriceValue.compareTo(BigDecimal.ZERO) == 0)
             if (!MyAlerts.showConfirmationDialog("Cena sprzedaży równa zero", "Cena sprzedaży jest równa 0.00zł. Chcesz kontynuować?"))
                 return;
 
-
-        int amountValue = amountText.getValue();
-        double sellPriceValue = Double.valueOf(sellPriceText.getText());
-        double buyPriceValue = Double.valueOf(buyPriceText.getText());
-
-
         selectedItemAmount.setText(String.valueOf(amountValue));
         if (buyPriceType.getSelectionModel().getSelectedIndex() == 0) {
-            selectedItemBuy.setText(Utils.round(buyPriceValue * amountValue, 2) + " zł");
-            selectedItemBuyPerItem.setText(Utils.round(buyPriceValue, 2) + " zł");
+            selectedItemBuy.setText(Price.priceFormat(buyPriceValue.multiply(amountValue)));
+            selectedItemBuyPerItem.setText(Price.priceFormat(buyPriceValue));
         } else {
-            selectedItemBuy.setText(Utils.round(buyPriceValue, 2) + " zł");
-            selectedItemBuyPerItem.setText(Utils.round(buyPriceValue / amountValue, 2) + " zł");
+            selectedItemBuy.setText(Price.priceFormat(buyPriceValue));
+            selectedItemBuyPerItem.setText(Price.priceFormat(buyPriceValue.divide(amountValue, 2, RoundingMode.CEILING)));
         }
-        selectedItemSell.setText(sellPriceValue + " zł");
+        selectedItemSell.setText(Price.priceFormat(sellPriceValue));
 
         goToStep(2);
     }
@@ -261,12 +262,12 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
         return Integer.valueOf(selectedItemAmount.getText());
     }
 
-    public double getSelectedBuyPrice() {
-        return Double.valueOf(selectedItemBuyPerItem.getText().substring(0, selectedItemBuyPerItem.getText().length() - 3));
+    public BigDecimal getSelectedBuyPrice() {
+        return new BigDecimal(selectedItemBuyPerItem.getText().substring(0, selectedItemBuyPerItem.getText().length() - 3));
     }
 
-    public double getSelectedSellPrice() {
-        return Double.valueOf(selectedItemSell.getText().substring(0, selectedItemSell.getText().length() - 3));
+    public BigDecimal getSelectedSellPrice() {
+        return new BigDecimal(selectedItemSell.getText().substring(0, selectedItemSell.getText().length() - 3));
     }
 
     public Item getSelectedItem() {

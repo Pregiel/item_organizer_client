@@ -5,6 +5,7 @@ import item_organizer_client.model.list.ItemList;
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.model.table_item.ItemTableItem;
 import item_organizer_client.utils.Utils;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,6 +25,7 @@ public class ItemListController extends SideBarController implements Initializab
     public AnchorPane itemMainPane;
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
     public SplitPane splitPane;
+    public TableColumn<ItemTableItem, String> idColumn;
 
     private ItemList itemList;
 
@@ -51,6 +53,9 @@ public class ItemListController extends SideBarController implements Initializab
             itemTableView.getItems().clear();
             itemTableView.getItems().addAll(itemList.getItemListAsTableItems());
         });
+
+        idColumn.setCellValueFactory(param ->
+                new SimpleObjectProperty<>(Utils.fillWithZeros(param.getValue().getId(), 4)));
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_ITEM, searchButton);

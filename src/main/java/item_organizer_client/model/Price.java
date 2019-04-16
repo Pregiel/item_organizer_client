@@ -4,6 +4,8 @@ import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
@@ -19,7 +21,7 @@ public class Price {
     private Integer id;
 
     @Column(name = "value", nullable = false)
-    private Double value;
+    private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, length = 5)
@@ -38,7 +40,7 @@ public class Price {
     public Price() {
     }
 
-    public Price(Double value, PriceType type, Item item, Timestamp date) {
+    public Price(BigDecimal value, PriceType type, Item item, Timestamp date) {
         this.value = value;
         this.type = type;
         this.item = item;
@@ -62,11 +64,11 @@ public class Price {
         this.id = id;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -104,6 +106,14 @@ public class Price {
 
     @Override
     public String toString() {
-        return value.toString() + " " + ResourceBundle.getBundle("strings").getString("price.currency");
+        return priceFormat(value.setScale(2, RoundingMode.CEILING).toString());
+    }
+
+    public static String priceFormat(String price) {
+        return price + " " + ResourceBundle.getBundle("strings").getString("price.currency");
+    }
+
+    public static String priceFormat(BigDecimal price) {
+        return price.setScale(2, RoundingMode.CEILING) + " " + ResourceBundle.getBundle("strings").getString("price.currency");
     }
 }

@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tornadofx.control.DateTimePicker;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -113,12 +115,12 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
         if (validate()) {
             int amountValue = Integer.parseInt(amountText.getEditor().getText());
-            double sellPriceValue = Double.valueOf(sellPriceText.getText());
-            double buyPriceValue = Double.valueOf(buyPriceText.getText());
+            BigDecimal sellPriceValue = new BigDecimal(sellPriceText.getText());
+            BigDecimal buyPriceValue = new BigDecimal(buyPriceText.getText());
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
 
             if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {
-                buyPriceValue = Utils.round(buyPriceValue / amountValue, 2);
+                buyPriceValue = buyPriceValue.divide(BigDecimal.valueOf(amountValue), 2, RoundingMode.CEILING);
             }
 
             Item item = new Item(Integer.valueOf(idText.getText()), nameText.getText(),

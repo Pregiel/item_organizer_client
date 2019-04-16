@@ -42,7 +42,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryPrice;
     public TableView<Price> priceHistoryTable;
     public TableView<TransactionItemInfoTableItem> transactionHistoryTable;
-    public TableColumn<Price, String> priceDateColumn;
+    public TableColumn<Price, String> priceDateColumn, pricePriceColumn;
     public TableColumn<TransactionItemInfoTableItem, String> transactionDateColumn;
 
     private Item selectedItem;
@@ -68,6 +68,9 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
         priceDateColumn.setCellValueFactory(param ->
                 new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
+
+        pricePriceColumn.setCellValueFactory(param ->
+                new SimpleObjectProperty<>(Price.priceFormat(param.getValue().getValue())));
 
         transactionDateColumn.setCellValueFactory(param ->
                 new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
@@ -101,14 +104,12 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
                 Price lastedBuyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
                 if (lastedBuyPrice != null) {
-                    selectedItemBuyPrice.setText(lastedBuyPrice.getValue().toString() +
-                            ResourceBundle.getBundle("strings").getString("price.currency"));
+                    selectedItemBuyPrice.setText(lastedBuyPrice.toString());
                 }
 
                 Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
                 if (lastedSellPrice != null) {
-                    selectedItemSellPrice.setText(lastedSellPrice.getValue().toString() +
-                            ResourceBundle.getBundle("strings").getString("price.currency"));
+                    selectedItemSellPrice.setText(lastedSellPrice.toString());
                 }
 
                 priceHistoryTable.getItems().clear();

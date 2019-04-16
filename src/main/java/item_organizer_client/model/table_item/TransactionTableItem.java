@@ -1,24 +1,29 @@
 package item_organizer_client.model.table_item;
 
+import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.TransactionItem;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
+import java.math.BigDecimal;
+
 public class TransactionTableItem extends Transaction {
     private HBox actionButtons;
 
-    private Double price;
+    private String totalPrice;
 
     public TransactionTableItem(Transaction transaction) {
         super(transaction);
 
-        price = 0.0;
+        BigDecimal price = BigDecimal.ZERO;
 
         for (TransactionItem transactionItem : transaction.getTransactionItems()) {
-            price += transactionItem.getPrice().getValue() * transactionItem.getAmount();
+            price = price.add(transactionItem.getPrice().getValue().multiply(BigDecimal.valueOf(transactionItem.getAmount())));
         }
+
+        totalPrice = Price.priceFormat(price);
 
         Button moreInfoButton = new Button("I");
         moreInfoButton.setOnAction((event) -> {
@@ -37,7 +42,7 @@ public class TransactionTableItem extends Transaction {
         return actionButtons;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getTotalPrice() {
+        return totalPrice;
     }
 }

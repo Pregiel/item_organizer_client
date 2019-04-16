@@ -7,6 +7,7 @@ import item_organizer_client.listeners.DatePickerListener;
 import item_organizer_client.listeners.SpinnerListener;
 import item_organizer_client.listeners.TextFieldListener;
 import item_organizer_client.model.Category;
+import item_organizer_client.model.Price;
 import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
@@ -17,6 +18,9 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import tornadofx.control.DateTimePicker;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -117,7 +121,7 @@ public abstract class SideBarMenuViewController extends Controller {
             if (newValue.equals(idRadioButton)) {
                 getPreferences().putInt("search_type", 0);
                 searchText.getItems().addAll(itemService.getAllIDs());
-            } else if (newValue.equals(nameRadioButton)){
+            } else if (newValue.equals(nameRadioButton)) {
                 getPreferences().putInt("search_type", 1);
                 searchText.getItems().addAll(itemService.getAllNames());
             }
@@ -169,9 +173,9 @@ public abstract class SideBarMenuViewController extends Controller {
                 ((Pane) parent).getChildren().remove(pricePerItemPane);
             } else {
                 ((Pane) parent).getChildren().add(pricePerItemPane);
-                pricePerItemText.setText(Utils.round(
-                        Double.valueOf(priceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2)
-                        + " " + ResourceBundle.getBundle("strings").getString("price.currency"));
+                BigDecimal pricePerItem = new BigDecimal(priceText.getText()).divide(
+                        new BigDecimal(amountText.getEditor().getText()), 2, RoundingMode.CEILING);
+                pricePerItemText.setText(Price.priceFormat(pricePerItem));
             }
         });
     }

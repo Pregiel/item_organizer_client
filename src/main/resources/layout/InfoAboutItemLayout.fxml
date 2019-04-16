@@ -202,7 +202,7 @@
                                                         <PropertyValueFactory property="type" />
                                                     </cellValueFactory>
                                                 </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Cena">
+                                                <TableColumn fx:id="pricePriceColumn" prefWidth="75.0" text="Cena">
                                                     <cellValueFactory>
                                                         <PropertyValueFactory property="value" />
                                                     </cellValueFactory>

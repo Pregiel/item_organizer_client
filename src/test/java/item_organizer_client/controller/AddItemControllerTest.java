@@ -74,7 +74,7 @@ public class AddItemControllerTest extends ApplicationTest {
     private void addItem(String id, String name, String category, String amount, String date, String buyPrice, String sellPrice) {
         clickOn("#addButton");
         writeItem(id, name, category, amount, date, buyPrice, sellPrice);
-        clickOn("#submit");
+        clickOn("#submit").clickOn("OK");
     }
 
     private static final String defaultId = "1234", defaultName = "Kubek 330ml czarny", defaultCategory = "kubek",

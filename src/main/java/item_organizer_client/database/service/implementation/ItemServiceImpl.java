@@ -3,10 +3,12 @@ package item_organizer_client.database.service.implementation;
 import item_organizer_client.database.Repository;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
+import item_organizer_client.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -44,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<String> getAllIDs() {
-        return itemRepository.getAllColumn(Item.class, "id");
+        return itemRepository.getAllColumn(Item.class, "id").stream().map(o -> Utils.fillWithZeros(o, 4)).collect(Collectors.toList());
     }
 
     @Override
