@@ -1,8 +1,10 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.list.ItemList;
-import item_organizer_client.MenuView;
+import item_organizer_client.controller.MenuView;
 import item_organizer_client.model.table_item.ItemTableItem;
+import item_organizer_client.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,7 +12,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -24,13 +25,12 @@ public class ItemListController extends SideBarController implements Initializab
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
     public SplitPane splitPane;
 
-    private Preferences preferences;
     private ItemList itemList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        preferences = Preferences.userRoot().node(this.getClass().getName());
+        setPreferences(Preferences.userRoot().node(this.getClass().getName()));
         itemList = ItemList.getInstance();
 
         itemList.init();
@@ -50,39 +50,8 @@ public class ItemListController extends SideBarController implements Initializab
         getButtonMap().put(MenuView.INFO_ITEM, infoButton);
 
         setSplitPane(splitPane);
-        setPreferences(preferences);
 
-        int i = 0;
-        for (TableColumn<ItemTableItem, ?> column : itemTableView.getColumns()) {
-            int finalI = i;
-            if (column.getColumns().size() > 0) {
-                int ii = 0;
-                for (TableColumn<ItemTableItem, ?> subcolumn : column.getColumns()) {
-                    double width = preferences.getDouble(
-                            "column" + i + "_" + ii + "_width",
-                            subcolumn.getPrefWidth());
-
-                    subcolumn.setPrefWidth(width);
-
-                    int finalII = ii;
-                    subcolumn.widthProperty().addListener((observable, oldValue, newValue) -> {
-                        preferences.putDouble("column" + finalI + "_" + finalII + "_width", (Double) newValue);
-                    });
-                    ii++;
-                }
-            } else {
-                double width = preferences.getDouble(
-                        "column" + i + "_width",
-                        column.getPrefWidth());
-
-                column.setPrefWidth(width);
-
-                column.widthProperty().addListener((observable, oldValue, newValue) -> {
-                    preferences.putDouble("column" + finalI + "_width", (Double) newValue);
-                });
-                i++;
-            }
-        }
+        Utils.setTableColumnWidthProperty(itemTableView, getPreferences());
     }
 
     public void goHome(ActionEvent event) {

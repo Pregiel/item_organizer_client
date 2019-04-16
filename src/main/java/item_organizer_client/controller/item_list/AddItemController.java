@@ -1,13 +1,14 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.*;
 import item_organizer_client.listeners.*;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.*;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
+import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,10 +24,11 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 @Component
-public class AddItemController implements Initializable {
+public class AddItemController extends SideBarMenuViewController implements Initializable {
     @Autowired
     private ItemService itemService;
 
@@ -55,73 +57,28 @@ public class AddItemController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buyPriceType.getItems().addAll("za sztukę", "za wszystko");
-        buyPriceType.getSelectionModel().select(0);
-        ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
-        buyPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() == 0) {
-                ((Pane) buyPriceText.getParent().getParent()).getChildren().remove(buyPricePerItemPane);
-            } else {
-                ((Pane) buyPriceText.getParent().getParent()).getChildren().add(buyPricePerItemPane);
-                buyPricePerItemText.setText(Utils.round(
-                        Double.valueOf(buyPriceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2) + " zł");
-            }
-        });
+        setPreferences(Preferences.userRoot().node(this.getClass().getName()));
 
-        TextFieldListener.selectAllOnFocusListener(idText);
-        TextFieldListener.onlyNumericListener(idText);
-        TextFieldListener.maxCharsAmountListener(idText, 4);
-        TextFieldListener.fillWithZerosListener(idText, 4);
-        TextFieldListener.isNullListener(idText, idNullAlert);
-        TextFieldListener.autoTrimListener(idText);
-        TextFieldListener.removeAlertsListener(idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
+        initFields();
+        clearAll(null);
+        clearAlerts();
+    }
 
-        TextFieldListener.selectAllOnFocusListener(nameText);
-        TextFieldListener.maxCharsAmountListener(nameText, 250);
-        TextFieldListener.minCharsAmountListener(nameText, 3, nameMinAlert);
-        TextFieldListener.isNullListener(nameText, nameNullAlert);
-        TextFieldListener.autoTrimListener(nameText);
-        TextFieldListener.removeAlertsListener(nameText.getParent(), nameNullAlert, nameMinAlert, nameMaxAlert,
-                nameDuplicateAlert);
-
-        categoryText.getItems().addAll(categoryService.getAll()
-                .stream().map(Category::getName).collect(Collectors.toList()));
-        TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
-        ComboBoxListener.selectAllOnFocusListener(categoryText);
-        ComboBoxListener.maxCharsAmountListener(categoryText, 250);
-        ComboBoxListener.isNullListener(categoryText, categoryNullAlert);
-        ComboBoxListener.minCharsAmountListener(categoryText, 3, categoryMinAlert);
-        ComboBoxListener.autoTrimListener(categoryText);
-        ComboBoxListener.removeAlertsListener(categoryText.getParent(), categoryNullAlert, categoryMinAlert, categoryMaxAlert);
-
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                0, Integer.MAX_VALUE, 1);
-        amountText.setValueFactory(valueFactory);
-        SpinnerListener.selectAllOnFocusListener(amountText);
-        SpinnerListener.onlyNumericListener(amountText);
-        SpinnerListener.autoFillListener(amountText, 1);
-        SpinnerListener.removeAlertsListener(amountText.getParent(), amountNullAlert);
-
-        TextFieldListener.selectAllOnFocusListener(buyPriceText);
-        TextFieldListener.priceListener(buyPriceText);
-        TextFieldListener.autoFillPriceListener(buyPriceText, "0.00");
-        TextFieldListener.isNullListener(buyPriceText, buyNullAlert, (Pane) buyPriceText.getParent().getParent());
-        TextFieldListener.autoTrimListener(buyPriceText);
-        TextFieldListener.removeAlertsListener(buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
-
-        TextFieldListener.selectAllOnFocusListener(sellPriceText);
-        TextFieldListener.priceListener(sellPriceText);
-        TextFieldListener.autoFillPriceListener(sellPriceText, "0.00");
-        TextFieldListener.isNullListener(sellPriceText, sellNullAlert);
-        TextFieldListener.autoTrimListener(sellPriceText);
-        TextFieldListener.removeAlertsListener(sellPriceText.getParent(), sellNullAlert, sellPriceSmallerInfo);
-
-        DatePickerListener.selectAllOnFocusListener(dateText);
-        DatePickerListener.autoFillDateListener(dateText);
+    @Override
+    protected void initFields() {
+        setIdTextFieldListeners(idText, 4, idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
+        setNameTextFieldListeners(nameText, 3, 250, nameText.getParent(), nameNullAlert, nameMinAlert,
+                nameMaxAlert, nameDuplicateAlert);
+        setCategoryComboBoxListeners(categoryText, 3, 250, categoryService, categoryText.getParent(),
+                categoryNullAlert, categoryMinAlert, categoryMaxAlert);
+        setAmountSpinnerListeners(amountText, 1, amountText.getParent(), amountNullAlert);
+        setPriceTextFieldListeners(buyPriceText, "0.00", buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
+        setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
+                buyPricePerItemText, amountText);
+        setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent(), sellNullAlert, sellPriceSmallerInfo);
+        setDateDatePickerListeners(dateText);
 
         CustomListener.updateBuyPerItemLabelListener(buyPricePerItemText, buyPriceText, amountText, buyPriceType);
-
-        clearAll(null);
     }
 
     public void clearAll(ActionEvent event) {
@@ -132,10 +89,10 @@ public class AddItemController implements Initializable {
         dateText.setValue(LocalDate.now());
         buyPriceText.setText("0.00");
         sellPriceText.setText("0.00");
-        clearAllAlerts();
     }
 
-    private void clearAllAlerts() {
+    @Override
+    protected void clearAlerts() {
         ((Pane) idText.getParent()).getChildren().removeAll(idNullAlert, idMaxAlert, idDuplicateAlert);
         ((Pane) nameText.getParent()).getChildren().removeAll(nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
@@ -145,6 +102,7 @@ public class AddItemController implements Initializable {
         ((Pane) buyPriceText.getParent().getParent()).getChildren().removeAll(buyNullAlert);
         ((Pane) sellPriceText.getParent()).getChildren().removeAll(sellPriceSmallerInfo, sellNullAlert);
     }
+
 
     public void submit(ActionEvent event) {
         idText.setText(idText.getText().trim());
@@ -176,8 +134,9 @@ public class AddItemController implements Initializable {
             transactionService.add(transaction);
             transactionItemService.add(transactionItem);
 
-            refresh();
             clearAll(null);
+            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            refresh();
         }
     }
 

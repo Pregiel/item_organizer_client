@@ -1,23 +1,18 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
-import item_organizer_client.listeners.ComboBoxListener;
 import item_organizer_client.listeners.CustomListener;
-import item_organizer_client.listeners.SpinnerListener;
-import item_organizer_client.listeners.TextFieldListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -29,7 +24,7 @@ import java.util.prefs.Preferences;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class SellItemElementController implements Initializable {
+public class SellItemElementController extends SideBarMenuViewController implements Initializable {
     @Autowired
     private ItemService itemService;
 
@@ -52,14 +47,7 @@ public class SellItemElementController implements Initializable {
     public Button removeItem;
     public BorderPane titlePane;
 
-    private Preferences preferences;
-
     private Item selectedItem;
-
-    private AutoCompletionBinding<String> autoCompletionSearch;
-
-    private ChangeListener<String> onlyNumericListener, maxIdCharsAmountListener, maxNameCharsAmountListener;
-    private ChangeListener<Boolean> fillWithZerosListener;
 
     private SellItemController sellItemController;
 
@@ -67,101 +55,30 @@ public class SellItemElementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        preferences = Preferences.userRoot().node(this.getClass().getName());
+        setPreferences(Preferences.userRoot().node(this.getClass().getName()));
 
         titlePane.prefWidthProperty().bind(itemPane.widthProperty());
-
-        int selectedSearchType = preferences.getInt("search_type", 1);
-        searchGroup.selectToggle((selectedSearchType == 0 ? idRadioButton : nameRadioButton));
-
-        searchText.getItems().addAll((selectedSearchType == 0 ? itemService.getAllIDs() : itemService.getAllNames()));
-
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
-        amountText.setValueFactory(valueFactory);
-
-        sellPriceType.getItems().addAll("za sztukę", "za wszystko");
-        sellPriceType.getSelectionModel().select(0);
-
-        initListeners();
-
-        refreshSearchTextListeners();
+        initFields();
         goToStep(0);
-
         clearAlerts();
     }
 
-    @SuppressWarnings({"AccessStaticViaInstance", "ConstantConditions"})
-    private void initListeners() {
-        searchGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            searchText.getItems().clear();
-
-            if (newValue.equals(idRadioButton)) {
-                preferences.putInt("search_type", 0);
-                searchText.getItems().addAll(itemService.getAllIDs());
-
-            } else {
-                preferences.putInt("search_type", 1);
-                searchText.getItems().addAll(itemService.getAllNames());
-            }
-
-            if (autoCompletionSearch != null)
-                autoCompletionSearch.dispose();
-            autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
-            refreshSearchTextListeners();
-        });
-
-        autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
-
-        onlyNumericListener = ComboBoxListener.onlyReturn().onlyNumericListener(searchText);
-        maxIdCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, 4);
-        maxNameCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, 250);
-        fillWithZerosListener = ComboBoxListener.onlyReturn().fillWithZerosListener(searchText, 4);
-
-        ComboBoxListener.autoTrimListener(searchText);
-        ComboBoxListener.removeAlertsListener(searchText.getParent(), idNotExistAlert, nameNotExistAlert);
-
-        SpinnerListener.onlyNumericListener(amountText);
-        SpinnerListener.autoFillListener(amountText, 1);
-
-        ((Pane) sellPriceText.getParent().getParent()).getChildren().remove(sellPricePerItemPane);
-        sellPriceType.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() == 0) {
-                ((Pane) sellPriceText.getParent().getParent()).getChildren().remove(sellPricePerItemPane);
-            } else {
-                ((Pane) sellPriceText.getParent().getParent()).getChildren().add(sellPricePerItemPane);
-                sellPricePerItemText.setText(Utils.round(
-                        Double.valueOf(sellPriceText.getText()) / Integer.valueOf(amountText.getEditor().getText()), 2) + " zł");
-            }
-        });
-
-        TextFieldListener.priceListener(sellPriceText);
-        TextFieldListener.autoFillPriceListener(sellPriceText, "0.00");
-        TextFieldListener.isNullListener(sellPriceText, sellNullAlert);
-        TextFieldListener.autoTrimListener(sellPriceText);
-        TextFieldListener.removeAlertsListener(sellPriceText.getParent().getParent(), sellNullAlert);
+    @Override
+    protected void initFields() {
+        setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
+                itemService, idNotExistAlert, nameNotExistAlert);
+        setAmountSpinnerListeners(amountText, 1, amountText.getParent(), amountNullAlert);
+        setPriceTypeListeners(sellPriceText, sellPriceType, sellPriceText.getParent().getParent(), sellPricePerItemPane,
+                sellPricePerItemText, amountText);
+        setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent().getParent(), sellNullAlert);
 
         CustomListener.updateBuyPerItemLabelListener(sellPricePerItemText, sellPriceText, amountText, sellPriceType);
+
+        refreshSearchTextListeners();
     }
 
-    private void refreshSearchTextListeners() {
-        searchText.getEditor().textProperty().removeListener(onlyNumericListener);
-        searchText.getEditor().textProperty().removeListener(maxIdCharsAmountListener);
-        searchText.getEditor().textProperty().removeListener(maxNameCharsAmountListener);
-        searchText.focusedProperty().removeListener(fillWithZerosListener);
-
-        searchText.getEditor().setText("");
-
-        if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-            searchText.getEditor().textProperty().addListener(onlyNumericListener);
-            searchText.getEditor().textProperty().addListener(maxIdCharsAmountListener);
-            searchText.focusedProperty().addListener(fillWithZerosListener);
-        } else {
-            searchText.getEditor().textProperty().addListener(maxNameCharsAmountListener);
-        }
-
-    }
-
-    private void clearAlerts() {
+    @Override
+    protected void clearAlerts() {
         ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
         ((Pane) amountText.getParent()).getChildren().removeAll(amountNullAlert);
         ((Pane) sellPriceText.getParent().getParent()).getChildren().removeAll(sellPricePerItemPane, sellNullAlert);

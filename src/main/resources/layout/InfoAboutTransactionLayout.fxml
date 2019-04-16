@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.InfoAboutTransactionController">
+<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.transaction_list.InfoAboutTransactionController">
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="200.0" prefWidth="300.0">
             <content>

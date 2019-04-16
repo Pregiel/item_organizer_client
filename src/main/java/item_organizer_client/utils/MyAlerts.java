@@ -24,6 +24,24 @@ public class MyAlerts {
         }
     }
 
+    public static void showInfo(String title, String content) {
+        showInfo(title, content, null);
+    }
+
+    public static void showInfo(String title, String content, Runnable runnableOnOk) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            if (runnableOnOk != null) {
+                runnableOnOk.run();
+            }
+        }
+    }
+
     public static boolean showConfirmationDialog(String title, String content) {
         return showConfirmationDialog(title, content, null, null);
     }

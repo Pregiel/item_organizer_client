@@ -1,6 +1,5 @@
 package item_organizer_client.controller;
 
-import item_organizer_client.MenuView;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -13,13 +12,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
-abstract class SideBarController implements Initializable {
+public abstract class SideBarController extends Controller implements Initializable {
     private MenuView currentView;
     private Node currentNode;
     private SplitPane splitPane;
-    private Preferences preferences;
     private Map<MenuView, Button> buttonMap = new HashMap<>();
 
     @Override
@@ -27,11 +24,11 @@ abstract class SideBarController implements Initializable {
         currentView = MenuView.NONE;
     }
 
-    Map<MenuView, Button> getButtonMap() {
+    protected Map<MenuView, Button> getButtonMap() {
         return buttonMap;
     }
 
-    void toggleView(MenuView menuView) {
+    protected void toggleView(MenuView menuView) {
         if (currentView == menuView) {
             hideView();
         } else {
@@ -39,7 +36,7 @@ abstract class SideBarController implements Initializable {
         }
     }
 
-    void showView(MenuView menuView) {
+    protected void showView(MenuView menuView) {
         SpringFXMLLoader loader = null;
         hideView();
 
@@ -55,7 +52,7 @@ abstract class SideBarController implements Initializable {
                 currentNode = loader.load();
                 splitPane.getItems().add(0, currentNode);
 
-                double position = preferences.getDouble(currentView.toString().toLowerCase() + "_divider", 0);
+                double position = getPreferences().getDouble(currentView.toString().toLowerCase() + "_divider", 0);
                 if (position <= 0) {
                     position = ((Pane) currentNode).getPrefWidth() / splitPane.getWidth();
                 }
@@ -63,7 +60,7 @@ abstract class SideBarController implements Initializable {
                 splitPane.getDividers().get(0).setPosition(position);
 
                 splitPane.getDividers().get(0).positionProperty().addListener((observable, oldValue, newValue) -> {
-                    preferences.putDouble(currentView.toString().toLowerCase() + "_divider", (Double) newValue);
+                    getPreferences().putDouble(currentView.toString().toLowerCase() + "_divider", (Double) newValue);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,7 +68,7 @@ abstract class SideBarController implements Initializable {
         }
     }
 
-    void hideView() {
+    protected void hideView() {
         if (currentNode != null) {
             splitPane.getItems().remove(currentNode);
         }
@@ -89,11 +86,7 @@ abstract class SideBarController implements Initializable {
         buttonMap.forEach((menuView, button) -> button.getStyleClass().remove(TOGGLED_SIDE_ICON_BUTTON_STYLECLASS));
     }
 
-    void setSplitPane(SplitPane splitPane) {
+    protected void setSplitPane(SplitPane splitPane) {
         this.splitPane = splitPane;
-    }
-
-    void setPreferences(Preferences preferences) {
-        this.preferences = preferences;
     }
 }

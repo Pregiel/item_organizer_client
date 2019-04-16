@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<TitledPane fx:id="itemPane" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.BuyItemElementController">
+<TitledPane fx:id="itemPane" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.BuyItemElementController">
     <content>
           <VBox fx:id="buyItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="18.0">
               <padding>
@@ -148,6 +148,7 @@
                               <children>
                                   <Label styleClass="property-label" text="Zakupiona liczba sztuk" />
                                   <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="amountNullAlert" styleClass="alert-label" text="Wprowadź liczbę sztuk" />
                               </children>
                           </VBox>
                           <VBox spacing="2.0" GridPane.rowIndex="4">

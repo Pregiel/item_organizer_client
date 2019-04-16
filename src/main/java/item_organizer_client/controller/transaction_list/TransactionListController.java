@@ -1,8 +1,10 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.transaction_list;
 
-import item_organizer_client.MenuView;
+import item_organizer_client.controller.MenuView;
+import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.list.TransactionList;
 import item_organizer_client.model.table_item.TransactionTableItem;
+import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -20,20 +22,16 @@ import java.util.prefs.Preferences;
 @Component
 public class TransactionListController extends SideBarController implements Initializable {
     public TableView<TransactionTableItem> transactionTableView;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public TableColumn<TransactionTableItem, String> dateColumn;
-    public TableColumn priceColumn;
     public Button homeButton, searchButton, infoButton;
     public SplitPane splitPane;
-
-    private Preferences preferences;
 
     private TransactionList transactionList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        preferences = Preferences.userRoot().node(this.getClass().getName());
+        setPreferences(Preferences.userRoot().node(this.getClass().getName()));
 
         transactionList = TransactionList.getInstance();
         transactionList.init();
@@ -46,29 +44,16 @@ public class TransactionListController extends SideBarController implements Init
         });
 
         dateColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(dateFormatter)));
+                new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_TRANSACTION, searchButton);
         getButtonMap().put(MenuView.INFO_TRANSACTION, infoButton);
 
         setSplitPane(splitPane);
-        setPreferences(preferences);
 
-        int i = 0;
-        for (TableColumn<TransactionTableItem, ?> transactionTableItemTableColumn : transactionTableView.getColumns()) {
-            double width = preferences.getDouble(
-                    "column" + i + "_width",
-                    transactionTableItemTableColumn.getPrefWidth());
 
-            transactionTableItemTableColumn.setPrefWidth(width);
-
-            int finalI = i;
-            transactionTableItemTableColumn.widthProperty().addListener((observable, oldValue, newValue) -> {
-                preferences.putDouble("column" + finalI + "_width", (Double) newValue);
-            });
-            i++;
-        }
+        Utils.setTableColumnWidthProperty(transactionTableView, getPreferences());
     }
 
     public void goHome(ActionEvent event) {

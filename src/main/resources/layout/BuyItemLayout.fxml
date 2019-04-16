@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import tornadofx.control.DateTimePicker?>
 
-<BorderPane maxHeight="1.7976931348623157E308" minWidth="220.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.BuyItemController">
+<BorderPane maxHeight="1.7976931348623157E308" minWidth="220.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.BuyItemController">
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <BorderPane.margin>

@@ -24,7 +24,7 @@ public class Item {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<TransactionItem> transactionItems;
 
     public Item() {

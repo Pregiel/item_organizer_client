@@ -1,4 +1,4 @@
-package item_organizer_client;
+package item_organizer_client.controller;
 
 public enum MenuView {
     NONE, SEARCH_ITEM, ADD_ITEM, BUY_ITEM, SELL_ITEM, INFO_ITEM, SEARCH_TRANSACTION, INFO_TRANSACTION;

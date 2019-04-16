@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.InfoAboutItemController">
+<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.InfoAboutItemController">
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="200.0" prefWidth="300.0">
             <content>
@@ -143,7 +143,7 @@
                                         </HBox>
                                         <HBox>
                                             <children>
-                                                <Label styleClass="property-label" text="Cena zakupu:">
+                                                <Label styleClass="property-label" text="Ostatnia cena zakupu:">
                                                     <padding>
                                                         <Insets right="4.0" />
                                                     </padding>
@@ -158,7 +158,7 @@
                                         </HBox>
                                         <HBox>
                                             <children>
-                                                <Label styleClass="property-label" text="Cena sprzedaży:">
+                                                <Label styleClass="property-label" text="Ostatnia cena sprzedaży:">
                                                     <padding>
                                                         <Insets right="4.0" />
                                                     </padding>
@@ -192,7 +192,7 @@
                                         </HBox>
                                         <TableView fx:id="priceHistoryTable" prefHeight="200.0" prefWidth="200.0">
                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Data">
+                                                <TableColumn fx:id="priceDateColumn" prefWidth="75.0" text="Data">
                                                     <cellValueFactory>
                                                         <PropertyValueFactory property="date" />
                                                     </cellValueFactory>
@@ -204,13 +204,10 @@
                                                 </TableColumn>
                                                 <TableColumn prefWidth="75.0" text="Cena">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="price" />
+                                                        <PropertyValueFactory property="value" />
                                                     </cellValueFactory>
                                                 </TableColumn>
                                             </columns>
-                                            <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                            </columnResizePolicy>
                                         </TableView>
                                     </children>
                                 </VBox>
@@ -240,7 +237,7 @@
                                                                 <PropertyValueFactory property="id" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn prefWidth="75.0" text="Data">
+                                                        <TableColumn fx:id="transactionDateColumn" prefWidth="75.0" text="Data">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property="date" />
                                                             </cellValueFactory>
@@ -255,11 +252,20 @@
                                                                 <PropertyValueFactory property="amount" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn prefWidth="75.0" text="Cena">
-                                                            <cellValueFactory>
-                                                                <PropertyValueFactory property="price" />
-                                                            </cellValueFactory>
-                                                        </TableColumn>
+                                          <TableColumn prefWidth="75.0" text="Cena">
+                                             <columns>
+                                                              <TableColumn prefWidth="75.0" text="Za sztukę">
+                                                                  <cellValueFactory>
+                                                                      <PropertyValueFactory property="price" />
+                                                                  </cellValueFactory>
+                                                              </TableColumn>
+                                                              <TableColumn prefWidth="75.0" text="Calkowita">
+                                                                  <cellValueFactory>
+                                                                      <PropertyValueFactory property="totalPrice" />
+                                                                  </cellValueFactory>
+                                                              </TableColumn>
+                                             </columns>
+                                          </TableColumn>
                                                     </columns>
                                                 </TableView>
                                             </content>

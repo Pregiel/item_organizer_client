@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.TransactionListController">
+<AnchorPane minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.transaction_list.TransactionListController">
    <children>
       <SplitPane fx:id="splitPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -38,7 +38,7 @@
                                   <PropertyValueFactory property="date" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Kwota">
+                          <TableColumn prefWidth="75.0" text="Kwota">
                               <cellValueFactory>
                                   <PropertyValueFactory property="price" />
                               </cellValueFactory>

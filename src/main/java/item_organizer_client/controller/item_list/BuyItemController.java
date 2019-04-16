@@ -1,11 +1,11 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
 import item_organizer_client.database.service.TransactionItemService;
 import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.exception.ItemNotFinishedException;
-import item_organizer_client.listeners.DatePickerListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class BuyItemController implements Initializable {
+public class BuyItemController extends SideBarMenuViewController implements Initializable {
     @Autowired
     private ItemService itemService;
     @Autowired
@@ -54,7 +54,17 @@ public class BuyItemController implements Initializable {
         addItem(null);
 
         dateText.setValue(LocalDate.now());
-        DatePickerListener.autoFillDateListener(dateText);
+        initFields();
+    }
+
+    @Override
+    protected void clearAlerts() {
+
+    }
+
+    @Override
+    protected void initFields() {
+        setDateDatePickerListeners(dateText);
     }
 
     public void clearAll(ActionEvent event) {
@@ -69,11 +79,9 @@ public class BuyItemController implements Initializable {
         List<Price> priceList = new ArrayList<>();
         List<TransactionItem> transactionItemList = new ArrayList<>();
 
-        Transaction transaction = null;
-
         try {
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
-            transaction = new Transaction(date, TransactionType.BUY);
+            Transaction transaction = new Transaction(date, TransactionType.BUY);
 
             for (BuyItemElementController controller : controllerList) {
                 if (controller.getStep() != 2) {
@@ -99,19 +107,21 @@ public class BuyItemController implements Initializable {
                 itemList.add(item);
                 transactionItemList.add(transactionItem);
             }
+
+            transactionService.add(transaction);
+            priceService.addAll(priceList);
+            itemService.updateAll(itemList);
+            transactionItemService.addAll(transactionItemList);
+
+            clearAll(null);
+            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            ItemList.getInstance().refresh();
         } catch (ItemNotFinishedException e) {
             MyAlerts.showError("Nie można zakończyć transakcji", "Dokończ dodawanie produktów zanim zakończysz transakcje.");
         } catch (Exception e) {
             MyAlerts.showError("Nie można zakończyć transakcji", "Wystąpił nieznany błąd.");
             e.printStackTrace();
         }
-
-        transactionService.add(transaction);
-        priceService.addAll(priceList);
-        itemService.updateAll(itemList);
-        transactionItemService.addAll(transactionItemList);
-
-        ItemList.getInstance().refresh();
     }
 
     public void addItem(ActionEvent event) {

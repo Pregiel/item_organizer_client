@@ -1,4 +1,4 @@
-package item_organizer_client.controller;
+package item_organizer_client.controller.transaction_list;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;

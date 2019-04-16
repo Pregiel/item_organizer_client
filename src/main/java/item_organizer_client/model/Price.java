@@ -45,6 +45,15 @@ public class Price {
         this.date = date;
     }
 
+    public Price(Price price) {
+        this.id = price.getId();
+        this.value = price.getValue();
+        this.type = price.getType();
+        this.item = price.getItem();
+        this.transactionItems = price.getTransactionItems();
+        this.date = price.getDate();
+    }
+
     public Integer getId() {
         return id;
     }

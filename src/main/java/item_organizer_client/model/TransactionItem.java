@@ -35,6 +35,13 @@ public class TransactionItem implements Serializable {
         this.amount = amount;
     }
 
+    public TransactionItem(TransactionItem transactionItem) {
+        this.item = transactionItem.getItem();
+        this.transaction = transactionItem.getTransaction();
+        this.price = transactionItem.getPrice();
+        this.amount = transactionItem.getAmount();
+    }
+
     public Item getItem() {
         return item;
     }
