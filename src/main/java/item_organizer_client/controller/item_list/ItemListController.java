@@ -27,6 +27,16 @@ public class ItemListController extends SideBarController implements Initializab
 
     private ItemList itemList;
 
+    private static ItemListController instance;
+
+    public static ItemListController getInstance() {
+        return instance;
+    }
+
+    public ItemListController() {
+        instance = this;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -76,6 +86,13 @@ public class ItemListController extends SideBarController implements Initializab
 
     public void showInfoView(ActionEvent event) {
         toggleView(MenuView.INFO_ITEM);
+    }
+
+    public void showInfoAbout(int id) {
+        hideView();
+        InfoAboutItemController infoController = showView(MenuView.INFO_ITEM);
+
+        infoController.showInfoAbout(id);
     }
 
 }

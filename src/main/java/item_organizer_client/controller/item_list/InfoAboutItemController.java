@@ -153,4 +153,21 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public void changeSelectedItem(ActionEvent event) {
         goToStep(0);
     }
+
+    public void showInfoAbout(int id) {
+        try {
+            selectedItem = itemService.findById(id);
+
+            if (selectedItem == null)
+                throw new NullPointerException();
+
+            goToStep(1);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            idRadioButton.fire();
+            searchText.getEditor().setText(Utils.fillWithZeros(id, 4));
+            MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
+            ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
+        }
+    }
 }

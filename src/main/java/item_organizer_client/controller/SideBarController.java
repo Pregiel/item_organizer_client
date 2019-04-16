@@ -36,7 +36,7 @@ public abstract class SideBarController extends Controller implements Initializa
         }
     }
 
-    protected void showView(MenuView menuView) {
+    protected <T> T showView(MenuView menuView) {
         SpringFXMLLoader loader = null;
         hideView();
 
@@ -62,10 +62,13 @@ public abstract class SideBarController extends Controller implements Initializa
                 splitPane.getDividers().get(0).positionProperty().addListener((observable, oldValue, newValue) -> {
                     getPreferences().putDouble(currentView.toString().toLowerCase() + "_divider", (Double) newValue);
                 });
+
+                return loader.getController();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     protected void hideView() {

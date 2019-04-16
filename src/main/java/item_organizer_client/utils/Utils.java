@@ -34,26 +34,26 @@ public class Utils {
                 int ii = 0;
                 for (TableColumn<T, ?> subcolumn : column.getColumns()) {
                     double width = preferences.getDouble(
-                            "column" + i + "_" + ii + "_width",
+                            tableView.getId() + "_column" + i + "_" + ii + "_width",
                             subcolumn.getPrefWidth());
 
                     subcolumn.setPrefWidth(width);
 
                     int finalII = ii;
                     subcolumn.widthProperty().addListener((observable, oldValue, newValue) -> {
-                        preferences.putDouble("column" + finalI + "_" + finalII + "_width", (Double) newValue);
+                        preferences.putDouble(tableView.getId() + "_column" + finalI + "_" + finalII + "_width", (Double) newValue);
                     });
                     ii++;
                 }
             } else {
                 double width = preferences.getDouble(
-                        "column" + i + "_width",
+                        tableView.getId() + "_column" + i + "_width",
                         column.getPrefWidth());
 
                 column.setPrefWidth(width);
 
                 column.widthProperty().addListener((observable, oldValue, newValue) -> {
-                    preferences.putDouble("column" + finalI + "_width", (Double) newValue);
+                    preferences.putDouble(tableView.getId() + "_column" + finalI + "_width", (Double) newValue);
                 });
                 i++;
             }

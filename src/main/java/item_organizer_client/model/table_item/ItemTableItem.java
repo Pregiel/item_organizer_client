@@ -1,7 +1,9 @@
 package item_organizer_client.model.table_item;
 
+import item_organizer_client.controller.item_list.ItemListController;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.type.PriceType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -10,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class ItemTableItem extends Item {
-
     private HBox actionButtons;
     private Price sellPrice, buyPrice;
 
@@ -44,11 +45,7 @@ public class ItemTableItem extends Item {
 
         Button moreInfoButton = new Button("I");
         moreInfoButton.setOnAction((event) -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.setContentText(toString());
-            alert.showAndWait();
+            ItemListController.getInstance().showInfoAbout(getId());
         });
 
         Button hideButton = new Button("H");
