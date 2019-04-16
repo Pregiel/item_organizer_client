@@ -43,10 +43,19 @@
                                         <PropertyValueFactory property="amount" />
                                     </cellValueFactory>
                                 </TableColumn>
-                                <TableColumn minWidth="40.0" prefWidth="75.0" text="Cena za sztukę">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="price" />
-                                    </cellValueFactory>
+                                <TableColumn prefWidth="75.0" text="Ostatnia cena">
+                                    <columns>
+                                        <TableColumn minWidth="40.0" prefWidth="75.0" text="Kupna">
+                                            <cellValueFactory>
+                                                <PropertyValueFactory property="buyPrice" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
+                                            <cellValueFactory>
+                                                <PropertyValueFactory property="sellPrice" />
+                                            </cellValueFactory>
+                                        </TableColumn>
+                                    </columns>
                                 </TableColumn>
                                 <TableColumn minWidth="40.0" prefWidth="100.0" text="Akcja">
                                     <cellValueFactory>
@@ -61,7 +70,7 @@
         </SplitPane>
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" stylesheets="@style/SideMenuBarStyle.css" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
-                <VBox fx:id="menuBar" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" prefWidth="60.0" spacing="8.0">
+                <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" prefWidth="60.0" spacing="8.0">
                     <children>
                         <Button fx:id="homeButton" layoutX="15.0" layoutY="226.0" mnemonicParsing="false" onAction="#goHome" styleClass="side-icon-button">
                             <graphic>
@@ -153,7 +162,7 @@
                                 </StackPane>
                             </graphic>
                             <tooltip>
-                                <Tooltip text="Pokaż zestawienie" />
+                                <Tooltip text="Informacje o produkcie" />
                             </tooltip>
                         </Button>
                     </children>

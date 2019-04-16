@@ -211,6 +211,13 @@ public class BuyItemElementController implements Initializable {
             } else {
                 ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
             }
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
+                MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
+            } else {
+                MyAlerts.showError("Niepoprawna nazwa", "Wprowadzono nie poprawną nazwę.");
+            }
         }
     }
 

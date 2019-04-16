@@ -1,38 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<TableView fx:id="transactionTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.TransactionListController">
-    <columns>
-        <TableColumn prefWidth="75.0" text="ID">
-            <cellValueFactory>
-                <PropertyValueFactory property="id" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn prefWidth="75.0" text="Rodzaj transakcji">
-            <cellValueFactory>
-                <PropertyValueFactory property="type" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Data">
-            <cellValueFactory>
-                <PropertyValueFactory property="date" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Kwota">
-            <cellValueFactory>
-                <PropertyValueFactory property="price" />
-            </cellValueFactory>
-        </TableColumn>
-        <TableColumn prefWidth="75.0" text="Akcja">
-            <cellValueFactory>
-                <PropertyValueFactory property="actionButtons" />
-            </cellValueFactory>
-        </TableColumn>
-    </columns>
-    <columnResizePolicy>
-        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-    </columnResizePolicy>
-</TableView>
+<AnchorPane minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.TransactionListController">
+   <children>
+      <SplitPane fx:id="splitPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0">
+               <content>
+                  <TableView fx:id="transactionTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                      <columns>
+                          <TableColumn prefWidth="75.0" text="ID">
+                              <cellValueFactory>
+                                  <PropertyValueFactory property="id" />
+                              </cellValueFactory>
+                          </TableColumn>
+                          <TableColumn prefWidth="75.0" text="Rodzaj transakcji">
+                              <cellValueFactory>
+                                  <PropertyValueFactory property="type" />
+                              </cellValueFactory>
+                          </TableColumn>
+                          <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Data">
+                              <cellValueFactory>
+                                  <PropertyValueFactory property="date" />
+                              </cellValueFactory>
+                          </TableColumn>
+                          <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Kwota">
+                              <cellValueFactory>
+                                  <PropertyValueFactory property="price" />
+                              </cellValueFactory>
+                          </TableColumn>
+                          <TableColumn prefWidth="75.0" text="Akcja">
+                              <cellValueFactory>
+                                  <PropertyValueFactory property="actionButtons" />
+                              </cellValueFactory>
+                          </TableColumn>
+                      </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="10.0" layoutY="10.0" stylesheets="@style/SideMenuBarStyle.css" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" prefWidth="60.0" spacing="8.0">
+               <children>
+                  <Button fx:id="homeButton" layoutX="15.0" layoutY="226.0" mnemonicParsing="false" onAction="#goHome" styleClass="side-icon-button">
+                     <graphic>
+                        <StackPane>
+                           <children>
+                              <SVGPath content="M 16.899,0 C 7.5660005,0 5e-7,7.5659997 5e-7,16.9 c 0,9.333002 7.566,16.899 16.8989995,16.899 9.333001,0 16.899999,-7.565998 16.899999,-16.899 C 33.798999,7.5659997 26.233002,0 16.899,0 Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="2.0" styleClass="icon-back" />
+                              <SVGPath content="m 9.1314744,18.078594 h 1.3454236 v 5.55101 c 0,0.327112 0.259474,0.59475 0.576607,0.59475 h 3.940148 c 0.317132,0 0.576605,-0.267638 0.576605,-0.59475 v -4.064135 h 2.402511 v 4.064135 c 0,0.327112 0.259473,0.59475 0.576606,0.59475 h 3.747935 c 0.317132,0 0.576605,-0.267638 0.576605,-0.59475 v -5.55101 h 1.633727 c 0.230641,0 0.442053,-0.148687 0.528543,-0.36675 0.08649,-0.218064 0.03843,-0.4758 -0.124919,-0.644323 L 17.396164,9.2069185 c -0.221044,-0.227999 -0.586204,-0.2379 -0.807248,-0.0099 L 8.7374844,17.057621 c -0.172982,0.168525 -0.221044,0.426226 -0.134553,0.654224 0.08649,0.227965 0.297901,0.366751 0.528543,0.366751 z" fill="TRANSPARENT" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" styleClass="icon-front" />
+                           </children>
+                        </StackPane>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Wróć/Zamknij" />
+                     </tooltip>
+                  </Button>
+                  <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="2.0" styleClass="menu-separator">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="3.0" right="3.0" top="4.0" />
+                     </VBox.margin>
+                  </Pane>
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#showSearchView" styleClass="side-icon-button">
+                     <graphic>
+                        <StackPane>
+                           <children>
+                              <SVGPath content="M 16.899,0 C 7.5660005,0 5e-7,7.5659997 5e-7,16.9 c 0,9.333002 7.566,16.899 16.8989995,16.899 9.333001,0 16.899999,-7.565998 16.899999,-16.899 C 33.798999,7.5659997 26.233002,0 16.899,0 Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="2.0" styleClass="icon-back" />
+                              <SVGPath content="m 20.545621,15.096197 c 0,3.00983 -2.439566,5.449405 -5.449384,5.449405 -3.010745,0 -5.4503113,-2.439575 -5.4503113,-5.449405 0,-3.010757 2.4404933,-5.4503328 5.4503113,-5.4503328 3.009818,0 5.449384,2.4405028 5.449384,5.4503328 z m 6.002019,11.451447 c -0.662048,0.662052 -1.735791,0.662052 -2.39784,0 l -4.408095,-4.408112 c -0.02318,-0.02318 -0.03987,-0.051 -0.0612,-0.07603 -1.315752,0.867899 -2.890204,1.373246 -4.58427,1.373246 -4.607451,0 -8.3423701,-3.734934 -8.3423701,-8.341475 0,-4.607469 3.7349191,-8.3424031 8.3423701,-8.3424031 4.606524,0 8.341443,3.7349341 8.341443,8.3424031 0,1.693145 -0.505345,3.267603 -1.373241,4.584288 0.02504,0.02133 0.05285,0.03802 0.07603,0.0612 l 4.408095,4.408111 c 0.661121,0.663906 0.661121,1.736726 -9.28e-4,2.398777 z" fill="TRANSPARENT" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" styleClass="icon-front" />
+                           </children>
+                        </StackPane>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Wyszukaj produkty" />
+                     </tooltip>
+                  </Button>
+                  <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="2.0" styleClass="menu-separator">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="3.0" right="3.0" top="4.0" />
+                     </VBox.margin>
+                  </Pane>
+                  <Button fx:id="infoButton" layoutX="15.0" layoutY="175.0" mnemonicParsing="false" onAction="#showInfoView" styleClass="side-icon-button">
+                     <graphic>
+                        <StackPane>
+                           <children>
+                              <SVGPath content="M 16.899,0 C 7.5660005,0 5e-7,7.5659997 5e-7,16.9 c 0,9.333002 7.566,16.899 16.8989995,16.899 9.333001,0 16.899999,-7.565998 16.899999,-16.899 C 33.798999,7.5659997 26.233002,0 16.899,0 Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="2.0" styleClass="icon-back" />
+                              <SVGPath content="m 14.757839,12.219557 h 3.777194 c 0.255523,0 0.476735,-0.08239 0.663842,-0.247293 0.18654,-0.164771 0.28012,-0.360088 0.28012,-0.585724 V 8.8872611 c 0,-0.2255906 -0.09358,-0.4207713 -0.280481,-0.585861 C 19.011716,8.1367207 18.790194,8.0541075 18.53462,8.0541075 h -3.776833 c -0.255574,0 -0.47689,0.082613 -0.663842,0.2472926 -0.186798,0.1649074 -0.280275,0.3602704 -0.280275,0.585861 V 11.38654 c 0,0.225636 0.09348,0.420953 0.280275,0.585724 0.186952,0.164907 0.408268,0.247293 0.663894,0.247293 z m 5.898645,10.894988 c -0.158855,-0.159033 -0.347216,-0.238616 -0.56486,-0.238616 h -0.803477 v -7.230684 c 0,-0.217509 -0.07945,-0.405784 -0.238352,-0.564771 -0.159165,-0.159033 -0.347526,-0.238573 -0.564861,-0.238573 h -4.82047 c -0.217598,0 -0.405873,0.07954 -0.564861,0.238573 -0.159079,0.158987 -0.238484,0.347262 -0.238484,0.564771 v 1.606911 c 0,0.21747 0.07945,0.405873 0.238484,0.564775 0.158945,0.159207 0.347263,0.238658 0.564861,0.238658 h 0.803476 v 4.820383 h -0.803476 c -0.217598,0 -0.405873,0.07958 -0.564861,0.238616 -0.159079,0.158902 -0.238484,0.347262 -0.238484,0.56486 v 1.606868 c 0,0.217555 0.07945,0.405915 0.238484,0.565169 0.158945,0.158724 0.347263,0.238353 0.564861,0.238353 h 6.42716 c 0.217598,0 0.405958,-0.07963 0.56486,-0.238353 0.158902,-0.159207 0.238353,-0.347568 0.238353,-0.565169 v -1.606868 c 0,-0.217641 -0.07901,-0.406001 -0.238353,-0.564903 z" fill="TRANSPARENT" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" styleClass="icon-front" />
+                           </children>
+                        </StackPane>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Informacje o transakcji" />
+                     </tooltip>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets top="12.0" />
+               </padding>
+               <styleClass>
+                  <String fx:value="background" />
+                  <String fx:value="right-border-separator" />
+               </styleClass>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

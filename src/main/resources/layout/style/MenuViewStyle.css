@@ -12,7 +12,7 @@
 }
 
 .title-top {
-    -fx-font-size: 19px;
+    -fx-font-size: 24px;
     -fx-text-fill: -primary-color;
 }
 
@@ -29,6 +29,11 @@
 
 .property-label {
     -fx-font-size: 14px;
+}
+
+
+.property-value-label {
+    -fx-font-weight: bold;
 }
 
 .alert-label {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -83,7 +84,11 @@
                               <Insets right="4.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="selectedItemId" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="4" />
+                        <Label fx:id="selectedItemId" maxHeight="1.7976931348623157E308" text="4">
+                           <styleClass>
+                              <String fx:value="property-label" />
+                              <String fx:value="property-value-label" />
+                           </styleClass></Label>
                      </children>
                   </HBox>
                   <HBox>
@@ -93,7 +98,11 @@
                               <Insets right="4.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="selectedItemName" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
+                        <Label fx:id="selectedItemName" maxHeight="1.7976931348623157E308" text="24 zł">
+                           <styleClass>
+                              <String fx:value="property-label" />
+                              <String fx:value="property-value-label" />
+                           </styleClass></Label>
                      </children>
                   </HBox>
                       </children>
@@ -161,7 +170,11 @@
                                           <Insets right="4.0" />
                                       </padding>
                                   </Label>
-                                  <Label fx:id="selectedItemAmount" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="4" />
+                                  <Label fx:id="selectedItemAmount" maxHeight="1.7976931348623157E308" text="4">
+                           <styleClass>
+                              <String fx:value="property-label" />
+                              <String fx:value="property-value-label" />
+                           </styleClass></Label>
                               </children>
                           </HBox>
                           <HBox>
@@ -171,7 +184,11 @@
                                           <Insets right="4.0" />
                                       </padding>
                                   </Label>
-                                  <Label fx:id="selectedItemSell" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="24 zł" />
+                                  <Label fx:id="selectedItemSell" maxHeight="1.7976931348623157E308" text="24 zł">
+                           <styleClass>
+                              <String fx:value="property-label" />
+                              <String fx:value="property-value-label" />
+                           </styleClass></Label>
                               </children>
                           </HBox>
                           <HBox layoutX="10.0" layoutY="10.0">
@@ -181,7 +198,11 @@
                                           <Insets right="4.0" />
                                       </padding>
                                   </Label>
-                                  <Label fx:id="selectedItemSellPerItem" maxHeight="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="property-label" text="6 zł" />
+                                  <Label fx:id="selectedItemSellPerItem" maxHeight="1.7976931348623157E308" text="6 zł">
+                           <styleClass>
+                              <String fx:value="property-label" />
+                              <String fx:value="property-value-label" />
+                           </styleClass></Label>
                               </children>
                           </HBox>
                       </children>

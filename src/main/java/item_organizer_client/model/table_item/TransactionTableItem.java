@@ -17,7 +17,7 @@ public class TransactionTableItem extends Transaction {
         price = 0.0;
 
         for (TransactionItem transactionItem : transaction.getTransactionItems()) {
-            price += transactionItem.getPrice().getValue();
+            price += transactionItem.getPrice().getValue() * transactionItem.getAmount();
         }
 
         Button moreInfoButton = new Button("I");

@@ -1,6 +1,5 @@
 package item_organizer_client.model.table_item;
 
-import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
@@ -9,25 +8,27 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 public class ItemTableItem extends Item {
 
     private HBox actionButtons;
-    private Price price;
+    private Price sellPrice, buyPrice;
 
     public ItemTableItem(Item item) {
         super(item);
 
         for (Price itemPrice : getPrices()) {
             if (itemPrice.getType() == PriceType.SELL) {
-                if (price == null) {
-                    price = itemPrice;
-                } else if (itemPrice.getDate().after(price.getDate())) {
-                    price = itemPrice;
+                if (sellPrice == null) {
+                    sellPrice = itemPrice;
+                } else if (itemPrice.getDate().after(sellPrice.getDate())) {
+                    sellPrice = itemPrice;
+                }
+            } else {
+                if (buyPrice == null) {
+                    buyPrice = itemPrice;
+                } else if (itemPrice.getDate().after(buyPrice.getDate())) {
+                    buyPrice = itemPrice;
                 }
             }
         }
@@ -83,11 +84,19 @@ public class ItemTableItem extends Item {
         this.actionButtons = actionButtons;
     }
 
-    public Price getPrice() {
-        return price;
+    public Price getSellPrice() {
+        return sellPrice;
     }
 
-    public void setPrice(Price price) {
-        this.price = price;
+    public void setSellPrice(Price sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public Price getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(Price buyPrice) {
+        this.buyPrice = buyPrice;
     }
 }
