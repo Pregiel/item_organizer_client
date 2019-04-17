@@ -1,6 +1,7 @@
 package item_organizer_client.model.table_item;
 
 import item_organizer_client.controller.item_list.ItemListController;
+import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
@@ -9,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 public class ItemTableElement extends Item implements Comparable<ItemTableElement>{
     private HBox actionButtons;
@@ -21,13 +24,13 @@ public class ItemTableElement extends Item implements Comparable<ItemTableElemen
             if (itemPrice.getType() == PriceType.SELL) {
                 if (sellPrice == null) {
                     sellPrice = itemPrice;
-                } else if (itemPrice.getDate().after(sellPrice.getDate())) {
+                } else if (itemPrice.getId() > sellPrice.getId()) {
                     sellPrice = itemPrice;
                 }
             } else {
                 if (buyPrice == null) {
                     buyPrice = itemPrice;
-                } else if (itemPrice.getDate().after(buyPrice.getDate())) {
+                } else if (itemPrice.getId() > buyPrice.getId()) {
                     buyPrice = itemPrice;
                 }
             }

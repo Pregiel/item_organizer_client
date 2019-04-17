@@ -75,11 +75,11 @@ public class SellItemController extends SideBarMenuViewController implements Ini
     }
 
     public void submit(ActionEvent event) {
-        List<Item> itemList = new ArrayList<>();
-        List<Price> priceList = new ArrayList<>();
-        List<TransactionItem> transactionItemList = new ArrayList<>();
-
         try {
+            List<Item> itemList = new ArrayList<>();
+            List<Price> priceList = new ArrayList<>();
+            List<TransactionItem> transactionItemList = new ArrayList<>();
+
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
             Transaction transaction = new Transaction(date, TransactionType.SELL);
 
@@ -87,30 +87,56 @@ public class SellItemController extends SideBarMenuViewController implements Ini
                 if (controller.getStep() != 2) {
                     throw new ItemNotFinishedException();
                 }
+            }
+
+            for (SellItemElementController controller : controllerList) {
+                boolean duplicatedItem = false, duplicatedTransactionItem = false;
+
                 Item item = controller.getSelectedItem();
                 int amount = controller.getSelectedAmount();
+
+                for (Item element : itemList) {
+                    if (element.getId().compareTo(item.getId()) == 0) {
+                        item = element;
+                        duplicatedItem = true;
+                        break;
+                    }
+                }
 
                 item.setAmount(item.getAmount() - amount);
 
                 Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
-                if (!sellPrice.getValue().equals(controller.getSelectedSellPrice())) {
-                    priceList.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
+                if (sellPrice.getValue().compareTo(controller.getSelectedSellPrice()) != 0) {
+                    sellPrice = new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date);
+                    priceList.add(sellPrice);
                 }
 
-                TransactionItem transactionItem = new TransactionItem(item, transaction, sellPrice, amount);
 
-                itemList.add(item);
-                transactionItemList.add(transactionItem);
+                for (TransactionItem transactionItem : transactionItemList) {
+                    if (transactionItem.getItem().getId().compareTo(item.getId()) == 0 &&
+                            transactionItem.getPrice().getValue().compareTo(sellPrice.getValue()) == 0) {
+                        duplicatedTransactionItem = true;
+                        transactionItem.setAmount(transactionItem.getAmount() + amount);
+                        break;
+                    }
+                }
 
-                transactionService.add(transaction);
-                priceService.addAll(priceList);
-                itemService.updateAll(itemList);
-                transactionItemService.addAll(transactionItemList);
-
-                clearAll(null);
-                MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
-                ItemList.getInstance().refresh();
+                if (!duplicatedItem) {
+                    itemList.add(item);
+                }
+                if (!duplicatedTransactionItem) {
+                    TransactionItem transactionItem = new TransactionItem(item, transaction, sellPrice, amount);
+                    transactionItemList.add(transactionItem);
+                }
             }
+            transactionService.add(transaction);
+            priceService.addAll(priceList);
+            itemService.updateAll(itemList);
+            transactionItemService.addAll(transactionItemList);
+
+            clearAll(null);
+            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            ItemList.getInstance().refresh();
         } catch (ItemNotFinishedException e) {
             MyAlerts.showError("Nie można zakończyć transakcji", "Dokończ dodawanie produktów zanim zakończysz transakcje.");
         } catch (Exception e) {

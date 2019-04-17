@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -11,14 +11,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import tornadofx.control.DateTimePicker?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.SearchItemController">
    <center>
-      <VBox alignment="CENTER" spacing="18.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane hgap="18.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="6.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <content>
+            <GridPane hgap="18.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" vgap="6.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="200.0" prefWidth="500.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -32,7 +33,7 @@
                <children>
                   <VBox spacing="4.0">
                      <children>
-                        <Label text="Id" />
+                        <Label styleClass="property-label" text="Id" />
                         <TextField />
                      </children>
                      <GridPane.margin>
@@ -41,7 +42,7 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Nazwa" />
+                        <Label styleClass="property-label" text="Nazwa" />
                         <TextField />
                      </children>
                      <GridPane.margin>
@@ -50,7 +51,7 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Kategoria" />
+                        <Label styleClass="property-label" text="Kategoria" />
                         <TextField />
                      </children>
                      <GridPane.margin>
@@ -59,13 +60,13 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Sztuk" />
-                        <HBox spacing="16.0">
+                        <Label styleClass="property-label" text="Sztuk" />
+                        <HBox alignment="CENTER" spacing="6.0">
                            <children>
-                              <Label text="Od" />
-                              <TextField />
-                              <Label text="Do" />
-                              <TextField />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Od" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Do" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -75,13 +76,13 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="4">
                      <children>
-                        <Label text="Data zakupu" />
-                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                        <Label styleClass="property-label" text="Data zakupu" />
+                        <HBox alignment="CENTER" spacing="6.0">
                            <children>
-                              <Label text="Od" />
-                              <DatePicker />
-                              <Label text="Do" />
-                              <DatePicker />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Od" />
+                              <DateTimePicker maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Do" />
+                              <DateTimePicker maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -91,13 +92,13 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="5">
                      <children>
-                        <Label text="Cena zakupu" />
-                        <HBox spacing="16.0">
+                        <Label styleClass="property-label" text="Cena zakupu" />
+                        <HBox alignment="CENTER" spacing="6.0">
                            <children>
-                              <Label text="Od" />
-                              <TextField />
-                              <Label text="Do" />
-                              <TextField />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Od" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Do" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -107,13 +108,13 @@
                   </VBox>
                   <VBox spacing="4.0" GridPane.rowIndex="6">
                      <children>
-                        <Label text="Cena sprzedaży" />
-                        <HBox spacing="16.0">
+                        <Label styleClass="property-label" text="Cena sprzedaży" />
+                        <HBox alignment="CENTER" spacing="6.0">
                            <children>
-                              <Label text="Od" />
-                              <TextField />
-                              <Label text="Do" />
-                              <TextField />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Od" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                              <Label maxWidth="-Infinity" minWidth="-Infinity" text="Do" />
+                              <TextField maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -122,14 +123,32 @@
                      </GridPane.margin>
                   </VBox>
                </children>
+               <padding>
+                  <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
+               </padding>
             </GridPane>
-            <HBox alignment="CENTER" spacing="12.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Wyczyść" />
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Wyszukaj" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
+         </content>
+      </ScrollPane>
    </center>
+   <top>
+      <VBox styleClass="header" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Wyszukaj produkty" />
+         </children>
+         <padding>
+            <Insets bottom="8.0" left="14.0" right="14.0" top="12.0" />
+         </padding>
+      </VBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" spacing="12.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearAll" prefWidth="100.0" text="Wyczyść" />
+            <Button fx:id="submit" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefWidth="150.0" text="Wyszukaj" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
 </BorderPane>

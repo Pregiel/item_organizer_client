@@ -146,7 +146,15 @@ public class SellItemElementController extends SideBarMenuViewController impleme
             return;
         }
 
-        if (BigDecimal.valueOf(selectedItem.getAmount()).subtract(amountValue).compareTo(BigDecimal.ZERO) < 0)
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for (SellItemElementController controller : sellItemController.getControllerList()) {
+            if (controller.getStep() == 2) {
+                totalAmount = totalAmount.add(BigDecimal.valueOf(controller.getSelectedAmount()));
+            }
+        }
+        totalAmount = totalAmount.add(amountValue);
+
+        if (BigDecimal.valueOf(selectedItem.getAmount()).subtract(totalAmount).compareTo(BigDecimal.ZERO) < 0)
             if (!MyAlerts.showConfirmationDialog("Za mało sztuk w bazie", "Liczba sztuk w bazie jest mniejsza od podanej liczby sztuk. Chcesz kontynuować?"))
                 return;
 
@@ -239,12 +247,8 @@ public class SellItemElementController extends SideBarMenuViewController impleme
         return Integer.valueOf(selectedItemAmount.getText());
     }
 
-    public double getSelectedBuyPrice() {
-        return Double.valueOf(selectedItemSellPerItem.getText().substring(0, selectedItemSellPerItem.getText().length() - 3));
-    }
-
     public BigDecimal getSelectedSellPrice() {
-        return new BigDecimal(selectedItemSell.getText().substring(0, selectedItemSell.getText().length() - 3));
+        return new BigDecimal(selectedItemSellPerItem.getText().substring(0, selectedItemSellPerItem.getText().length() - 3));
     }
 
     public Item getSelectedItem() {

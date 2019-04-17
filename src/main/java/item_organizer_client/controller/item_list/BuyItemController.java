@@ -75,11 +75,11 @@ public class BuyItemController extends SideBarMenuViewController implements Init
     }
 
     public void submit(ActionEvent event) {
-        List<Item> itemList = new ArrayList<>();
-        List<Price> priceList = new ArrayList<>();
-        List<TransactionItem> transactionItemList = new ArrayList<>();
-
         try {
+            List<Item> itemList = new ArrayList<>();
+            List<Price> priceList = new ArrayList<>();
+            List<TransactionItem> transactionItemList = new ArrayList<>();
+
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
             Transaction transaction = new Transaction(date, TransactionType.BUY);
 
@@ -87,25 +87,52 @@ public class BuyItemController extends SideBarMenuViewController implements Init
                 if (controller.getStep() != 2) {
                     throw new ItemNotFinishedException();
                 }
+            }
+
+            for (BuyItemElementController controller : controllerList) {
+                boolean duplicatedItem = false, duplicatedTransactionItem = false;
+
                 Item item = controller.getSelectedItem();
                 int amount = controller.getSelectedAmount();
+
+                for (Item element : itemList) {
+                    if (element.getId().compareTo(item.getId()) == 0) {
+                        item = element;
+                        duplicatedItem = true;
+                        break;
+                    }
+                }
 
                 item.setAmount(item.getAmount() + amount);
 
                 Price buyPrice = priceService.getLastedForItem(item, PriceType.BUY);
-                if (!buyPrice.getValue().equals(controller.getSelectedBuyPrice())) {
-                    priceList.add(new Price(controller.getSelectedBuyPrice(), PriceType.BUY, item, date));
+                if (buyPrice.getValue().compareTo(controller.getSelectedBuyPrice()) != 0) {
+                    buyPrice = new Price(controller.getSelectedBuyPrice(), PriceType.BUY, item, date);
+                    priceList.add(buyPrice);
                 }
 
                 Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
-                if (!sellPrice.getValue().equals(controller.getSelectedSellPrice())) {
-                    priceList.add(new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date));
+                if (sellPrice.getValue().compareTo(controller.getSelectedSellPrice()) != 0) {
+                    sellPrice = new Price(controller.getSelectedSellPrice(), PriceType.SELL, item, date);
+                    priceList.add(sellPrice);
                 }
 
-                TransactionItem transactionItem = new TransactionItem(item, transaction, buyPrice, amount);
+                for (TransactionItem transactionItem : transactionItemList) {
+                    if (transactionItem.getItem().getId().compareTo(item.getId()) == 0 &&
+                            transactionItem.getPrice().getValue().compareTo(buyPrice.getValue()) == 0) {
+                        duplicatedTransactionItem = true;
+                        transactionItem.setAmount(transactionItem.getAmount() + amount);
+                        break;
+                    }
+                }
 
-                itemList.add(item);
-                transactionItemList.add(transactionItem);
+                if (!duplicatedItem) {
+                    itemList.add(item);
+                }
+                if (!duplicatedTransactionItem) {
+                    TransactionItem transactionItem = new TransactionItem(item, transaction, buyPrice, amount);
+                    transactionItemList.add(transactionItem);
+                }
             }
 
             transactionService.add(transaction);

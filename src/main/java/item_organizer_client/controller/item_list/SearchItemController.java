@@ -1,0 +1,24 @@
+package item_organizer_client.controller.item_list;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
+import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+@Component
+public class SearchItemController implements Initializable {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    public void clearAll(ActionEvent event) {
+
+    }
+
+    public void submit(ActionEvent event) {
+
+    }
+}

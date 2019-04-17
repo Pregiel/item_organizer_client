@@ -46,7 +46,7 @@ public class PriceServiceImpl implements PriceService {
         List<Price> list = priceRepository.findByQuery(
                 "FROM Price p " +
                         "WHERE p.item = :item_id AND p.type = :type " +
-                        "ORDER BY p.date DESC, p.id ASC",
+                        "ORDER BY p.date DESC, p.id DESC",
                 new QueryParameter<>("item_id", item),
                 new QueryParameter<>("type", priceType));
 
