@@ -1,12 +1,16 @@
 package item_organizer_client.utils;
 
 import item_organizer_client.model.table_item.ItemTableItem;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -64,5 +68,9 @@ public class Utils {
 
     public static DateTimeFormatter getDateFormatter() {
         return dateFormatter;
+    }
+
+    public static <T> List<T> convertSetToList(Set<T> set) {
+        return new ArrayList<>(set);
     }
 }

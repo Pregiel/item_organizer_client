@@ -7,10 +7,15 @@ import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.table_item.TransactionItemInfoTableItem;
+import item_organizer_client.model.table_item.TransactionTableItem;
 import item_organizer_client.model.type.PriceType;
+import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -39,7 +44,9 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public Label idNotExistAlert, nameNotExistAlert, selectedItemId, selectedItemName, selectedItemCategory,
             selectedItemAmount, selectedItemBuyPrice, selectedItemSellPrice;
     public RadioButton idRadioButton, nameRadioButton;
-    public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryPrice;
+    public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryGroup;
+    public ToggleButton sellTransactionHistoryToggle, buyTransactionHistoryToggle, allTransactionHistoryToggle,
+            sellPriceHistoryToggle, buyPriceHistoryToggle, allPriceHistoryToggle;
     public TableView<Price> priceHistoryTable;
     public TableView<TransactionItemInfoTableItem> transactionHistoryTable;
     public TableColumn<Price, String> priceDateColumn, pricePriceColumn;
@@ -48,6 +55,10 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     private Item selectedItem;
 
     private int step = 0;
+
+    private FilteredList<Price> priceHistoryList;
+
+    private FilteredList<TransactionItemInfoTableItem> transactionHistoryList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,6 +85,40 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
         transactionDateColumn.setCellValueFactory(param ->
                 new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
+
+        priceHistoryGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                oldValue.setSelected(true);
+            } else {
+                priceHistoryList.setPredicate(price -> {
+                    if (newValue.equals(allPriceHistoryToggle)) {
+                        return true;
+                    } else if (newValue.equals(buyPriceHistoryToggle)) {
+                        return price.getType().equals(PriceType.BUY);
+                    } else if (newValue.equals(sellPriceHistoryToggle)) {
+                        return price.getType().equals(PriceType.SELL);
+                    }
+                    return false;
+                });
+            }
+        });
+
+        transactionHistoryGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                oldValue.setSelected(true);
+            } else {
+                transactionHistoryList.setPredicate(transactionItem -> {
+                    if (newValue.equals(allTransactionHistoryToggle)) {
+                        return true;
+                    } else if (newValue.equals(buyTransactionHistoryToggle)) {
+                        return transactionItem.getType().equals(TransactionType.BUY);
+                    } else if (newValue.equals(sellTransactionHistoryToggle)) {
+                        return transactionItem.getType().equals(TransactionType.SELL);
+                    }
+                    return false;
+                });
+            }
+        });
 
         refreshSearchTextListeners();
     }
@@ -112,12 +157,24 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
                     selectedItemSellPrice.setText(lastedSellPrice.toString());
                 }
 
-                priceHistoryTable.getItems().clear();
-                priceHistoryTable.getItems().addAll(selectedItem.getPrices());
+                priceHistoryList = new FilteredList<>(FXCollections.observableList(
+                        Utils.convertSetToList(selectedItem.getPrices())), price -> true);
 
-                transactionHistoryTable.getItems().clear();
-                transactionHistoryTable.getItems().addAll(selectedItem.getTransactionItems()
-                        .stream().map(TransactionItemInfoTableItem::new).collect(Collectors.toList()));
+                SortedList<Price> priceHistorySortedList = new SortedList<>(priceHistoryList);
+                priceHistorySortedList.comparatorProperty().bind(priceHistoryTable.comparatorProperty());
+
+                priceHistoryTable.setItems(priceHistorySortedList);
+
+
+                transactionHistoryList
+                        = new FilteredList<>(FXCollections.observableList(selectedItem.getTransactionItems()
+                        .stream().map(TransactionItemInfoTableItem::new).collect(Collectors.toList())), price -> true);
+
+                SortedList<TransactionItemInfoTableItem> transactionHistorySortedList
+                        = new SortedList<>(transactionHistoryList);
+                transactionHistorySortedList.comparatorProperty().bind(transactionHistoryTable.comparatorProperty());
+
+                transactionHistoryTable.setItems(transactionHistorySortedList);
                 break;
         }
     }

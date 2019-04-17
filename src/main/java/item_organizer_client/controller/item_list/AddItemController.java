@@ -79,8 +79,6 @@ public class AddItemController extends SideBarMenuViewController implements Init
                 buyPricePerItemText, amountText);
         setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent(), sellNullAlert, sellPriceSmallerInfo);
         setDateDatePickerListeners(dateText);
-
-        CustomListener.updateBuyPerItemLabelListener(buyPricePerItemText, buyPriceText, amountText, buyPriceType);
     }
 
     public void clearAll(ActionEvent event) {

@@ -76,8 +76,6 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
         setPriceTextFieldListeners(buyPriceText, "0.00", buyPriceText.getParent().getParent(), buyNullAlert);
         setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent(), sellNullAlert);
 
-        CustomListener.updateBuyPerItemLabelListener(buyPricePerItemText, buyPriceText, amountText, buyPriceType);
-
         refreshSearchTextListeners();
     }
 

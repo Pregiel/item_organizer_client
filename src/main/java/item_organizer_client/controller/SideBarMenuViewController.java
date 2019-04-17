@@ -2,10 +2,7 @@ package item_organizer_client.controller;
 
 import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.database.service.ItemService;
-import item_organizer_client.listeners.ComboBoxListener;
-import item_organizer_client.listeners.DatePickerListener;
-import item_organizer_client.listeners.SpinnerListener;
-import item_organizer_client.listeners.TextFieldListener;
+import item_organizer_client.listeners.*;
 import item_organizer_client.model.Category;
 import item_organizer_client.model.Price;
 import item_organizer_client.utils.Utils;
@@ -178,5 +175,7 @@ public abstract class SideBarMenuViewController extends Controller {
                 pricePerItemText.setText(Price.priceFormat(pricePerItem));
             }
         });
+
+        CustomListener.updateBuyPerItemLabelListener(pricePerItemText, priceText, amountText, priceType);
     }
 }
