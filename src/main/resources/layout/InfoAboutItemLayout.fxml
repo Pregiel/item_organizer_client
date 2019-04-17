@@ -20,63 +20,51 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="item_organizer_client.controller.item_list.InfoAboutItemController">
+<BorderPane maxHeight="1.7976931348623157E308" minWidth="250.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.InfoAboutItemController">
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="200.0" prefWidth="300.0">
             <content>
-                <VBox fx:id="infoItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
-                      maxWidth="1.7976931348623157E308" spacing="18.0">
+                <VBox fx:id="infoItemPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="18.0">
                     <padding>
-                        <Insets bottom="8.0" left="14.0" right="14.0" top="8.0"/>
+                        <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
                     </padding>
                     <children>
-                        <GridPane fx:id="searchInputPane" alignment="TOP_CENTER" hgap="18.0" maxHeight="-Infinity"
-                                  maxWidth="1.7976931348623157E308" styleClass="grid-pane" vgap="6.0">
+                        <GridPane fx:id="searchInputPane" alignment="TOP_CENTER" hgap="18.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="grid-pane" vgap="6.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308"
-                                                   minWidth="150.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="150.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints valignment="CENTER"/>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints valignment="CENTER" />
                             </rowConstraints>
                             <children>
                                 <VBox spacing="2.0" GridPane.rowIndex="2">
                                     <children>
-                                        <ComboBox fx:id="searchText" editable="true" maxWidth="1.7976931348623157E308"
-                                                  VBox.vgrow="ALWAYS"/>
-                                        <Label fx:id="idNotExistAlert" styleClass="alert-label"
-                                               text="Produkt o podanym ID nie istnieje"/>
-                                        <Label fx:id="nameNotExistAlert" styleClass="alert-label"
-                                               text="Produkt o podanej nazwie nie istnieje"/>
+                                        <ComboBox fx:id="searchText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                                        <Label fx:id="idNotExistAlert" styleClass="alert-label" text="Produkt o podanym ID nie istnieje" />
+                                        <Label fx:id="nameNotExistAlert" styleClass="alert-label" text="Produkt o podanej nazwie nie istnieje" />
                                     </children>
                                     <GridPane.margin>
-                                        <Insets/>
+                                        <Insets />
                                     </GridPane.margin>
                                 </VBox>
-                                <Label alignment="CENTER" styleClass="title-top-secondary" text="Wybierz produkt"/>
+                                <Label alignment="CENTER" styleClass="title-top-secondary" text="Wybierz produkt" />
                                 <HBox alignment="CENTER" spacing="12.0" GridPane.rowIndex="1">
                                     <children>
-                                        <RadioButton fx:id="idRadioButton" mnemonicParsing="false"
-                                                     styleClass="property-label" text="ID">
+                                        <RadioButton fx:id="idRadioButton" mnemonicParsing="false" styleClass="property-label" text="ID">
                                             <toggleGroup>
-                                                <ToggleGroup fx:id="searchGroup"/>
+                                                <ToggleGroup fx:id="searchGroup" />
                                             </toggleGroup>
                                         </RadioButton>
-                                        <RadioButton fx:id="nameRadioButton" layoutX="10.0" layoutY="10.0"
-                                                     mnemonicParsing="false" selected="true" styleClass="property-label"
-                                                     text="Nazwa" toggleGroup="$searchGroup"/>
+                                        <RadioButton fx:id="nameRadioButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" selected="true" styleClass="property-label" text="Nazwa" toggleGroup="$searchGroup" />
                                     </children>
                                     <padding>
-                                        <Insets bottom="4.0" top="4.0"/>
+                                        <Insets bottom="4.0" top="4.0" />
                                     </padding>
                                 </HBox>
-                                <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej"
-                                        GridPane.halignment="RIGHT" GridPane.rowIndex="3"/>
+                                <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                             </children>
                         </GridPane>
                         <VBox fx:id="detailsPane" spacing="8.0">
@@ -87,25 +75,22 @@
                                             <children>
                                                 <Label styleClass="title-top-secondary" text="Szczegóły produktu">
                                                     <HBox.margin>
-                                                        <Insets right="6.0"/>
+                                                        <Insets right="6.0" />
                                                     </HBox.margin>
                                                 </Label>
-                                                <Hyperlink maxHeight="1.7976931348623157E308"
-                                                           onAction="#changeSelectedItem" text="Zmień produkt"/>
                                             </children>
                                         </HBox>
                                         <HBox>
                                             <children>
                                                 <Label styleClass="property-label" text="ID:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemId" maxHeight="1.7976931348623157E308"
-                                                       text="4">
+                                                <Label fx:id="selectedItemId" maxHeight="1.7976931348623157E308" text="4">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -114,14 +99,13 @@
                                             <children>
                                                 <Label styleClass="property-label" text="Nazwa:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemName" maxHeight="1.7976931348623157E308"
-                                                       text="24 zł">
+                                                <Label fx:id="selectedItemName" maxHeight="1.7976931348623157E308" text="24 zł">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -130,14 +114,13 @@
                                             <children>
                                                 <Label styleClass="property-label" text="Kategoria:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemCategory" maxHeight="1.7976931348623157E308"
-                                                       text="24 zł">
+                                                <Label fx:id="selectedItemCategory" maxHeight="1.7976931348623157E308" text="24 zł">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -146,14 +129,13 @@
                                             <children>
                                                 <Label styleClass="property-label" text="Sztuk:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemAmount" maxHeight="1.7976931348623157E308"
-                                                       text="24 zł">
+                                                <Label fx:id="selectedItemAmount" maxHeight="1.7976931348623157E308" text="24 zł">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -162,14 +144,13 @@
                                             <children>
                                                 <Label styleClass="property-label" text="Ostatnia cena zakupu:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemBuyPrice" maxHeight="1.7976931348623157E308"
-                                                       text="24 zł">
+                                                <Label fx:id="selectedItemBuyPrice" maxHeight="1.7976931348623157E308" text="24 zł">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -178,14 +159,13 @@
                                             <children>
                                                 <Label styleClass="property-label" text="Ostatnia cena sprzedaży:">
                                                     <padding>
-                                                        <Insets right="4.0"/>
+                                                        <Insets right="4.0" />
                                                     </padding>
                                                 </Label>
-                                                <Label fx:id="selectedItemSellPrice" maxHeight="1.7976931348623157E308"
-                                                       text="24 zł">
+                                                <Label fx:id="selectedItemSellPrice" maxHeight="1.7976931348623157E308" text="24 zł">
                                                     <styleClass>
-                                                        <String fx:value="property-label"/>
-                                                        <String fx:value="property-value-label"/>
+                                                        <String fx:value="property-label" />
+                                                        <String fx:value="property-value-label" />
                                                     </styleClass>
                                                 </Label>
                                             </children>
@@ -194,42 +174,36 @@
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label styleClass="title-top-secondary" text="Historia cen"/>
+                                        <Label styleClass="title-top-secondary" text="Historia cen" />
                                         <HBox alignment="CENTER" spacing="6.0">
                                             <padding>
-                                                <Insets bottom="4.0" top="4.0"/>
+                                                <Insets bottom="4.0" top="4.0" />
                                             </padding>
                                             <children>
-                                                <ToggleButton fx:id="allPriceHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" selected="true" text="Wszystkie"
-                                                              HBox.hgrow="SOMETIMES">
+                                                <ToggleButton fx:id="allPriceHistoryToggle" maxWidth="120.0" mnemonicParsing="false" selected="true" text="Wszystkie" HBox.hgrow="SOMETIMES">
                                                     <toggleGroup>
-                                                        <ToggleGroup fx:id="priceHistoryGroup"/>
+                                                        <ToggleGroup fx:id="priceHistoryGroup" />
                                                     </toggleGroup>
                                                 </ToggleButton>
-                                                <ToggleButton fx:id="buyPriceHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" text="Ceny kupna"
-                                                              toggleGroup="$priceHistoryGroup" HBox.hgrow="SOMETIMES"/>
-                                                <ToggleButton fx:id="sellPriceHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" text="Ceny sprzedaży"
-                                                              toggleGroup="$priceHistoryGroup" HBox.hgrow="SOMETIMES"/>
+                                                <ToggleButton fx:id="buyPriceHistoryToggle" maxWidth="120.0" mnemonicParsing="false" text="Ceny kupna" toggleGroup="$priceHistoryGroup" HBox.hgrow="SOMETIMES" />
+                                                <ToggleButton fx:id="sellPriceHistoryToggle" maxWidth="120.0" mnemonicParsing="false" text="Ceny sprzedaży" toggleGroup="$priceHistoryGroup" HBox.hgrow="SOMETIMES" />
                                             </children>
                                         </HBox>
                                         <TableView fx:id="priceHistoryTable" prefHeight="200.0" prefWidth="200.0">
                                             <columns>
-                                                <TableColumn fx:id="priceDateColumn" prefWidth="75.0" text="Data">
+                                                <TableColumn prefWidth="75.0" text="Data">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="date"/>
+                                                        <PropertyValueFactory property="formattedDate" />
                                                     </cellValueFactory>
                                                 </TableColumn>
                                                 <TableColumn prefWidth="75.0" text="Typ">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="type"/>
+                                                        <PropertyValueFactory property="type" />
                                                     </cellValueFactory>
                                                 </TableColumn>
-                                                <TableColumn fx:id="pricePriceColumn" prefWidth="75.0" text="Cena">
+                                                <TableColumn prefWidth="75.0" text="Cena">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="value"/>
+                                                        <PropertyValueFactory property="price" />
                                                     </cellValueFactory>
                                                 </TableColumn>
                                             </columns>
@@ -238,67 +212,55 @@
                                 </VBox>
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label styleClass="title-top-secondary" text="Historia transakcji"/>
+                                        <Label styleClass="title-top-secondary" text="Historia transakcji" />
                                         <HBox alignment="CENTER" spacing="6.0">
                                             <padding>
-                                                <Insets bottom="4.0" top="4.0"/>
+                                                <Insets bottom="4.0" top="4.0" />
                                             </padding>
                                             <children>
-                                                <ToggleButton fx:id="allTransactionHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" selected="true" text="Wszystkie"
-                                                              HBox.hgrow="SOMETIMES">
+                                                <ToggleButton fx:id="allTransactionHistoryToggle" maxWidth="120.0" mnemonicParsing="false" selected="true" text="Wszystkie" HBox.hgrow="SOMETIMES">
                                                     <toggleGroup>
-                                                        <ToggleGroup fx:id="transactionHistoryGroup"/>
+                                                        <ToggleGroup fx:id="transactionHistoryGroup" />
                                                     </toggleGroup>
                                                 </ToggleButton>
-                                                <ToggleButton fx:id="buyTransactionHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" text="Zakup"
-                                                              toggleGroup="$transactionHistoryGroup"
-                                                              HBox.hgrow="SOMETIMES"/>
-                                                <ToggleButton fx:id="sellTransactionHistoryToggle" maxWidth="120.0"
-                                                              mnemonicParsing="false" text="Sprzedaż"
-                                                              toggleGroup="$transactionHistoryGroup"
-                                                              HBox.hgrow="SOMETIMES"/>
+                                                <ToggleButton fx:id="buyTransactionHistoryToggle" maxWidth="120.0" mnemonicParsing="false" text="Zakup" toggleGroup="$transactionHistoryGroup" HBox.hgrow="SOMETIMES" />
+                                                <ToggleButton fx:id="sellTransactionHistoryToggle" maxWidth="120.0" mnemonicParsing="false" text="Sprzedaż" toggleGroup="$transactionHistoryGroup" HBox.hgrow="SOMETIMES" />
                                             </children>
                                         </HBox>
-                                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="300.0"
-                                                    maxWidth="1.7976931348623157E308" minWidth="100.0">
+                                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="300.0" maxWidth="1.7976931348623157E308" minWidth="100.0">
                                             <content>
-                                                <TableView fx:id="transactionHistoryTable"
-                                                           maxHeight="1.7976931348623157E308"
-                                                           maxWidth="1.7976931348623157E308">
+                                                <TableView fx:id="transactionHistoryTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                     <columns>
                                                         <TableColumn prefWidth="75.0" text="ID">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="id"/>
+                                                                <PropertyValueFactory property="id" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="transactionDateColumn" prefWidth="75.0"
-                                                                     text="Data">
+                                                        <TableColumn prefWidth="75.0" text="Data">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="date"/>
+                                                                <PropertyValueFactory property="date" />
                                                             </cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn prefWidth="75.0" text="Rodzaj">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="type"/>
+                                                                <PropertyValueFactory property="type" />
                                                             </cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn prefWidth="75.0" text="Sztuk">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="amount"/>
+                                                                <PropertyValueFactory property="amount" />
                                                             </cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn prefWidth="75.0" text="Cena">
                                                             <columns>
                                                                 <TableColumn prefWidth="75.0" text="Za sztukę">
                                                                     <cellValueFactory>
-                                                                        <PropertyValueFactory property="price"/>
+                                                                        <PropertyValueFactory property="price" />
                                                                     </cellValueFactory>
                                                                 </TableColumn>
                                                                 <TableColumn prefWidth="75.0" text="Calkowita">
                                                                     <cellValueFactory>
-                                                                        <PropertyValueFactory property="totalPrice"/>
+                                                                        <PropertyValueFactory property="totalPrice" />
                                                                     </cellValueFactory>
                                                                 </TableColumn>
                                                             </columns>
@@ -317,9 +279,25 @@
         </ScrollPane>
     </center>
     <top>
-        <Label alignment="CENTER" styleClass="title-top" text="Informacje o produkcie" BorderPane.alignment="CENTER"/>
+      <VBox fx:id="headerPane" styleClass="header" BorderPane.alignment="CENTER">
+         <children>
+              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Informacje o produkcie" />
+            <HBox fx:id="selectedItemPane" spacing="12.0">
+               <children>
+                  <Label fx:id="selectedItemTitle" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="0002. Kubek" HBox.hgrow="ALWAYS" />
+                              <Hyperlink maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeSelectedItem" text="Zmień produkt" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="8.0" top="12.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets bottom="8.0" />
+         </BorderPane.margin>
+      </VBox>
     </top>
     <padding>
-        <Insets bottom="12.0" top="12.0"/>
+        <Insets bottom="12.0" />
     </padding>
 </BorderPane>

@@ -1,11 +1,14 @@
 package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.list.ItemList;
-import item_organizer_client.controller.MenuView;
-import item_organizer_client.model.table_item.ItemTableItem;
+import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,14 +21,15 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
 @Component
 public class ItemListController extends SideBarController implements Initializable {
-    public TableView<ItemTableItem> itemTableView;
+    public TableView<ItemTableElement> itemTableView;
     public AnchorPane itemMainPane;
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
     public SplitPane splitPane;
-    public TableColumn<ItemTableItem, String> idColumn;
+    public TableColumn<ItemTableElement, String> idColumn;
 
     private ItemList itemList;
 
@@ -43,16 +47,13 @@ public class ItemListController extends SideBarController implements Initializab
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
         setPreferences(Preferences.userRoot().node(this.getClass().getName()));
-        itemList = ItemList.getInstance();
 
+        itemList = ItemList.getInstance();
         itemList.init();
 
-        itemTableView.getItems().addAll(itemList.getItemListAsTableItems());
+        setTableItems();
 
-        itemList.addListener(() -> {
-            itemTableView.getItems().clear();
-            itemTableView.getItems().addAll(itemList.getItemListAsTableItems());
-        });
+        itemList.addListener(this::setTableItems);
 
         idColumn.setCellValueFactory(param ->
                 new SimpleObjectProperty<>(Utils.fillWithZeros(param.getValue().getId(), 4)));
@@ -67,6 +68,17 @@ public class ItemListController extends SideBarController implements Initializab
         setSplitPane(splitPane);
 
         Utils.setTableColumnWidthProperty(itemTableView, getPreferences());
+    }
+
+    private void setTableItems() {
+        FilteredList<ItemTableElement> filteredItemList
+                = new FilteredList<>(FXCollections.observableList(itemList.getItemList().stream()
+                .map(ItemTableElement::new).sorted().collect(Collectors.toList())), itemTableItem -> true);
+
+        SortedList<ItemTableElement> sortedItemList = new SortedList<>(filteredItemList);
+        sortedItemList.comparatorProperty().bind(itemTableView.comparatorProperty());
+
+        itemTableView.setItems(sortedItemList);
     }
 
     public void goHome(ActionEvent event) {

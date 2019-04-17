@@ -9,6 +9,10 @@
 	-icon-toggled-pressed-color: #6981bc;
 
 	-icon-hover-background-color: rgba(220,220,220,5);
+
+
+	-background-color: #777777;
+	-header-background-color: #eaeaea;
 }
 
 .title-top {
@@ -89,4 +93,8 @@
 
 .titled-pane:focused > .title > .arrow-button .arrow {
     -fx-effect: null;
+}
+
+.header {
+    -fx-background-color: -header-background-color;
 }

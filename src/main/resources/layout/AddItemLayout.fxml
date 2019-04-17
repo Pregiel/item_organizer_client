@@ -127,7 +127,7 @@
                   </VBox>
                </children>
                <padding>
-                  <Insets left="8.0" right="8.0" />
+                  <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
                </padding>
             </GridPane>
          </content>
@@ -137,11 +137,17 @@
       </ScrollPane>
    </center>
    <top>
-      <Label alignment="CENTER" styleClass="title-top" text="Dodaj nowy produkt" BorderPane.alignment="CENTER">
+      <VBox styleClass="header" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="8.0" left="14.0" right="14.0" />
+            <Insets bottom="8.0" />
          </BorderPane.margin>
-      </Label>
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Dodaj nowy produkt" />
+         </children>
+         <padding>
+            <Insets bottom="8.0" left="14.0" right="14.0" top="12.0" />
+         </padding>
+      </VBox>
    </top>
    <bottom>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" spacing="12.0" BorderPane.alignment="CENTER">
@@ -155,6 +161,6 @@
       </HBox>
    </bottom>
    <padding>
-      <Insets bottom="12.0" top="12.0" />
+      <Insets bottom="12.0" />
    </padding>
 </BorderPane>

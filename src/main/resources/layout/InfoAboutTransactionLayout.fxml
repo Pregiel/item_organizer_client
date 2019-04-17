@@ -161,7 +161,7 @@
                                                         </TableColumn>
                                                         <TableColumn prefWidth="75.0" text="Cena">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property="price" />
+                                                                <PropertyValueFactory property="totalPrice" />
                                                             </cellValueFactory>
                                                         </TableColumn>
                                                     </columns>

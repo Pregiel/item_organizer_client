@@ -10,4 +10,6 @@ public interface TransactionService {
     Transaction findById(int id);
 
     List<Transaction> getAll();
+
+    List<String> getAllIDs();
 }

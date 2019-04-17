@@ -5,9 +5,8 @@ import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
-import item_organizer_client.model.Transaction;
-import item_organizer_client.model.table_item.TransactionItemInfoTableItem;
-import item_organizer_client.model.table_item.TransactionTableItem;
+import item_organizer_client.model.table_item.PriceTableElement;
+import item_organizer_client.model.table_item.TransactionItemInfoItemTableElement;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
@@ -20,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,27 +38,22 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     @Autowired
     private PriceService priceService;
 
-    public VBox infoItemPane, detailsPane;
+    public VBox infoItemPane, detailsPane, headerPane;
+    public HBox selectedItemPane;
     public GridPane searchInputPane;
     public ComboBox<String> searchText;
-    public Label idNotExistAlert, nameNotExistAlert, selectedItemId, selectedItemName, selectedItemCategory,
-            selectedItemAmount, selectedItemBuyPrice, selectedItemSellPrice;
+    public Label selectedItemTitle, idNotExistAlert, nameNotExistAlert, selectedItemId, selectedItemName,
+            selectedItemCategory, selectedItemAmount, selectedItemBuyPrice, selectedItemSellPrice;
     public RadioButton idRadioButton, nameRadioButton;
     public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryGroup;
     public ToggleButton sellTransactionHistoryToggle, buyTransactionHistoryToggle, allTransactionHistoryToggle,
             sellPriceHistoryToggle, buyPriceHistoryToggle, allPriceHistoryToggle;
-    public TableView<Price> priceHistoryTable;
-    public TableView<TransactionItemInfoTableItem> transactionHistoryTable;
-    public TableColumn<Price, String> priceDateColumn, pricePriceColumn;
-    public TableColumn<TransactionItemInfoTableItem, String> transactionDateColumn;
+    public TableView<PriceTableElement> priceHistoryTable;
+    public TableView<TransactionItemInfoItemTableElement> transactionHistoryTable;
 
     private Item selectedItem;
-
-    private int step = 0;
-
-    private FilteredList<Price> priceHistoryList;
-
-    private FilteredList<TransactionItemInfoTableItem> transactionHistoryList;
+    private FilteredList<PriceTableElement> priceHistoryList;
+    private FilteredList<TransactionItemInfoItemTableElement> transactionHistoryList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,15 +71,6 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     protected void initFields() {
         setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
                 itemService, idNotExistAlert, nameNotExistAlert);
-
-        priceDateColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
-
-        pricePriceColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(Price.priceFormat(param.getValue().getValue())));
-
-        transactionDateColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
 
         priceHistoryGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -132,16 +118,18 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
      * @param step 0 - search item, 1 - details
      */
     private void goToStep(int step) {
-        this.step = step;
         clearAlerts();
         infoItemPane.getChildren().removeAll(searchInputPane, detailsPane);
+        headerPane.getChildren().remove(selectedItemPane);
         switch (step) {
             case 0:
                 infoItemPane.getChildren().addAll(searchInputPane);
                 break;
             case 1:
                 infoItemPane.getChildren().addAll(detailsPane);
+                headerPane.getChildren().add(selectedItemPane);
 
+                selectedItemTitle.setText(selectedItem.toTitle());
                 selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
                 selectedItemCategory.setText(selectedItem.getCategory().getName());
@@ -157,20 +145,21 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
                     selectedItemSellPrice.setText(lastedSellPrice.toString());
                 }
 
-                priceHistoryList = new FilteredList<>(FXCollections.observableList(
-                        Utils.convertSetToList(selectedItem.getPrices())), price -> true);
+                priceHistoryList
+                        = new FilteredList<>(FXCollections.observableList(selectedItem.getPrices().stream()
+                        .map(PriceTableElement::new).sorted().collect(Collectors.toList())), price -> true);
 
-                SortedList<Price> priceHistorySortedList = new SortedList<>(priceHistoryList);
+                SortedList<PriceTableElement> priceHistorySortedList = new SortedList<>(priceHistoryList);
                 priceHistorySortedList.comparatorProperty().bind(priceHistoryTable.comparatorProperty());
 
                 priceHistoryTable.setItems(priceHistorySortedList);
 
-
                 transactionHistoryList
                         = new FilteredList<>(FXCollections.observableList(selectedItem.getTransactionItems()
-                        .stream().map(TransactionItemInfoTableItem::new).collect(Collectors.toList())), price -> true);
+                        .stream().map(TransactionItemInfoItemTableElement::new).sorted().collect(Collectors.toList())),
+                        price -> true);
 
-                SortedList<TransactionItemInfoTableItem> transactionHistorySortedList
+                SortedList<TransactionItemInfoItemTableElement> transactionHistorySortedList
                         = new SortedList<>(transactionHistoryList);
                 transactionHistorySortedList.comparatorProperty().bind(transactionHistoryTable.comparatorProperty());
 

@@ -6,7 +6,7 @@ import item_organizer_client.category.DatabaseTestCategory;
 import item_organizer_client.category.ValidationTestCategory;
 import item_organizer_client.database.ItemOrganizerDatabase;
 import item_organizer_client.database.service.ItemService;
-import item_organizer_client.model.table_item.ItemTableItem;
+import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -473,9 +473,9 @@ public class AddItemControllerTest extends ApplicationTest {
 
         addItem(id, name, category, amount, date, buyPrice, sellPrice);
 
-        ObservableList<ItemTableItem> itemList = ((TableView<ItemTableItem>) lookup("#itemTableView").query()).getItems();
+        ObservableList<ItemTableElement> itemList = ((TableView<ItemTableElement>) lookup("#itemTableView").query()).getItems();
 
-        for (ItemTableItem item : itemList) {
+        for (ItemTableElement item : itemList) {
             assertEquals(id, item.getId().toString());
             assertEquals(name, item.getName());
             assertEquals(category, item.getCategory().getName());

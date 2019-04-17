@@ -2,7 +2,6 @@ package item_organizer_client.model.list;
 
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
-import item_organizer_client.model.table_item.ItemTableItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ItemList {
@@ -36,13 +34,6 @@ public class ItemList {
 
     public List<Item> getItemList() {
         return itemList;
-    }
-
-    public List<ItemTableItem> getItemListAsTableItems() {
-        return itemList
-                .stream()
-                .map((Item item) -> new ItemTableItem(item))
-                .collect(Collectors.toList());
     }
 
     public void init() {

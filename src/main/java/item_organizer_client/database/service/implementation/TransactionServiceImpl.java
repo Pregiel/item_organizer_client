@@ -27,4 +27,9 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> getAll() {
         return transactionRepository.getAll(Transaction.class);
     }
+
+    @Override
+    public List<String> getAllIDs() {
+        return transactionRepository.getAllColumn(Transaction.class, "id");
+    }
 }

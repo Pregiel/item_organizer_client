@@ -2,6 +2,7 @@ package item_organizer_client.controller;
 
 import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.database.service.ItemService;
+import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.listeners.*;
 import item_organizer_client.model.Category;
 import item_organizer_client.model.Price;
@@ -34,6 +35,16 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.isNullListener(idText, nullAlert);
         TextFieldListener.autoTrimListener(idText);
         TextFieldListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+    }
+
+    protected void setIdComboBoxListeners(ComboBox<String> searchText,TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {
+        ComboBoxListener.selectAllOnFocusListener(searchText);
+        ComboBoxListener.onlyNumericListener(searchText);
+        ComboBoxListener.autoTrimListener(searchText);
+        ComboBoxListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{idNotExistAlert}, alerts));
+
+        searchText.getItems().addAll(transactionService.getAllIDs());
+        TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
     }
 
     protected void setNameTextFieldListeners(TextField nameText, int min, int max, Parent parent, Label nullAlert, Label minAlert, Label... alerts) {
@@ -95,8 +106,7 @@ public abstract class SideBarMenuViewController extends Controller {
     @SuppressWarnings({"AccessStaticViaInstance", "ConstantConditions"})
     protected void setItemSearchComboBox(ComboBox<String> searchText, int idDigits, int nameMax, ToggleGroup searchGroup,
                                          RadioButton idRadioButton, RadioButton nameRadioButton,
-                                         ItemService itemService, Label idNotExistAlert,
-                                         Label nameNotExistAlert) {
+                                         ItemService itemService, Label idNotExistAlert, Label nameNotExistAlert) {
         this.searchText = searchText;
         this.searchGroup = searchGroup;
         this.idRadioButton = idRadioButton;

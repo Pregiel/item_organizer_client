@@ -3,7 +3,6 @@ package item_organizer_client.model.table_item;
 import item_organizer_client.controller.item_list.ItemListController;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
-import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.type.PriceType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,11 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-public class ItemTableItem extends Item {
+public class ItemTableElement extends Item implements Comparable<ItemTableElement>{
     private HBox actionButtons;
     private Price sellPrice, buyPrice;
 
-    public ItemTableItem(Item item) {
+    public ItemTableElement(Item item) {
         super(item);
 
         for (Price itemPrice : getPrices()) {
@@ -95,5 +94,13 @@ public class ItemTableItem extends Item {
 
     public void setBuyPrice(Price buyPrice) {
         this.buyPrice = buyPrice;
+    }
+
+    @Override
+    public int compareTo(ItemTableElement o) {
+        if (getId() == null || o.getId() == null) {
+            return 0;
+        }
+        return getId().compareTo(o.getId());
     }
 }

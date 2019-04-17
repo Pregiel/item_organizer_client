@@ -1,7 +1,5 @@
 package item_organizer_client.utils;
 
-import item_organizer_client.model.table_item.ItemTableItem;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 

@@ -2,7 +2,7 @@ package item_organizer_client.model.list;
 
 import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.model.Transaction;
-import item_organizer_client.model.table_item.TransactionTableItem;
+import item_organizer_client.model.table_item.TransactionTableElement;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -38,10 +38,11 @@ public class TransactionList {
         instance = this;
     }
 
-    public List<TransactionTableItem> getItemListAsTableItems() {
+    public List<TransactionTableElement> getItemListAsTableItems() {
         return transactionList
                 .stream()
-                .map(TransactionTableItem::new)
+                .map(TransactionTableElement::new)
+                .sorted()
                 .collect(Collectors.toList());
     }
 

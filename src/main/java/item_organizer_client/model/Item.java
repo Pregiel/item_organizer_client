@@ -1,6 +1,8 @@
 package item_organizer_client.model;
 
 
+import item_organizer_client.utils.Utils;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -92,5 +94,9 @@ public class Item {
 
     public void setTransactionItems(Set<TransactionItem> transactionItems) {
         this.transactionItems = transactionItems;
+    }
+
+    public String toTitle() {
+        return Utils.fillWithZeros(id, 4) + ". " + name;
     }
 }
