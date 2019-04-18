@@ -1,5 +1,6 @@
 package item_organizer_client.controller.item_list;
 
+import de.felixroske.jfxsupport.FXMLController;
 import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@FXMLController
 @Component
 public class SellItemController extends SideBarMenuViewController implements Initializable {
     @Autowired

@@ -1,14 +1,13 @@
 package item_organizer_client.controller.item_list;
 
+import de.felixroske.jfxsupport.FXMLController;
 import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.*;
-import item_organizer_client.listeners.*;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.*;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
-import item_organizer_client.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -29,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
+@FXMLController
 @Component
 public class AddItemController extends SideBarMenuViewController implements Initializable {
     @Autowired
@@ -69,15 +69,15 @@ public class AddItemController extends SideBarMenuViewController implements Init
     @Override
     protected void initFields() {
         setIdTextFieldListeners(idText, 4, idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
-        setNameTextFieldListeners(nameText, 3, 250, nameText.getParent(), nameNullAlert, nameMinAlert,
+        setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
-        setCategoryComboBoxListeners(categoryText, 3, 250, categoryService, categoryText.getParent(),
+        setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
                 categoryNullAlert, categoryMinAlert, categoryMaxAlert);
-        setAmountSpinnerListeners(amountText, 1, amountText.getParent(), amountNullAlert);
-        setPriceTextFieldListeners(buyPriceText, "0.00", buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
+        setAmountSpinnerListeners(amountText, amountText.getParent(), amountNullAlert);
+        setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
         setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
                 buyPricePerItemText, amountText);
-        setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent(), sellNullAlert, sellPriceSmallerInfo);
+        setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent(), sellNullAlert, sellPriceSmallerInfo);
         setDateDatePickerListeners(dateText);
     }
 

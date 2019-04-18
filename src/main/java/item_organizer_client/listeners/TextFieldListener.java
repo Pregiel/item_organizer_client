@@ -27,10 +27,15 @@ public class TextFieldListener extends TextInputControlListener {
     }
 
     public static ChangeListener<Boolean> autoFillPriceListener(TextField textField, String text) {
+        return autoFillPriceListener(textField, text, true);
+    }
+
+    public static ChangeListener<Boolean> autoFillPriceListener(TextField textField, String text, boolean autoFill) {
         return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
-                    textField.setText(text);
+                    if (autoFill)
+                        textField.setText(text);
                 } else if (!textField.getText().matches(".*[.]\\d{2}")) {
                     if (!textField.getText().contains(".")) {
                         textField.setText(textField.getText() + ".00");

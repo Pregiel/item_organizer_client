@@ -13,8 +13,9 @@ import java.util.ResourceBundle;
 public class SpringFXMLLoader extends FXMLLoader {
     private static ConfigurableApplicationContext applicationContext;
 
-    public static void setApplicationContext(ConfigurableApplicationContext applicationContext) {
+    public static void setApplicationContext(ConfigurableApplicationContext applicationContext, Object o) {
         SpringFXMLLoader.applicationContext = applicationContext;
+        applicationContext.getAutowireCapableBeanFactory().autowireBean(o);
     }
 
     public SpringFXMLLoader(URL url) {

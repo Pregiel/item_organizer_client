@@ -6,7 +6,6 @@ import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.listeners.*;
 import item_organizer_client.model.Category;
 import item_organizer_client.model.Price;
-import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -18,7 +17,6 @@ import tornadofx.control.DateTimePicker;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -27,17 +25,22 @@ public abstract class SideBarMenuViewController extends Controller {
 
     protected abstract void initFields();
 
-    protected void setIdTextFieldListeners(TextField idText, int digits, Parent parent, Label nullAlert, Label... alerts) {
+    protected void setIdTextFieldListeners(TextField idText, int digits, boolean fillWithZeros) {
         TextFieldListener.selectAllOnFocusListener(idText);
         TextFieldListener.onlyNumericListener(idText);
         TextFieldListener.maxCharsAmountListener(idText, digits);
-        TextFieldListener.fillWithZerosListener(idText, digits);
-        TextFieldListener.isNullListener(idText, nullAlert);
+        if (fillWithZeros)
+            TextFieldListener.fillWithZerosListener(idText, digits);
         TextFieldListener.autoTrimListener(idText);
+    }
+
+    protected void setIdTextFieldListeners(TextField idText, int digits, Parent parent, Label nullAlert, Label... alerts) {
+        setIdTextFieldListeners(idText, digits, true);
+        TextFieldListener.isNullListener(idText, nullAlert);
         TextFieldListener.removeAlertsListener(idText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
     }
 
-    protected void setIdComboBoxListeners(ComboBox<String> searchText,TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {
+    protected void setIdComboBoxListeners(ComboBox<String> searchText, TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {
         ComboBoxListener.selectAllOnFocusListener(searchText);
         ComboBoxListener.onlyNumericListener(searchText);
         ComboBoxListener.autoTrimListener(searchText);
@@ -47,53 +50,75 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
     }
 
-    protected void setNameTextFieldListeners(TextField nameText, int min, int max, Parent parent, Label nullAlert, Label minAlert, Label... alerts) {
+    protected void setNameTextFieldListeners(TextField nameText) {
         TextFieldListener.selectAllOnFocusListener(nameText);
-        TextFieldListener.maxCharsAmountListener(nameText, max);
-        TextFieldListener.minCharsAmountListener(nameText, min, minAlert);
-        TextFieldListener.isNullListener(nameText, nullAlert);
+        TextFieldListener.maxCharsAmountListener(nameText, 250);
         TextFieldListener.autoTrimListener(nameText);
-        TextFieldListener.removeAlertsListener(nameText,parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
     }
 
-    protected void setCategoryComboBoxListeners(ComboBox<String> categoryText, int min, int max,
-                                                CategoryService categoryService, Parent parent, Label nullAlert,
-                                                Label minAlert, Label... alerts) {
-        categoryText.getItems().addAll(categoryService.getAll()
-                .stream().map(Category::getName).collect(Collectors.toList()));
-        TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
+    protected void setNameTextFieldListeners(TextField nameText, Parent parent, Label nullAlert, Label minAlert, Label... alerts) {
+        setNameTextFieldListeners(nameText);
+        TextFieldListener.minCharsAmountListener(nameText, 3, minAlert);
+        TextFieldListener.isNullListener(nameText, nullAlert);
+        TextFieldListener.removeAlertsListener(nameText, parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
+    }
 
-        ComboBoxListener.selectAllOnFocusListener(categoryText);
-        ComboBoxListener.maxCharsAmountListener(categoryText, max);
-        ComboBoxListener.minCharsAmountListener(categoryText, min, minAlert, parent);
+    protected void setCategoryComboBoxListeners(ComboBox<String> categoryText, CategoryService categoryService, Parent parent,
+                                                Label nullAlert, Label minAlert, Label... alerts) {
+        setCategoryComboBoxListeners(categoryText, categoryService);
+        ComboBoxListener.minCharsAmountListener(categoryText, 3, minAlert, parent);
         ComboBoxListener.isNullListener(categoryText, nullAlert, parent);
-        ComboBoxListener.autoTrimListener(categoryText);
         ComboBoxListener.removeAlertsListener(categoryText, parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
     }
 
-    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, int defaultValue, Parent parent, Label nullAlert, Label... alerts) {
-        SpinnerValueFactory<Integer> valueFactory
-                = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
-        amountText.setValueFactory(valueFactory);
+    protected void setCategoryComboBoxListeners(ComboBox<String> categoryText, CategoryService categoryService) {
+        categoryText.getItems().addAll(categoryService.getAll().stream().map(Category::getName).collect(Collectors.toList()));
+        TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
 
-        SpinnerListener.selectAllOnFocusListener(amountText);
-        SpinnerListener.onlyNumericListener(amountText);
-        SpinnerListener.autoFillListener(amountText, defaultValue);
-        SpinnerListener.removeAlertsListener(amountText,parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+        ComboBoxListener.selectAllOnFocusListener(categoryText);
+        ComboBoxListener.maxCharsAmountListener(categoryText, 250);
+        ComboBoxListener.autoTrimListener(categoryText);
     }
 
-    protected void setPriceTextFieldListeners(TextField priceText, String defaultPrice, Parent parent, Label nullAlert, Label... alerts) {
+    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, Parent parent, Label nullAlert, Label... alerts) {
+        setAmountSpinnerListeners(amountText, true);
+        SpinnerListener.removeAlertsListener(amountText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+    }
+
+    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, boolean autoFill) {
+        SpinnerValueFactory<Integer> valueFactory;
+        if (autoFill) {
+            valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
+            SpinnerListener.autoFillListener(amountText, 1);
+        } else {
+            valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
+        }
+        amountText.setValueFactory(valueFactory);
+        SpinnerListener.selectAllOnFocusListener(amountText);
+        SpinnerListener.onlyNumericListener(amountText);
+    }
+
+    protected void setPriceTextFieldListeners(TextField priceText, Parent parent, Label nullAlert, Label... alerts) {
+        setPriceTextFieldListeners(priceText, true);
+        TextFieldListener.isNullListener(priceText, nullAlert, (Pane) parent);
+        TextFieldListener.removeAlertsListener(priceText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+    }
+
+    protected void setPriceTextFieldListeners(TextField priceText, boolean autoFill) {
         TextFieldListener.selectAllOnFocusListener(priceText);
         TextFieldListener.priceListener(priceText);
-        TextFieldListener.autoFillPriceListener(priceText, defaultPrice);
-        TextFieldListener.isNullListener(priceText, nullAlert, (Pane) parent);
+        TextFieldListener.autoFillPriceListener(priceText, "0.00", autoFill);
         TextFieldListener.autoTrimListener(priceText);
-        TextFieldListener.removeAlertsListener(priceText,parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+    }
+
+    protected void setDateDatePickerListeners(DateTimePicker dateText, boolean autoFill) {
+        DatePickerListener.selectAllOnFocusListener(dateText);
+        if (autoFill)
+            DatePickerListener.autoFillDateListener(dateText);
     }
 
     protected void setDateDatePickerListeners(DateTimePicker dateText) {
-        DatePickerListener.selectAllOnFocusListener(dateText);
-        DatePickerListener.autoFillDateListener(dateText);
+        setDateDatePickerListeners(dateText, true);
     }
 
     private ChangeListener<String> onlyNumericListener, maxIdCharsAmountListener, maxNameCharsAmountListener;

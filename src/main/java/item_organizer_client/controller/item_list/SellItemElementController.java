@@ -1,9 +1,9 @@
 package item_organizer_client.controller.item_list;
 
+import de.felixroske.jfxsupport.FXMLController;
 import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
-import item_organizer_client.listeners.CustomListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+@FXMLController
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class SellItemElementController extends SideBarMenuViewController implements Initializable {
@@ -69,10 +70,10 @@ public class SellItemElementController extends SideBarMenuViewController impleme
     protected void initFields() {
         setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
                 itemService, idNotExistAlert, nameNotExistAlert);
-        setAmountSpinnerListeners(amountText, 1, amountText.getParent(), amountNullAlert);
+        setAmountSpinnerListeners(amountText, amountText.getParent(), amountNullAlert);
         setPriceTypeListeners(sellPriceText, sellPriceType, sellPriceText.getParent().getParent(), sellPricePerItemPane,
                 sellPricePerItemText, amountText);
-        setPriceTextFieldListeners(sellPriceText, "0.00", sellPriceText.getParent().getParent(), sellNullAlert);
+        setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent().getParent(), sellNullAlert);
 
         refreshSearchTextListeners();
     }

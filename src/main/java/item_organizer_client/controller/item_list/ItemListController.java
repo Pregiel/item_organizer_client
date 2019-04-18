@@ -1,5 +1,8 @@
 package item_organizer_client.controller.item_list;
 
+import de.felixroske.jfxsupport.FXMLController;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.Item;
@@ -8,14 +11,16 @@ import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.textfield.CustomTextField;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -23,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
+@FXMLController
 @Component
 public class ItemListController extends SideBarController implements Initializable {
     public TableView<ItemTableElement> itemTableView;
@@ -31,8 +37,11 @@ public class ItemListController extends SideBarController implements Initializab
     public SplitPane splitPane;
     public TableColumn<ItemTableElement, Integer> idColumn;
     public TableColumn<ItemTableElement, Price> buyPriceColumn, sellPriceColumn;
+    public Label headerTitleText;
+    public Label headerAmountText;
+    public CustomTextField headerSearchText;
 
-    private ItemList itemList;
+    private Button searchClearButton;
 
     private static ItemListController instance;
 
@@ -49,12 +58,7 @@ public class ItemListController extends SideBarController implements Initializab
         super.initialize(url, resourceBundle);
         setPreferences(Preferences.userRoot().node(this.getClass().getName()));
 
-        itemList = ItemList.getInstance();
-        itemList.init();
-
         setTableItems();
-
-        itemList.addListener(this::setTableItems);
 
         itemTableView.setRowFactory(param -> {
             TableRow<ItemTableElement> row = new TableRow<>();
@@ -88,6 +92,36 @@ public class ItemListController extends SideBarController implements Initializab
         buyPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
         sellPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
 
+        searchClearButton = new Button("", new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
+        searchClearButton.getStyleClass().add("clear-button");
+        searchClearButton.setOnAction(event -> headerSearchText.setText(""));
+
+        Label searchIcon = new Label("", new FontAwesomeIconView(FontAwesomeIcon.SEARCH));
+        searchIcon.setPadding(new Insets(0, 0, 0, 4));
+        headerSearchText.setLeft(searchIcon);
+        headerSearchText.setRight(searchClearButton);
+        headerSearchText.getRight().setVisible(false);
+
+        ItemList.getInstance().setUpSearchBoxFilters(headerSearchText);
+
+        headerSearchText.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 0) {
+                headerSearchText.getRight().setVisible(true);
+            } else {
+                headerSearchText.getRight().setVisible(false);
+            }
+        });
+
+        headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
+
+        itemTableView.getItems().addListener((InvalidationListener) c -> {
+            headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
+            if (itemTableView.getItems().size() == ItemList.getInstance().getItemList().size()) {
+                headerTitleText.setText(ResourceBundle.getBundle("strings").getString("item_list.header.all_items"));
+            } else {
+                headerTitleText.setText(ResourceBundle.getBundle("strings").getString("item_list.header.founded"));
+            }
+        });
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_ITEM, searchButton);
@@ -102,14 +136,17 @@ public class ItemListController extends SideBarController implements Initializab
     }
 
     private void setTableItems() {
-        FilteredList<ItemTableElement> filteredItemList
-                = new FilteredList<>(FXCollections.observableList(itemList.getItemList().stream()
-                .map(ItemTableElement::new).sorted().collect(Collectors.toList())), itemTableItem -> true);
+        ItemList.getInstance().init();
 
-        SortedList<ItemTableElement> sortedItemList = new SortedList<>(filteredItemList);
+        ItemList.getInstance().setFilteredItemList(new FilteredList<>(FXCollections.observableList(ItemList.getInstance().getItemList().stream()
+                .map(ItemTableElement::new).sorted().collect(Collectors.toList())), itemTableItem -> true));
+
+        SortedList<ItemTableElement> sortedItemList = new SortedList<>(ItemList.getInstance().getFilteredItemList());
         sortedItemList.comparatorProperty().bind(itemTableView.comparatorProperty());
 
         itemTableView.setItems(sortedItemList);
+
+        ItemList.getInstance().addListener(this::setTableItems);
     }
 
     public void goHome(ActionEvent event) {
@@ -143,4 +180,7 @@ public class ItemListController extends SideBarController implements Initializab
         infoController.showInfoAbout(id);
     }
 
+    public CustomTextField getHeaderSearchText() {
+        return headerSearchText;
+    }
 }

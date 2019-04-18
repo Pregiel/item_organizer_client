@@ -41,7 +41,7 @@ public class AddItemControllerTest extends ApplicationTest {
 
     @Override
     public void init() throws Exception {
-        SpringFXMLLoader.setApplicationContext(SpringApplication.run(Main.class));
+        SpringFXMLLoader.setApplicationContext(SpringApplication.run(Main.class), this);
     }
 
     @Override

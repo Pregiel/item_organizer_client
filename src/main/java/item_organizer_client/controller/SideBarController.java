@@ -1,5 +1,6 @@
 package item_organizer_client.controller;
 
+import item_organizer_client.controller.item_list.SearchItemController;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -74,6 +75,10 @@ public abstract class SideBarController extends Controller implements Initializa
     }
 
     protected void hideView() {
+        if (currentView.equals(MenuView.SEARCH_ITEM)) {
+            ((SearchItemController) currentController).saveValues();
+        }
+
         if (currentNode != null) {
             splitPane.getItems().remove(currentNode);
         }

@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -10,10 +11,13 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
 
 <AnchorPane fx:id="itemMainPane" minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.ItemListController">
     <children>
@@ -21,49 +25,68 @@
             <items>
                 <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="200.0">
                     <content>
-                        <TableView fx:id="itemTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                            <columns>
-                                <TableColumn fx:id="idColumn" minWidth="40.0" prefWidth="75.0" text="ID">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="id" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn minWidth="40.0" prefWidth="200.0" text="Nazwa">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="name" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn minWidth="40.0" prefWidth="120.0" text="Kategoria">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="category" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn minWidth="40.0" prefWidth="75.0" text="Sztuk">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="amount" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="75.0" text="Ostatnia cena">
-                                    <columns>
-                                        <TableColumn fx:id="buyPriceColumn" minWidth="40.0" prefWidth="75.0" text="Kupna">
-                                            <cellValueFactory>
-                                                <PropertyValueFactory property="buyPrice" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                        <TableColumn fx:id="sellPriceColumn" minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
-                                            <cellValueFactory>
-                                                <PropertyValueFactory property="sellPrice" />
-                                            </cellValueFactory>
-                                        </TableColumn>
-                                    </columns>
-                                </TableColumn>
-                                <TableColumn minWidth="40.0" prefWidth="100.0" text="Akcja">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="actionButtons" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                            </columns>
-                        </TableView>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <center>
+                              <TableView fx:id="itemTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                  <columns>
+                                      <TableColumn fx:id="idColumn" minWidth="40.0" prefWidth="75.0" text="ID">
+                                          <cellValueFactory>
+                                              <PropertyValueFactory property="id" />
+                                          </cellValueFactory>
+                                      </TableColumn>
+                                      <TableColumn minWidth="40.0" prefWidth="200.0" text="Nazwa">
+                                          <cellValueFactory>
+                                              <PropertyValueFactory property="name" />
+                                          </cellValueFactory>
+                                      </TableColumn>
+                                      <TableColumn minWidth="40.0" prefWidth="120.0" text="Kategoria">
+                                          <cellValueFactory>
+                                              <PropertyValueFactory property="category" />
+                                          </cellValueFactory>
+                                      </TableColumn>
+                                      <TableColumn minWidth="40.0" prefWidth="75.0" text="Sztuk">
+                                          <cellValueFactory>
+                                              <PropertyValueFactory property="amount" />
+                                          </cellValueFactory>
+                                      </TableColumn>
+                                      <TableColumn prefWidth="75.0" text="Ostatnia cena">
+                                          <columns>
+                                              <TableColumn fx:id="buyPriceColumn" minWidth="40.0" prefWidth="75.0" text="Kupna">
+                                                  <cellValueFactory>
+                                                      <PropertyValueFactory property="buyPrice" />
+                                                  </cellValueFactory>
+                                              </TableColumn>
+                                              <TableColumn fx:id="sellPriceColumn" minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
+                                                  <cellValueFactory>
+                                                      <PropertyValueFactory property="sellPrice" />
+                                                  </cellValueFactory>
+                                              </TableColumn>
+                                          </columns>
+                                      </TableColumn>
+                                      <TableColumn minWidth="40.0" prefWidth="100.0" text="Akcja">
+                                          <cellValueFactory>
+                                              <PropertyValueFactory property="actionButtons" />
+                                          </cellValueFactory>
+                                      </TableColumn>
+                                  </columns>
+                              </TableView>
+                     </center>
+                     <top>
+                        <HBox alignment="CENTER" spacing="4.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label fx:id="headerTitleText" text="Wszystkie produkty" />
+                              <Label fx:id="headerAmountText" maxWidth="1.7976931348623157E308" text="(27)" HBox.hgrow="ALWAYS" />
+                              <CustomTextField fx:id="headerSearchText" maxHeight="-Infinity" minHeight="-Infinity" minWidth="100.0" prefHeight="26.0" prefWidth="250.0" promptText="Szybkie wyszukiwanie">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></CustomTextField>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" left="12.0" right="4.0" top="4.0" />
+                           </padding>
+                        </HBox>
+                     </top>
+                  </BorderPane>
                     </content>
                 </ScrollPane>
             </items>
