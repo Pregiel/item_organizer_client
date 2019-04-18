@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 public abstract class SideBarController extends Controller implements Initializable {
     private MenuView currentView;
     private Node currentNode;
+    private Controller currentController;
     private SplitPane splitPane;
     private Map<MenuView, Button> buttonMap = new HashMap<>();
 
@@ -63,6 +64,7 @@ public abstract class SideBarController extends Controller implements Initializa
                     getPreferences().putDouble(currentView.toString().toLowerCase() + "_divider", (Double) newValue);
                 });
 
+                currentController = loader.getController();
                 return loader.getController();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -76,6 +78,7 @@ public abstract class SideBarController extends Controller implements Initializa
             splitPane.getItems().remove(currentNode);
         }
         currentView = MenuView.NONE;
+        currentController = null;
         untoggleAllButtons();
     }
 
@@ -91,5 +94,13 @@ public abstract class SideBarController extends Controller implements Initializa
 
     protected void setSplitPane(SplitPane splitPane) {
         this.splitPane = splitPane;
+    }
+
+    public MenuView getCurrentView() {
+        return currentView;
+    }
+
+    public Controller getCurrentController() {
+        return currentController;
     }
 }

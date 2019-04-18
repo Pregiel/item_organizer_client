@@ -152,6 +152,19 @@ public class BuyItemController extends SideBarMenuViewController implements Init
     }
 
     public void addItem(ActionEvent event) {
+        addNewItem(null);
+    }
+
+    public void addNewItem(Item item) {
+        if (controllerList.size() > 0) {
+            BuyItemElementController lastController = controllerList.get(controllerList.size() - 1);
+            if (lastController.getStep() == 0) {
+                lastController.setSelectedItem(item);
+                lastController.goToStep(1);
+                return;
+            }
+        }
+
         SpringFXMLLoader loader = new SpringFXMLLoader(getClass().getResource(BUY_ELEMENT_FXML));
 
         try {
@@ -166,9 +179,15 @@ public class BuyItemController extends SideBarMenuViewController implements Init
             controller.setItemTitle();
             controller.setBuyItemController(this);
 
+            if (item != null) {
+                controller.setSelectedItem(item);
+                controller.goToStep(1);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public List<BuyItemElementController> getControllerList() {

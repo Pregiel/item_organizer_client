@@ -147,6 +147,18 @@ public class SellItemController extends SideBarMenuViewController implements Ini
     }
 
     public void addItem(ActionEvent event) {
+        addNewItem(null);
+    }
+
+    public void addNewItem(Item item) {
+        if (controllerList.size() > 0) {
+            SellItemElementController lastController = controllerList.get(controllerList.size() - 1);
+            if (lastController.getStep() == 0) {
+                lastController.setSelectedItem(item);
+                lastController.goToStep(1);
+                return;
+            }
+        }
         SpringFXMLLoader loader = new SpringFXMLLoader(getClass().getResource(SELL_ELEMENT_FXML));
 
         try {
@@ -161,9 +173,16 @@ public class SellItemController extends SideBarMenuViewController implements Ini
             controller.setItemTitle();
             controller.setSellItemController(this);
 
+            if (item != null) {
+                controller.setSelectedItem(item);
+                controller.goToStep(1);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public List<SellItemElementController> getControllerList() {

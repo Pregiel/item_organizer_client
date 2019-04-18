@@ -1,5 +1,6 @@
 package item_organizer_client.controller.item_list;
 
+import item_organizer_client.controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class SearchItemController implements Initializable {
+public class SearchItemController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

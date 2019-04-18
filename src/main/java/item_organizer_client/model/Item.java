@@ -9,6 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "item")
 public class Item {
+    public static final int ID_DIGITS = 4;
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;

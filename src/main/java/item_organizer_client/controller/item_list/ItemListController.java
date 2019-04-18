@@ -2,6 +2,7 @@ package item_organizer_client.controller.item_list;
 
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
+import item_organizer_client.model.Item;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.Utils;
@@ -11,10 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
@@ -55,8 +53,36 @@ public class ItemListController extends SideBarController implements Initializab
 
         itemList.addListener(this::setTableItems);
 
+        itemTableView.setRowFactory(param -> {
+            TableRow<ItemTableElement> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Item item = new Item(row.getItem());
+                    switch (getCurrentView()) {
+                        case NONE:
+                            showInfoAbout(item.getId());
+                            break;
+                        case INFO_ITEM:
+                            ((InfoAboutItemController) getCurrentController()).showInfoAbout(item.getId());
+                            break;
+                        case SEARCH_ITEM:
+                            break;
+                        case ADD_ITEM:
+                            break;
+                        case BUY_ITEM:
+                            ((BuyItemController) getCurrentController()).addNewItem(item);
+                            break;
+                        case SELL_ITEM:
+                            ((SellItemController) getCurrentController()).addNewItem(item);
+                            break;
+                    }
+                }
+            });
+            return row;
+        });
+
         idColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(Utils.fillWithZeros(param.getValue().getId(), 4)));
+                new SimpleObjectProperty<>(Utils.fillWithZeros(param.getValue().getId(), Item.ID_DIGITS)));
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_ITEM, searchButton);

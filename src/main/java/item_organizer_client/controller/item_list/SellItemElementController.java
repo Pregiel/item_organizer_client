@@ -94,16 +94,6 @@ public class SellItemElementController extends SideBarMenuViewController impleme
             if (selectedItem == null)
                 throw new NullPointerException();
 
-            Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
-            if (lastedSellPrice != null) {
-                sellPriceText.setText(lastedSellPrice.getValue().toString());
-            }
-
-            if (checkIfItemIsAlreadyAdded(selectedItem)) {
-                if (!MyAlerts.showConfirmationDialog("Powtórzenie produktu", "Wybrany produkt znajduję się już na liście. Chcesz kontynuować?"))
-                    return;
-            }
-
             goToStep(1);
 
         } catch (IndexOutOfBoundsException | NullPointerException ex) {
@@ -118,9 +108,11 @@ public class SellItemElementController extends SideBarMenuViewController impleme
 
     private boolean checkIfItemIsAlreadyAdded(Item item) {
         for (SellItemElementController controller : sellItemController.getControllerList()) {
-            if (item.getId() == controller.getSelectedId()) {
-                if (item.getName().equals(controller.getSelectedName())) {
-                    return true;
+            if (getElementId() != controller.getElementId()) {
+                if (item.getId() == controller.getSelectedId()) {
+                    if (item.getName().equals(controller.getSelectedName())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -181,7 +173,7 @@ public class SellItemElementController extends SideBarMenuViewController impleme
     /**
      * @param step 0 - search item, 1 - insert details, 2 - summary
      */
-    private void goToStep(int step) {
+    public void goToStep(int step) {
         this.step = step;
         clearAlerts();
         sellItemPane.getChildren().removeAll(searchInputPane, searchPane, detailsInputPane, detailsPane);
@@ -197,7 +189,19 @@ public class SellItemElementController extends SideBarMenuViewController impleme
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
 
                 if (sellPriceType.getSelectionModel().getSelectedIndex() != 0) {
-                    ((Pane) sellPriceText.getParent().getParent()).getChildren().add(sellPricePerItemPane);
+                    sellPriceType.getSelectionModel().select(0);
+                }
+
+                Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
+                if (lastedSellPrice != null) {
+                    sellPriceText.setText(lastedSellPrice.getValue().toString());
+                }
+
+                if (checkIfItemIsAlreadyAdded(selectedItem)) {
+                    if (!MyAlerts.showConfirmationDialog("Powtórzenie produktu", "Wybrany produkt znajduję się już na liście. Chcesz kontynuować?")) {
+                        removeItem(null);
+                        return;
+                    }
                 }
                 break;
 
@@ -255,7 +259,15 @@ public class SellItemElementController extends SideBarMenuViewController impleme
         return selectedItem;
     }
 
+    public void setSelectedItem(Item selectedItem) {
+        this.selectedItem = selectedItem;
+    }
+
     public TitledPane getItemPane() {
         return itemPane;
+    }
+
+    public int getElementId() {
+        return elementId;
     }
 }
