@@ -55,15 +55,15 @@ public class TextInputControlListener extends ControlListener {
         return minCharsAmountListener(textField, min, alertLabel, (Pane) textField.getParent());
     }
 
-    public static ChangeListener<Boolean> minCharsAmountListener(TextField textField, int min, Label alertLabel, Pane parent) {
+    public static ChangeListener<Boolean> minCharsAmountListener(TextField textField, int min, Label alertLabel, Parent parent) {
         return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
             if (!newValue) {
                 textField.setText(textField.getText().trim());
                 if (textField.getText().length() < min && textField.getText().length() > 0) {
-                    parent.getChildren().add(alertLabel);
+                    ((Pane) parent).getChildren().add(alertLabel);
                 }
             } else {
-                parent.getChildren().remove(alertLabel);
+                ((Pane) parent).getChildren().remove(alertLabel);
             }
         });
     }
@@ -72,11 +72,11 @@ public class TextInputControlListener extends ControlListener {
         return isNullListener(textField, alertLabel, (Pane) textField.getParent());
     }
 
-    public static ChangeListener<Boolean> isNullListener(TextField textField, Label alertLabel, Pane parent) {
+    public static ChangeListener<Boolean> isNullListener(TextField textField, Label alertLabel, Parent parent) {
         return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
             if (!newValue) {
                 if (textField.getText().length() == 0) {
-                    parent.getChildren().add(alertLabel);
+                    ((Pane) parent).getChildren().add(alertLabel);
                 }
             }
         });

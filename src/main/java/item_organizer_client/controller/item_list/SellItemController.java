@@ -177,12 +177,9 @@ public class SellItemController extends SideBarMenuViewController implements Ini
                 controller.setSelectedItem(item);
                 controller.goToStep(1);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public List<SellItemElementController> getControllerList() {

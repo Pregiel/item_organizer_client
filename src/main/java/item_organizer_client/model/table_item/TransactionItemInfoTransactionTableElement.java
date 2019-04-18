@@ -9,7 +9,7 @@ import item_organizer_client.utils.Utils;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class TransactionItemInfoTransactionTableElement extends TransactionItem implements Comparable<TransactionItemInfoTransactionTableElement> {
+public class TransactionItemInfoTransactionTableElement extends TransactionItem {
     private String id, name, pricePerItem, totalPrice, category;
 
     public TransactionItemInfoTransactionTableElement(TransactionItem transactionItem) {
@@ -43,10 +43,20 @@ public class TransactionItemInfoTransactionTableElement extends TransactionItem 
     }
 
     @Override
-    public int compareTo(TransactionItemInfoTransactionTableElement o) {
-        if (getId() == null || o.getId() == null) {
+    public int compareTo(TransactionItem o) {
+        if (getItem().getId() == null || o.getItem().getId() == null) {
             return 0;
+        } else if (getItem().getId().compareTo(o.getItem().getId()) == 0) {
+            if (getAmount() == null || o.getAmount() == null) {
+                return 0;
+            } else if (getAmount().compareTo(o.getAmount()) == 0) {
+                if (getPrice() == null || o.getPrice() == null) {
+                    return 0;
+                }
+                return getPrice().compareTo(o.getPrice());
+            }
+            return getAmount().compareTo(o.getAmount());
         }
-        return getId().compareTo(o.getId());
+        return getItem().getId().compareTo(o.getItem().getId());
     }
 }

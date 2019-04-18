@@ -1,6 +1,7 @@
 package item_organizer_client.model;
 
 
+import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.Utils;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements Comparable<Item> {
     public static final int ID_DIGITS = 4;
 
     @Id
@@ -100,5 +101,13 @@ public class Item {
 
     public String toTitle() {
         return Utils.fillWithZeros(id, 4) + ". " + name;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        if (getId() == null || o.getId() == null) {
+            return 0;
+        }
+        return getId().compareTo(o.getId());
     }
 }

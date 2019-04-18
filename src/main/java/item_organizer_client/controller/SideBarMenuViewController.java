@@ -34,14 +34,14 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.fillWithZerosListener(idText, digits);
         TextFieldListener.isNullListener(idText, nullAlert);
         TextFieldListener.autoTrimListener(idText);
-        TextFieldListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+        TextFieldListener.removeAlertsListener(idText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
     }
 
     protected void setIdComboBoxListeners(ComboBox<String> searchText,TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {
         ComboBoxListener.selectAllOnFocusListener(searchText);
         ComboBoxListener.onlyNumericListener(searchText);
         ComboBoxListener.autoTrimListener(searchText);
-        ComboBoxListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{idNotExistAlert}, alerts));
+        ComboBoxListener.removeAlertsListener(searchText, parent, ArrayUtils.addAll(new Label[]{idNotExistAlert}, alerts));
 
         searchText.getItems().addAll(transactionService.getAllIDs());
         TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
@@ -53,7 +53,7 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.minCharsAmountListener(nameText, min, minAlert);
         TextFieldListener.isNullListener(nameText, nullAlert);
         TextFieldListener.autoTrimListener(nameText);
-        TextFieldListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
+        TextFieldListener.removeAlertsListener(nameText,parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
     }
 
     protected void setCategoryComboBoxListeners(ComboBox<String> categoryText, int min, int max,
@@ -65,10 +65,10 @@ public abstract class SideBarMenuViewController extends Controller {
 
         ComboBoxListener.selectAllOnFocusListener(categoryText);
         ComboBoxListener.maxCharsAmountListener(categoryText, max);
-        ComboBoxListener.minCharsAmountListener(categoryText, min, minAlert);
-        ComboBoxListener.isNullListener(categoryText, nullAlert);
+        ComboBoxListener.minCharsAmountListener(categoryText, min, minAlert, parent);
+        ComboBoxListener.isNullListener(categoryText, nullAlert, parent);
         ComboBoxListener.autoTrimListener(categoryText);
-        ComboBoxListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
+        ComboBoxListener.removeAlertsListener(categoryText, parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
     }
 
     protected void setAmountSpinnerListeners(Spinner<Integer> amountText, int defaultValue, Parent parent, Label nullAlert, Label... alerts) {
@@ -79,7 +79,7 @@ public abstract class SideBarMenuViewController extends Controller {
         SpinnerListener.selectAllOnFocusListener(amountText);
         SpinnerListener.onlyNumericListener(amountText);
         SpinnerListener.autoFillListener(amountText, defaultValue);
-        SpinnerListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+        SpinnerListener.removeAlertsListener(amountText,parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
     }
 
     protected void setPriceTextFieldListeners(TextField priceText, String defaultPrice, Parent parent, Label nullAlert, Label... alerts) {
@@ -88,7 +88,7 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.autoFillPriceListener(priceText, defaultPrice);
         TextFieldListener.isNullListener(priceText, nullAlert, (Pane) parent);
         TextFieldListener.autoTrimListener(priceText);
-        TextFieldListener.removeAlertsListener(parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+        TextFieldListener.removeAlertsListener(priceText,parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
     }
 
     protected void setDateDatePickerListeners(DateTimePicker dateText) {
@@ -147,7 +147,7 @@ public abstract class SideBarMenuViewController extends Controller {
         fillWithZerosListener = ComboBoxListener.onlyReturn().fillWithZerosListener(searchText, idDigits);
 
         ComboBoxListener.autoTrimListener(searchText);
-        ComboBoxListener.removeAlertsListener(searchText.getParent(), idNotExistAlert, nameNotExistAlert);
+        ComboBoxListener.removeAlertsListener(searchText, searchText.getParent(), idNotExistAlert, nameNotExistAlert);
     }
 
     protected void refreshSearchTextListeners() {

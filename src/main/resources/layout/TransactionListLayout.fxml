@@ -38,7 +38,7 @@
                                   <PropertyValueFactory property="date" />
                               </cellValueFactory>
                           </TableColumn>
-                          <TableColumn prefWidth="75.0" text="Kwota">
+                          <TableColumn fx:id="totalPriceColumn" prefWidth="75.0" text="Kwota">
                               <cellValueFactory>
                                   <PropertyValueFactory property="totalPrice" />
                               </cellValueFactory>

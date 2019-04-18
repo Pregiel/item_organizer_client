@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "transaction_item")
 @IdClass(TransactionItemPK.class)
-public class TransactionItem implements Serializable {
+public class TransactionItem implements Serializable, Comparable<TransactionItem> {
     @Id
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
@@ -72,5 +72,18 @@ public class TransactionItem implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public int compareTo(TransactionItem o) {
+        if (getTransaction().getDate() == null || o.getTransaction().getDate() == null) {
+            return 0;
+        } else if (getTransaction().getDate().compareTo(o.getTransaction().getDate()) == 0) {
+            if (getTransaction().getId() == null || o.getTransaction().getId() == null) {
+                return 0;
+            }
+            return getTransaction().getId().compareTo(o.getTransaction().getId());
+        }
+        return getTransaction().getDate().compareTo(o.getTransaction().getDate());
     }
 }

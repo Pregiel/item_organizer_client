@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "price")
-public class Price {
+public class Price implements Comparable<Price> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_price")
     @SequenceGenerator(name = "id_price", sequenceName = "ID_PRI")
@@ -65,7 +65,7 @@ public class Price {
     }
 
     public BigDecimal getValue() {
-        return value;
+        return value.setScale(2, RoundingMode.CEILING);
     }
 
     public void setValue(BigDecimal value) {
@@ -106,7 +106,7 @@ public class Price {
 
     @Override
     public String toString() {
-        return priceFormat(value.setScale(2, RoundingMode.CEILING).toString());
+        return value.setScale(2, RoundingMode.CEILING).toString();
     }
 
     public static String priceFormat(String price) {
@@ -115,5 +115,22 @@ public class Price {
 
     public static String priceFormat(BigDecimal price) {
         return price.setScale(2, RoundingMode.CEILING) + " " + ResourceBundle.getBundle("strings").getString("price.currency");
+    }
+
+    public String priceFormat() {
+        return Price.priceFormat(getValue());
+    }
+
+    @Override
+    public int compareTo(Price o) {
+        if (getValue() == null || o.getValue() == null) {
+            return 0;
+        } else if (getValue().compareTo(o.getValue()) == 0) {
+            if (getId() == null || o.getId() == 0) {
+                return 0;
+            }
+            return getId().compareTo(o.getId());
+        }
+        return getValue().compareTo(o.getValue());
     }
 }

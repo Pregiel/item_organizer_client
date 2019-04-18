@@ -1,6 +1,7 @@
 package item_organizer_client.listeners;
 
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -20,12 +21,12 @@ public class ComboBoxListener extends TextInputControlListener {
         return maxCharsAmountListener(comboBox.getEditor(), max);
     }
 
-    public static ChangeListener<Boolean> minCharsAmountListener(ComboBox<String> comboBox, int min, Label alertLabel) {
-        return minCharsAmountListener(comboBox.getEditor(), min, alertLabel, (Pane) comboBox.getParent().getParent());
+    public static ChangeListener<Boolean> minCharsAmountListener(ComboBox<String> comboBox, int min, Label alertLabel, Parent parent) {
+        return minCharsAmountListener(comboBox.getEditor(), min, alertLabel, parent);
     }
 
-    public static ChangeListener<Boolean> isNullListener(ComboBox<String> comboBox, Label alertLabel) {
-        return isNullListener(comboBox.getEditor(), alertLabel, (Pane) comboBox.getParent().getParent());
+    public static ChangeListener<Boolean> isNullListener(ComboBox<String> comboBox, Label alertLabel, Parent parent) {
+        return isNullListener(comboBox.getEditor(), alertLabel, parent);
     }
 
     public static ChangeListener<Boolean> autoTrimListener(ComboBox<String> comboBox) {

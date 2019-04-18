@@ -10,21 +10,19 @@ import javafx.scene.layout.HBox;
 
 import java.math.BigDecimal;
 
-public class TransactionTableElement extends Transaction implements Comparable<TransactionTableElement> {
+public class TransactionTableElement extends Transaction {
     private HBox actionButtons;
 
-    private String totalPrice;
+    private BigDecimal totalPrice;
 
     public TransactionTableElement(Transaction transaction) {
         super(transaction);
 
-        BigDecimal price = BigDecimal.ZERO;
+        totalPrice = BigDecimal.ZERO;
 
         for (TransactionItem transactionItem : transaction.getTransactionItems()) {
-            price = price.add(transactionItem.getPrice().getValue().multiply(BigDecimal.valueOf(transactionItem.getAmount())));
+            totalPrice = totalPrice.add(transactionItem.getPrice().getValue().multiply(BigDecimal.valueOf(transactionItem.getAmount())));
         }
-
-        totalPrice = Price.priceFormat(price);
 
         Button moreInfoButton = new Button("I");
         moreInfoButton.setOnAction((event) -> {
@@ -39,20 +37,8 @@ public class TransactionTableElement extends Transaction implements Comparable<T
         return actionButtons;
     }
 
-    public String getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    @Override
-    public int compareTo(TransactionTableElement o) {
-        if (getDate() == null || o.getDate() == null) {
-            return 0;
-        } else if (getDate().compareTo(o.getDate()) == 0) {
-            if (getId() == null || o.getId() == null) {
-                return 0;
-            }
-            return getId().compareTo(o.getId());
-        }
-        return getDate().compareTo(o.getDate());
-    }
 }

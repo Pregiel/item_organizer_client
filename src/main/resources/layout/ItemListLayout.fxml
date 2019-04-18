@@ -45,12 +45,12 @@
                                 </TableColumn>
                                 <TableColumn prefWidth="75.0" text="Ostatnia cena">
                                     <columns>
-                                        <TableColumn minWidth="40.0" prefWidth="75.0" text="Kupna">
+                                        <TableColumn fx:id="buyPriceColumn" minWidth="40.0" prefWidth="75.0" text="Kupna">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="buyPrice" />
                                             </cellValueFactory>
                                         </TableColumn>
-                                        <TableColumn minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
+                                        <TableColumn fx:id="sellPriceColumn" minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
                                             <cellValueFactory>
                                                 <PropertyValueFactory property="sellPrice" />
                                             </cellValueFactory>

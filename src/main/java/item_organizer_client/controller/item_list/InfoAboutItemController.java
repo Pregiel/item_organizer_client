@@ -10,6 +10,7 @@ import item_organizer_client.model.table_item.TransactionItemInfoItemTableElemen
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
+import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -25,7 +27,9 @@ import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
@@ -51,6 +55,12 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public TableView<PriceTableElement> priceHistoryTable;
     public TableView<TransactionItemInfoItemTableElement> transactionHistoryTable;
 
+    public TableColumn<TransactionItemInfoItemTableElement, Timestamp> dateTransactionHistoryTable;
+    public TableColumn<TransactionItemInfoItemTableElement, Price> pricePerItemTransactionHistoryTable;
+    public TableColumn<TransactionItemInfoItemTableElement, BigDecimal> totalPriceTransactionHistoryTable;
+    public TableColumn<PriceTableElement, BigDecimal> pricePriceHistoryTable;
+    public TableColumn<PriceTableElement, Timestamp> datePriceHistoryTable;
+
     private Item selectedItem;
     private FilteredList<PriceTableElement> priceHistoryList;
     private FilteredList<TransactionItemInfoItemTableElement> transactionHistoryList;
@@ -71,6 +81,13 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     protected void initFields() {
         setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
                 itemService, idNotExistAlert, nameNotExistAlert);
+
+        pricePriceHistoryTable.setCellFactory(TableColumnFormatter.priceFormat());
+        datePriceHistoryTable.setCellFactory(TableColumnFormatter.dateFormat());
+
+        pricePerItemTransactionHistoryTable.setCellFactory(TableColumnFormatter.priceFormat());
+        totalPriceTransactionHistoryTable.setCellFactory(TableColumnFormatter.priceFormat());
+        dateTransactionHistoryTable.setCellFactory(TableColumnFormatter.dateFormat());
 
         priceHistoryGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {

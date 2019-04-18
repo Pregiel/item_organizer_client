@@ -2,9 +2,15 @@ package item_organizer_client.controller.transaction_list;
 
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
+import item_organizer_client.controller.item_list.BuyItemController;
 import item_organizer_client.controller.item_list.InfoAboutItemController;
+import item_organizer_client.controller.item_list.SellItemController;
+import item_organizer_client.model.Item;
+import item_organizer_client.model.Transaction;
 import item_organizer_client.model.list.TransactionList;
+import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.model.table_item.TransactionTableElement;
+import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -12,13 +18,12 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
@@ -26,7 +31,8 @@ import java.util.stream.Collectors;
 @Component
 public class TransactionListController extends SideBarController implements Initializable {
     public TableView<TransactionTableElement> transactionTableView;
-    public TableColumn<TransactionTableElement, String> dateColumn;
+    public TableColumn<TransactionTableElement, Timestamp> dateColumn;
+    public TableColumn<TransactionTableElement, BigDecimal> totalPriceColumn;
     public Button homeButton, searchButton, infoButton;
     public SplitPane splitPane;
 
@@ -54,8 +60,26 @@ public class TransactionListController extends SideBarController implements Init
 
         transactionList.addListener(this::setTableItems);
 
-        dateColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(param.getValue().getDate().toLocalDateTime().format(Utils.getDateFormatter())));
+        transactionTableView.setRowFactory(param -> {
+            TableRow<TransactionTableElement> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    Transaction item = new Transaction(row.getItem());
+                    switch (getCurrentView()) {
+                        case NONE:
+                            showInfoAbout(item.getId());
+                            break;
+                        case INFO_TRANSACTION:
+                            ((InfoAboutTransactionController) getCurrentController()).showInfoAbout(item.getId());
+                            break;
+                    }
+                }
+            });
+            return row;
+        });
+
+        totalPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
+        dateColumn.setCellFactory(TableColumnFormatter.dateFormat());
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_TRANSACTION, searchButton);

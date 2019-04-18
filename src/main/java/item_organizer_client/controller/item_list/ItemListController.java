@@ -3,8 +3,10 @@ package item_organizer_client.controller.item_list;
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.Item;
+import item_organizer_client.model.Price;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.table_item.ItemTableElement;
+import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -27,7 +29,8 @@ public class ItemListController extends SideBarController implements Initializab
     public AnchorPane itemMainPane;
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
     public SplitPane splitPane;
-    public TableColumn<ItemTableElement, String> idColumn;
+    public TableColumn<ItemTableElement, Integer> idColumn;
+    public TableColumn<ItemTableElement, Price> buyPriceColumn, sellPriceColumn;
 
     private ItemList itemList;
 
@@ -81,8 +84,10 @@ public class ItemListController extends SideBarController implements Initializab
             return row;
         });
 
-        idColumn.setCellValueFactory(param ->
-                new SimpleObjectProperty<>(Utils.fillWithZeros(param.getValue().getId(), Item.ID_DIGITS)));
+        idColumn.setCellFactory(TableColumnFormatter.idFormat());
+        buyPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
+        sellPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
+
 
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_ITEM, searchButton);

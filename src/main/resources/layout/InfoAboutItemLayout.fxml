@@ -191,9 +191,9 @@
                                         </HBox>
                                         <TableView fx:id="priceHistoryTable" prefHeight="200.0" prefWidth="200.0">
                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Data">
+                                                <TableColumn fx:id="datePriceHistoryTable" prefWidth="75.0" text="Data">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="formattedDate" />
+                                                        <PropertyValueFactory property="date" />
                                                     </cellValueFactory>
                                                 </TableColumn>
                                                 <TableColumn prefWidth="75.0" text="Typ">
@@ -201,9 +201,9 @@
                                                         <PropertyValueFactory property="type" />
                                                     </cellValueFactory>
                                                 </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Cena">
+                                                <TableColumn fx:id="pricePriceHistoryTable" prefWidth="75.0" text="Cena">
                                                     <cellValueFactory>
-                                                        <PropertyValueFactory property="price" />
+                                                        <PropertyValueFactory property="value" />
                                                     </cellValueFactory>
                                                 </TableColumn>
                                             </columns>
@@ -236,7 +236,7 @@
                                                                 <PropertyValueFactory property="id" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn prefWidth="75.0" text="Data">
+                                                        <TableColumn fx:id="dateTransactionHistoryTable" prefWidth="75.0" text="Data">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property="date" />
                                                             </cellValueFactory>
@@ -253,12 +253,12 @@
                                                         </TableColumn>
                                                         <TableColumn prefWidth="75.0" text="Cena">
                                                             <columns>
-                                                                <TableColumn prefWidth="75.0" text="Za sztukę">
+                                                                <TableColumn fx:id="pricePerItemTransactionHistoryTable" prefWidth="75.0" text="Za sztukę">
                                                                     <cellValueFactory>
-                                                                        <PropertyValueFactory property="price" />
+                                                                        <PropertyValueFactory property="pricePerItem" />
                                                                     </cellValueFactory>
                                                                 </TableColumn>
-                                                                <TableColumn prefWidth="75.0" text="Calkowita">
+                                                                <TableColumn fx:id="totalPriceTransactionHistoryTable" prefWidth="75.0" text="Calkowita">
                                                                     <cellValueFactory>
                                                                         <PropertyValueFactory property="totalPrice" />
                                                                     </cellValueFactory>

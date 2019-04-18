@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "transaction_table")
-public class Transaction {
+public class Transaction implements Comparable<Transaction>{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_transaction")
     @SequenceGenerator(name = "id_transaction", sequenceName = "ID_TRA", allocationSize = 1)
@@ -73,5 +73,18 @@ public class Transaction {
 
     public void setTransactionItems(Set<TransactionItem> transactionItems) {
         this.transactionItems = transactionItems;
+    }
+
+    @Override
+    public int compareTo(Transaction o) {
+        if (getDate() == null || o.getDate() == null) {
+            return 0;
+        } else if (getDate().compareTo(o.getDate()) == 0) {
+            if (getId() == null || o.getId() == null) {
+                return 0;
+            }
+            return getId().compareTo(o.getId());
+        }
+        return getDate().compareTo(o.getDate());
     }
 }

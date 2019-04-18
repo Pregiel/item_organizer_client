@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-public class ItemTableElement extends Item implements Comparable<ItemTableElement>{
+public class ItemTableElement extends Item {
     private HBox actionButtons;
     private Price sellPrice, buyPrice;
 
@@ -97,13 +97,5 @@ public class ItemTableElement extends Item implements Comparable<ItemTableElemen
 
     public void setBuyPrice(Price buyPrice) {
         this.buyPrice = buyPrice;
-    }
-
-    @Override
-    public int compareTo(ItemTableElement o) {
-        if (getId() == null || o.getId() == null) {
-            return 0;
-        }
-        return getId().compareTo(o.getId());
     }
 }
