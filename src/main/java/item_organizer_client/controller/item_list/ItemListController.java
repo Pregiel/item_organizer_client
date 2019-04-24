@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.springframework.stereotype.Component;
 
@@ -58,28 +59,50 @@ public class ItemListController extends SideBarController implements Initializab
 
         setTableItems();
 
-        itemTableView.setRowFactory(param -> {
-            TableRow<ItemTableElement> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    Item item = new Item(row.getItem());
-                    switch (getCurrentView()) {
-                        case NONE:
-                        case SEARCH_ITEM:
-                        case ADD_ITEM:
-                        case INFO_ITEM:
-                            showInfoAbout(item.getId());
-                            break;
-                        case BUY_ITEM:
-                            ((BuyItemController) getCurrentController()).addNewItem(item);
-                            break;
-                        case SELL_ITEM:
-                            ((SellItemController) getCurrentController()).addNewItem(item);
-                            break;
+        itemTableView.setRowFactory(new Callback<TableView<ItemTableElement>, TableRow<ItemTableElement>>() {
+            @Override
+            public TableRow<ItemTableElement> call(TableView<ItemTableElement> param) {
+                TableRow<ItemTableElement> row = new TableRow<ItemTableElement>() {
+                    @Override
+                    protected void updateItem(ItemTableElement item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item != null) {
+                            getStyleClass().removeAll("alert-danger", "alert-warning");
+                            if (item.getAmount() <= 0) {
+                                getStyleClass().add("alert-danger");
+                            } else {
+                                if (item.getAmount() < item.getSafeAmount()) {
+                                    getStyleClass().add("alert-warning");
+                                }
+                            }
+                        }
                     }
-                }
-            });
-            return row;
+                };
+
+                row.setOnMouseClicked(event -> {
+                    ItemTableElement item = row.getItem();
+                    if (row.isEmpty()) {
+                        itemTableView.getSelectionModel().clearSelection();
+                    } else if (event.getClickCount() == 2) {
+                        switch (ItemListController.this.getCurrentView()) {
+                            case NONE:
+                            case SEARCH_ITEM:
+                            case ADD_ITEM:
+                            case INFO_ITEM:
+                                ItemListController.this.showInfoAbout(item.getId());
+                                break;
+                            case BUY_ITEM:
+                                ((BuyItemController) ItemListController.this.getCurrentController()).addNewItem(new Item(item));
+                                break;
+                            case SELL_ITEM:
+                                ((SellItemController) ItemListController.this.getCurrentController()).addNewItem(new Item(item));
+                                break;
+                        }
+                    }
+                });
+                return row;
+            }
         });
 
         idColumn.setCellFactory(TableColumnFormatter.idFormat());

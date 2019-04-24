@@ -12,6 +12,12 @@
 
 	-icon-hover-background-color: rgba(220,220,220,5);
 
+	-alert-warning-color: #ffee0c;
+	-alert-warning-odd-color: #fff359;
+
+	-alert-danger-color: #e56300;
+	-alert-danger-odd-color: #ea7419;
+
     -menu-separator: #dbdbdb;
 }
 
@@ -32,4 +38,25 @@
 
 .clear-button {
     -fx-cursor: hand;
+}
+
+.alert-danger {
+    -fx-background-color: -alert-danger-color;
+}
+
+.alert-danger:odd {
+    -fx-background-color: -alert-danger-odd-color;
+}
+
+.alert-warning {
+    -fx-background-color: -alert-warning-color;
+}
+
+.alert-warning:odd {
+    -fx-background-color: -alert-warning-odd-color;
+}
+
+.alert-danger:selected,
+ .alert-warning:selected{
+    -fx-background-color: -fx-table-cell-border-color, -fx-background;
 }
