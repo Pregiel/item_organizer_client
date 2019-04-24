@@ -28,6 +28,14 @@ public class SpinnerListener extends TextInputControlListener {
         return selectAllOnFocusListener(spinner.getEditor());
     }
 
+    public static <T> ChangeListener<T> preventNullValueListener(Spinner<T> spinner) {
+        return handleListener(spinner.valueProperty(), (observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                spinner.getValueFactory().setValue(oldValue);
+            }
+        });
+    }
+
     public static SpinnerListener onlyReturn() {
         dontAdd();
         return null;

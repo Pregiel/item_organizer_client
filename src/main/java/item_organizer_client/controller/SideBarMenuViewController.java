@@ -80,22 +80,27 @@ public abstract class SideBarMenuViewController extends Controller {
         ComboBoxListener.autoTrimListener(categoryText);
     }
 
-    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, Parent parent, Label nullAlert, Label... alerts) {
-        setAmountSpinnerListeners(amountText, true);
+    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, Integer initialValue, Parent parent, Label nullAlert, Label... alerts) {
+        setAmountSpinnerListeners(amountText, true, initialValue);
         SpinnerListener.removeAlertsListener(amountText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
     }
 
     protected void setAmountSpinnerListeners(Spinner<Integer> amountText, boolean autoFill) {
+        setAmountSpinnerListeners(amountText, autoFill, 0);
+    }
+
+    protected void setAmountSpinnerListeners(Spinner<Integer> amountText, boolean autoFill, Integer initialValue) {
         SpinnerValueFactory<Integer> valueFactory;
         if (autoFill) {
-            valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1);
-            SpinnerListener.autoFillListener(amountText, 1);
+            valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, initialValue);
+            SpinnerListener.autoFillListener(amountText, initialValue);
         } else {
             valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         }
         amountText.setValueFactory(valueFactory);
         SpinnerListener.selectAllOnFocusListener(amountText);
         SpinnerListener.onlyNumericListener(amountText);
+        SpinnerListener.preventNullValueListener(amountText);
     }
 
     protected void setPriceTextFieldListeners(TextField priceText, Parent parent, Label nullAlert, Label... alerts) {

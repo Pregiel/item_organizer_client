@@ -17,7 +17,6 @@ public class Transaction implements Comparable<Transaction>{
     @Column(name = "id")
     private Integer id;
 
-    @CreationTimestamp
     @Column(name = "date", nullable = false)
     private Timestamp date;
 

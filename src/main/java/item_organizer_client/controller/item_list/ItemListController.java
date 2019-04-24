@@ -41,8 +41,6 @@ public class ItemListController extends SideBarController implements Initializab
     public Label headerAmountText;
     public CustomTextField headerSearchText;
 
-    private Button searchClearButton;
-
     private static ItemListController instance;
 
     public static ItemListController getInstance() {
@@ -67,14 +65,10 @@ public class ItemListController extends SideBarController implements Initializab
                     Item item = new Item(row.getItem());
                     switch (getCurrentView()) {
                         case NONE:
-                            showInfoAbout(item.getId());
-                            break;
-                        case INFO_ITEM:
-                            ((InfoAboutItemController) getCurrentController()).showInfoAbout(item.getId());
-                            break;
                         case SEARCH_ITEM:
-                            break;
                         case ADD_ITEM:
+                        case INFO_ITEM:
+                            showInfoAbout(item.getId());
                             break;
                         case BUY_ITEM:
                             ((BuyItemController) getCurrentController()).addNewItem(item);
@@ -92,7 +86,7 @@ public class ItemListController extends SideBarController implements Initializab
         buyPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
         sellPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
 
-        searchClearButton = new Button("", new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
+        Button searchClearButton = new Button("", new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
         searchClearButton.getStyleClass().add("clear-button");
         searchClearButton.setOnAction(event -> headerSearchText.setText(""));
 
@@ -104,13 +98,8 @@ public class ItemListController extends SideBarController implements Initializab
 
         ItemList.getInstance().setUpSearchBoxFilters(headerSearchText);
 
-        headerSearchText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 0) {
-                headerSearchText.getRight().setVisible(true);
-            } else {
-                headerSearchText.getRight().setVisible(false);
-            }
-        });
+        headerSearchText.textProperty().addListener((observable, oldValue, newValue) ->
+                headerSearchText.getRight().setVisible(newValue.length() > 0));
 
         headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
 
@@ -174,10 +163,11 @@ public class ItemListController extends SideBarController implements Initializab
     }
 
     public void showInfoAbout(int id) {
-        hideView();
-        InfoAboutItemController infoController = showView(MenuView.INFO_ITEM);
-
-        infoController.showInfoAbout(id);
+        if (!getCurrentView().equals(MenuView.INFO_ITEM)) {
+            hideView();
+            showView(MenuView.INFO_ITEM);
+        }
+        ((InfoAboutItemController) getCurrentController()).showInfoAbout(id);
     }
 
     public CustomTextField getHeaderSearchText() {

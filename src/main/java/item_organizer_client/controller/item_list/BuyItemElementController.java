@@ -71,7 +71,7 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
     protected void initFields() {
         setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
                 itemService, idNotExistAlert, nameNotExistAlert);
-        setAmountSpinnerListeners(amountText, amountText.getParent(), amountNullAlert);
+        setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
         setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
                 buyPricePerItemText, amountText);
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent().getParent(), buyNullAlert);

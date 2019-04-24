@@ -13,14 +13,12 @@ import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -49,7 +47,8 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public GridPane searchInputPane;
     public ComboBox<String> searchText;
     public Label selectedItemTitle, idNotExistAlert, nameNotExistAlert, selectedItemId, selectedItemName,
-            selectedItemCategory, selectedItemAmount, selectedItemBuyPrice, selectedItemSellPrice;
+            selectedItemCategory, selectedItemAmount, selectedItemSafeAmount, selectedItemBuyPrice,
+            selectedItemSellPrice;
     public RadioButton idRadioButton, nameRadioButton;
     public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryGroup;
     public ToggleButton sellTransactionHistoryToggle, buyTransactionHistoryToggle, allTransactionHistoryToggle,
@@ -153,6 +152,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
                 selectedItemCategory.setText(selectedItem.getCategory().getName());
                 selectedItemAmount.setText(String.valueOf(selectedItem.getAmount()));
+                selectedItemSafeAmount.setText(String.valueOf(selectedItem.getSafeAmount()));
 
                 Price lastedBuyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
                 if (lastedBuyPrice != null) {

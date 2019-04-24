@@ -47,13 +47,13 @@ public class AddItemController extends SideBarMenuViewController implements Init
     private TransactionItemService transactionItemService;
 
     public TextField idText, nameText, buyPriceText, sellPriceText;
-    public Spinner<Integer> amountText;
+    public Spinner<Integer> amountText, safeAmountText;
     public DateTimePicker dateText;
     public ComboBox<String> categoryText;
     public VBox addItemPane;
     public Label nameMinAlert, categoryMinAlert, idNullAlert, idDuplicateAlert, nameNullAlert, nameDuplicateAlert,
             amountNullAlert, sellPriceSmallerInfo, categoryMaxAlert, nameMaxAlert, buyNullAlert, sellNullAlert,
-            categoryNullAlert, idMaxAlert, buyPricePerItemText;
+            categoryNullAlert, idMaxAlert, buyPricePerItemText, safeAmountNullAlert;
     public ComboBox<String> buyPriceType;
     public HBox buyPricePerItemPane;
 
@@ -73,7 +73,8 @@ public class AddItemController extends SideBarMenuViewController implements Init
                 nameMaxAlert, nameDuplicateAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
                 categoryNullAlert, categoryMinAlert, categoryMaxAlert);
-        setAmountSpinnerListeners(amountText, amountText.getParent(), amountNullAlert);
+        setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
+        setAmountSpinnerListeners(safeAmountText, Item.INITIAL_SAFE_AMOUNT_VALUE, safeAmountText.getParent(), safeAmountNullAlert);
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
         setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
                 buyPricePerItemText, amountText);
@@ -85,7 +86,8 @@ public class AddItemController extends SideBarMenuViewController implements Init
         idText.setText("");
         nameText.setText("");
         categoryText.setValue("");
-        amountText.getEditor().setText("1");
+        amountText.getEditor().setText(String.valueOf(Item.INITIAL_AMOUNT_VALUE));
+        safeAmountText.getEditor().setText(String.valueOf(Item.INITIAL_SAFE_AMOUNT_VALUE));
         dateText.setValue(LocalDate.now());
         buyPriceText.setText("0.00");
         sellPriceText.setText("0.00");
@@ -99,6 +101,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
         ((Pane) categoryText.getParent()).getChildren().removeAll(categoryNullAlert, categoryMinAlert,
                 categoryMaxAlert);
         ((Pane) amountText.getParent()).getChildren().removeAll(amountNullAlert);
+        ((Pane) safeAmountText.getParent()).getChildren().removeAll(safeAmountNullAlert);
         ((Pane) buyPriceText.getParent().getParent()).getChildren().removeAll(buyNullAlert);
         ((Pane) sellPriceText.getParent()).getChildren().removeAll(sellPriceSmallerInfo, sellNullAlert);
     }
@@ -113,6 +116,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
         if (validate()) {
             int amountValue = Integer.parseInt(amountText.getEditor().getText());
+            int safeAmountValue = Integer.parseInt(safeAmountText.getEditor().getText());
             BigDecimal sellPriceValue = new BigDecimal(sellPriceText.getText());
             BigDecimal buyPriceValue = new BigDecimal(buyPriceText.getText());
             Timestamp date = Timestamp.valueOf(dateText.getDateTimeValue());
@@ -122,7 +126,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
             }
 
             Item item = new Item(Integer.valueOf(idText.getText()), nameText.getText(),
-                    categoryService.findOrAdd(new Category(categoryText.getValue())), amountValue);
+                    categoryService.findOrAdd(new Category(categoryText.getValue())), amountValue, safeAmountValue);
             Price sellPrice = new Price(sellPriceValue, PriceType.SELL, item, date);
             Price buyPrice = new Price(buyPriceValue, PriceType.BUY, item, date);
             Transaction transaction = new Transaction(date, TransactionType.BUY);

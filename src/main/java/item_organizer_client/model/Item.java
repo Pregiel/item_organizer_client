@@ -1,7 +1,6 @@
 package item_organizer_client.model;
 
 
-import item_organizer_client.model.table_item.ItemTableElement;
 import item_organizer_client.utils.Utils;
 
 import javax.persistence.*;
@@ -11,6 +10,8 @@ import java.util.Set;
 @Table(name = "item")
 public class Item implements Comparable<Item> {
     public static final int ID_DIGITS = 4;
+    public static final int INITIAL_AMOUNT_VALUE = 1;
+    public static final int INITIAL_SAFE_AMOUNT_VALUE = 5;
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -26,6 +27,9 @@ public class Item implements Comparable<Item> {
     @Column(name = "amount")
     private Integer amount;
 
+    @Column(name = "safe_amount")
+    private Integer safeAmount;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
@@ -35,11 +39,12 @@ public class Item implements Comparable<Item> {
     public Item() {
     }
 
-    public Item(Integer id, String name, Category category, Integer amount) {
+    public Item(Integer id, String name, Category category, Integer amount, Integer safeAmount) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.amount = amount;
+        this.safeAmount = safeAmount;
     }
 
     public Item(Item item) {
@@ -47,6 +52,7 @@ public class Item implements Comparable<Item> {
         this.name = item.name;
         this.category = item.category;
         this.amount = item.amount;
+        this.safeAmount = item.safeAmount;
         this.prices = item.prices;
         this.transactionItems = item.transactionItems;
     }
@@ -81,6 +87,14 @@ public class Item implements Comparable<Item> {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getSafeAmount() {
+        return safeAmount;
+    }
+
+    public void setSafeAmount(Integer safeAmount) {
+        this.safeAmount = safeAmount;
     }
 
     public Set<Price> getPrices() {

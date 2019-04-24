@@ -31,6 +31,7 @@
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <VBox spacing="2.0">
@@ -82,6 +83,13 @@
                   </VBox>
                   <VBox spacing="2.0" GridPane.rowIndex="4">
                      <children>
+                        <Label styleClass="property-label" text="Bezpieczna liczba sztuk" />
+                        <Spinner fx:id="safeAmountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="safeAmountNullAlert" styleClass="alert-label" text="Wprowadź bezpieczną liczbę sztuk" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0" GridPane.rowIndex="5">
+                     <children>
                         <Label styleClass="property-label" text="Data zakupu" />
                         <DateTimePicker fx:id="dateText" format="dd.MM.yyyy HH:mm" maxWidth="1.7976931348623157E308" />
                      </children>
@@ -89,7 +97,7 @@
                         <Insets />
                      </GridPane.margin>
                   </VBox>
-                  <VBox spacing="2.0" GridPane.rowIndex="5">
+                  <VBox spacing="2.0" GridPane.rowIndex="6">
                      <children>
                         <Label styleClass="property-label" text="Cena zakupu" />
                         <HBox maxWidth="1.7976931348623157E308" minWidth="-Infinity">
@@ -114,7 +122,7 @@
                         <Insets />
                      </GridPane.margin>
                   </VBox>
-                  <VBox spacing="2.0" GridPane.rowIndex="6">
+                  <VBox spacing="2.0" GridPane.rowIndex="7">
                      <children>
                         <Label styleClass="property-label" text="Cena sprzedaży (za sztukę)" />
                         <TextField fx:id="sellPriceText" text="0.00" />

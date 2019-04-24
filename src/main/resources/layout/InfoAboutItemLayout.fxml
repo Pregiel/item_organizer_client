@@ -140,6 +140,21 @@
                                                 </Label>
                                             </children>
                                         </HBox>
+                              <HBox layoutX="10.0" layoutY="104.0">
+                                 <children>
+                                    <Label styleClass="property-label" text="Bezpieczna liczba sztuk:">
+                                       <padding>
+                                          <Insets right="4.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="selectedItemSafeAmount" maxHeight="1.7976931348623157E308" text="24 zł">
+                                       <styleClass>
+                                          <String fx:value="property-label" />
+                                          <String fx:value="property-value-label" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                              </HBox>
                                         <HBox>
                                             <children>
                                                 <Label styleClass="property-label" text="Ostatnia cena zakupu:">

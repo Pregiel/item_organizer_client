@@ -70,7 +70,7 @@ public class SellItemElementController extends SideBarMenuViewController impleme
     protected void initFields() {
         setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
                 itemService, idNotExistAlert, nameNotExistAlert);
-        setAmountSpinnerListeners(amountText, amountText.getParent(), amountNullAlert);
+        setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
         setPriceTypeListeners(sellPriceText, sellPriceType, sellPriceText.getParent().getParent(), sellPricePerItemPane,
                 sellPricePerItemText, amountText);
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent().getParent(), sellNullAlert);
