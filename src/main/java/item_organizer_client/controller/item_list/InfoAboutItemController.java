@@ -156,12 +156,12 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
                 Price lastedBuyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
                 if (lastedBuyPrice != null) {
-                    selectedItemBuyPrice.setText(lastedBuyPrice.toString());
+                    selectedItemBuyPrice.setText(lastedBuyPrice.priceFormat());
                 }
 
                 Price lastedSellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
                 if (lastedSellPrice != null) {
-                    selectedItemSellPrice.setText(lastedSellPrice.toString());
+                    selectedItemSellPrice.setText(lastedSellPrice.priceFormat());
                 }
 
                 priceHistoryList

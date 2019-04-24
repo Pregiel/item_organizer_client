@@ -42,6 +42,10 @@ public class MainController implements Initializable {
         System.out.println(itemService.findByName("as"));
     }
 
+    public void showNotification(ActionEvent event) {
+
+    }
+
     private void setupStage(String fxml) {
         try {
             currentNode = new SpringFXMLLoader(getClass().getResource(fxml)).load();

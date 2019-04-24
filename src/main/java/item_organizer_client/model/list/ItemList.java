@@ -97,9 +97,7 @@ public class ItemList {
         }, searchBoxField.textProperty()));
 
         filteredItemList.predicateProperty().unbind();
-        filteredItemList.predicateProperty().bind(Bindings.createObjectBinding(() ->
-                        searchBoxFilter.get(),
-                searchBoxFilter));
+        filteredItemList.predicateProperty().bind(Bindings.createObjectBinding(searchBoxFilter::get, searchBoxFilter));
     }
 
     public void setUpSearchViewFilters(TextField searchBoxField, TextField idText, TextField nameText, ComboBox<String> categoryText,

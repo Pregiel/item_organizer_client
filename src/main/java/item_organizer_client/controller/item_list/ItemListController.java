@@ -66,9 +66,9 @@ public class ItemListController extends SideBarController implements Initializab
                     @Override
                     protected void updateItem(ItemTableElement item, boolean empty) {
                         super.updateItem(item, empty);
-
+                        getStyleClass().removeAll("alert-danger", "alert-warning");
                         if (item != null) {
-                            getStyleClass().removeAll("alert-danger", "alert-warning");
+
                             if (item.getAmount() <= 0) {
                                 getStyleClass().add("alert-danger");
                             } else {

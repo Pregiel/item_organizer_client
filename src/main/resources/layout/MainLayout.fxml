@@ -11,6 +11,7 @@
             <Button mnemonicParsing="false" onAction="#showItemList" text="Produkty" />
             <Button mnemonicParsing="false" onAction="#showTransactionList" text="Transakcje" />
             <Button mnemonicParsing="false" onAction="#showSummary" text="Podsumowanie" />
+            <Button mnemonicParsing="false" onAction="#showNotification" text="Powiadomienia" />
          </children>
       </HBox>
    </top>
