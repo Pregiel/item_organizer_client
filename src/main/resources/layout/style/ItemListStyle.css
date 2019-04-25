@@ -12,11 +12,11 @@
 
 	-icon-hover-background-color: rgba(220,220,220,5);
 
-	-alert-warning-color: #ffee0c;
-	-alert-warning-odd-color: #fff359;
+	-alert-warning-color: #fff359;
+	-alert-warning-odd-color: #ffee0c;
 
-	-alert-danger-color: #e56300;
-	-alert-danger-odd-color: #ea7419;
+	-alert-danger-color: #ea7419;
+	-alert-danger-odd-color: #e56300;
 
     -menu-separator: #dbdbdb;
 }
@@ -38,6 +38,14 @@
 
 .clear-button {
     -fx-cursor: hand;
+}
+
+.table-cell {
+    -fx-alignment: CENTER-LEFT;
+}
+
+.numeric-column {
+    -fx-alignment: CENTER-RIGHT;
 }
 
 .alert-danger {

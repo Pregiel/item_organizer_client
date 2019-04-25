@@ -1,17 +1,15 @@
 package item_organizer_client.model.table_item;
 
 import item_organizer_client.controller.item_list.ItemListController;
-import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
+import item_organizer_client.utils.Icon;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class ItemTableElement extends Item {
     private HBox actionButtons;
@@ -36,7 +34,7 @@ public class ItemTableElement extends Item {
             }
         }
 
-        Button editButton = new Button("E");
+        Button editButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_EDIT, "#ffae00", "#e29a00"));
         editButton.setOnAction((event) -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Hey!");
@@ -45,12 +43,30 @@ public class ItemTableElement extends Item {
             alert.showAndWait();
         });
 
-        Button moreInfoButton = new Button("I");
+        Button moreInfoButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_INFO, "#3f59ea", "#26368e"));
         moreInfoButton.setOnAction((event) -> {
             ItemListController.getInstance().showInfoAbout(getId());
         });
 
-        Button hideButton = new Button("H");
+        Button buyButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_BUY, "#00c3e5", "#00a5c1"));
+        buyButton.setOnAction((event) -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Hey!");
+            alert.setHeaderText(null);
+            alert.setContentText("Item hidden");
+            alert.showAndWait();
+        });
+
+        Button sellButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_SELL, "#00cc03", "#00aa02"));
+        sellButton.setOnAction((event) -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Hey!");
+            alert.setHeaderText(null);
+            alert.setContentText("Item hidden");
+            alert.showAndWait();
+        });
+
+        Button hideButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_HIDE, "#5b5b5b", "#303030"));
         hideButton.setOnAction((event) -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Hey!");
@@ -59,19 +75,7 @@ public class ItemTableElement extends Item {
             alert.showAndWait();
         });
 
-        Button qrButton = new Button("QR");
-        qrButton.setOnAction((event) -> {
-            Image image = new Image(getClass().getResource("/qrcode.jpg").toExternalForm());
-            ImageView imageView = new ImageView(image);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setGraphic(imageView);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.showAndWait();
-        });
-
-        actionButtons = new HBox(editButton, moreInfoButton, hideButton, qrButton);
+        actionButtons = new HBox(editButton, moreInfoButton, buyButton, sellButton, hideButton);
         actionButtons.setSpacing(2);
     }
 

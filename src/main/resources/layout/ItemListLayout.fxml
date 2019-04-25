@@ -44,19 +44,19 @@
                                               <PropertyValueFactory property="category" />
                                           </cellValueFactory>
                                       </TableColumn>
-                                      <TableColumn minWidth="40.0" prefWidth="75.0" text="Sztuk">
+                                      <TableColumn minWidth="40.0" prefWidth="75.0" styleClass="numeric-column" text="Sztuk">
                                           <cellValueFactory>
                                               <PropertyValueFactory property="amount" />
                                           </cellValueFactory>
                                       </TableColumn>
                                       <TableColumn prefWidth="75.0" text="Ostatnia cena">
                                           <columns>
-                                              <TableColumn fx:id="buyPriceColumn" minWidth="40.0" prefWidth="75.0" text="Kupna">
+                                              <TableColumn fx:id="buyPriceColumn" minWidth="40.0" prefWidth="75.0" styleClass="numeric-column" text="Kupna">
                                                   <cellValueFactory>
                                                       <PropertyValueFactory property="buyPrice" />
                                                   </cellValueFactory>
                                               </TableColumn>
-                                              <TableColumn fx:id="sellPriceColumn" minWidth="40.0" prefWidth="75.0" text="Sprzedaży">
+                                              <TableColumn fx:id="sellPriceColumn" minWidth="40.0" prefWidth="75.0" styleClass="numeric-column" text="Sprzedaży">
                                                   <cellValueFactory>
                                                       <PropertyValueFactory property="sellPrice" />
                                                   </cellValueFactory>
