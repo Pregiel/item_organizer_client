@@ -4,6 +4,7 @@ import item_organizer_client.controller.transaction_list.TransactionListControll
 import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.TransactionItem;
+import item_organizer_client.utils.Icon;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -24,7 +25,7 @@ public class TransactionTableElement extends Transaction {
             totalPrice = totalPrice.add(transactionItem.getPrice().getValue().multiply(BigDecimal.valueOf(transactionItem.getAmount())));
         }
 
-        Button moreInfoButton = new Button("I");
+        Button moreInfoButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_INFO, "#3f59ea", "#26368e"));
         moreInfoButton.setOnAction((event) -> {
             TransactionListController.getInstance().showInfoAbout(getId());
         });
@@ -40,5 +41,4 @@ public class TransactionTableElement extends Transaction {
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
-
 }

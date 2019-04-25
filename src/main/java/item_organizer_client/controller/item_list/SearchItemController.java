@@ -115,4 +115,11 @@ public class SearchItemController extends SideBarMenuViewController implements I
         sellPriceToText.setText(savedValues.get("sellPriceToText"));
     }
 
+    public static void clearSavedValues() {
+        if (savedValues != null) {
+            savedValues.clear();
+            savedValues = null;
+        }
+    }
+
 }

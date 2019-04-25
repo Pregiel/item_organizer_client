@@ -1,5 +1,6 @@
 package item_organizer_client.controller;
 
+import item_organizer_client.controller.item_list.SearchItemController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.ItemOrganizerDatabase;
 import item_organizer_client.utils.SpringFXMLLoader;
@@ -47,6 +48,7 @@ public class MainController implements Initializable {
     }
 
     private void setupStage(String fxml) {
+        SearchItemController.clearSavedValues();
         try {
             currentNode = new SpringFXMLLoader(getClass().getResource(fxml)).load();
         } catch (IOException e) {

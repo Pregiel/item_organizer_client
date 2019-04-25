@@ -9,7 +9,7 @@ public enum MenuView {
     private static final String SEARCH_FXML = "/layout/SearchItemLayout.fxml";
     private static final String INFO_ITEM_FXML = "/layout/InfoAboutItemLayout.fxml";
     private static final String EDIT_ITEM_FXML = "/layout/EditItemLayout.fxml";
-    private static final String SEARCH_TRANSACTION_FXML = "";
+    private static final String SEARCH_TRANSACTION_FXML = "/layout/SearchTransactionLayout.fxml";
     private static final String INFO_TRANSACTION_ITEM_FXML = "/layout/InfoAboutTransactionLayout.fxml";
 
     public String getView() {
