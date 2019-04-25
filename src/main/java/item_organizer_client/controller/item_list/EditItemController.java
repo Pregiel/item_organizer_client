@@ -44,9 +44,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     public ComboBox<String> searchText, categoryText;
     public Label nameMinAlert, categoryMinAlert, idNullAlert, idDuplicateAlert, nameNullAlert, nameDuplicateAlert,
             amountNullAlert, categoryMaxAlert, nameMaxAlert, buyNullAlert, sellNullAlert, categoryNullAlert, idMaxAlert,
-            safeAmountNullAlert, selectedItemTitle, nameNotExistAlert, idNotExistAlert;
-    public RadioButton idRadioButton, nameRadioButton;
-    public ToggleGroup searchGroup;
+            safeAmountNullAlert, selectedItemTitle, itemNotExistAlert;
 
     private Item selectedItem;
 
@@ -61,8 +59,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
 
     @Override
     protected void initFields() {
-        setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
-                itemService, idNotExistAlert, nameNotExistAlert);
+        setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
 
         setIdTextFieldListeners(idText, 4, idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
         setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
@@ -74,8 +71,6 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent(), buyNullAlert);
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent(), sellNullAlert);
 
-        refreshSearchTextListeners();
-
         for (Button button : new Button[]{idReset, nameReset, categoryReset, amountReset, safeAmountReset, buyPriceReset, sellPriceReset}) {
             Icon.setIconButton(button, Icon.createSVGIcon(Icon.IconPath.RESTORE,
                     "-icon-color",
@@ -86,7 +81,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
 
     @Override
     protected void clearAlerts() {
-        ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
+        ((Pane) searchText.getParent()).getChildren().removeAll(itemNotExistAlert);
 
         ((Pane) idText.getParent()).getChildren().removeAll(idNullAlert, idMaxAlert, idDuplicateAlert);
         ((Pane) nameText.getParent()).getChildren().removeAll(nameNullAlert, nameMinAlert,
@@ -199,29 +194,20 @@ public class EditItemController extends SideBarMenuViewController implements Ini
 
     public void nextStepSearch(ActionEvent event) {
         try {
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                selectedItem = itemService.findById(Integer.parseInt(searchText.getEditor().getText()));
+            String text = searchText.getEditor().getText();
+            if (text.substring(0,4).matches("\\d{4}")) {
+                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
             } else {
-                selectedItem = itemService.findByName(searchText.getEditor().getText()).get(0);
+                selectedItem = itemService.findByName(text);
             }
+
             if (selectedItem == null)
                 throw new NullPointerException();
 
             goToStep(1);
-        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+        } catch (NumberFormatException | IndexOutOfBoundsException | NullPointerException ex) {
             ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
-            } else {
-                ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
-            }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
-            } else {
-                MyAlerts.showError("Niepoprawna nazwa", "Wprowadzono nie poprawną nazwę.");
-            }
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 
@@ -239,10 +225,8 @@ public class EditItemController extends SideBarMenuViewController implements Ini
             goToStep(1);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
-            idRadioButton.fire();
             searchText.getEditor().setText(Utils.fillWithZeros(id, 4));
-            MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
-            ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 }

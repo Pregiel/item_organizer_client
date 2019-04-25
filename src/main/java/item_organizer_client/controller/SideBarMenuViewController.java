@@ -17,6 +17,7 @@ import tornadofx.control.DateTimePicker;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -126,75 +127,14 @@ public abstract class SideBarMenuViewController extends Controller {
         setDateDatePickerListeners(dateText, true);
     }
 
-    private ChangeListener<String> onlyNumericListener, maxIdCharsAmountListener, maxNameCharsAmountListener;
-    private ChangeListener<Boolean> fillWithZerosListener;
-    private ComboBox<String> searchText;
-    private ToggleGroup searchGroup;
-    private RadioButton idRadioButton, nameRadioButton;
-    private AutoCompletionBinding<String> autoCompletionSearch;
 
-    @SuppressWarnings({"AccessStaticViaInstance", "ConstantConditions"})
-    protected void setItemSearchComboBox(ComboBox<String> searchText, int idDigits, int nameMax, ToggleGroup searchGroup,
-                                         RadioButton idRadioButton, RadioButton nameRadioButton,
-                                         ItemService itemService, Label idNotExistAlert, Label nameNotExistAlert) {
-        this.searchText = searchText;
-        this.searchGroup = searchGroup;
-        this.idRadioButton = idRadioButton;
-        this.nameRadioButton = nameRadioButton;
+    protected void setItemSearchComboBox(ComboBox<String> searchText, List<String> entries, Label itemNotExistAlert) {
+        searchText.getItems().addAll(entries);
 
-        int selectedSearchType = getPreferences().getInt("search_type", 1);
-
-        if (selectedSearchType == 0) {
-            searchText.getItems().addAll(itemService.getAllIDs());
-            searchGroup.selectToggle(idRadioButton);
-        } else {
-            searchText.getItems().addAll(itemService.getAllNames());
-            searchGroup.selectToggle(nameRadioButton);
-        }
-
-        searchGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            searchText.getItems().clear();
-
-            if (newValue.equals(idRadioButton)) {
-                getPreferences().putInt("search_type", 0);
-                searchText.getItems().addAll(itemService.getAllIDs());
-            } else if (newValue.equals(nameRadioButton)) {
-                getPreferences().putInt("search_type", 1);
-                searchText.getItems().addAll(itemService.getAllNames());
-            }
-
-            if (autoCompletionSearch != null)
-                autoCompletionSearch.dispose();
-            autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
-            refreshSearchTextListeners();
-        });
-
-        autoCompletionSearch = TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
-
-        onlyNumericListener = ComboBoxListener.onlyReturn().onlyNumericListener(searchText);
-        maxIdCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, idDigits);
-        maxNameCharsAmountListener = ComboBoxListener.onlyReturn().maxCharsAmountListener(searchText, nameMax);
-        fillWithZerosListener = ComboBoxListener.onlyReturn().fillWithZerosListener(searchText, idDigits);
+        TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
 
         ComboBoxListener.autoTrimListener(searchText);
-        ComboBoxListener.removeAlertsListener(searchText, searchText.getParent(), idNotExistAlert, nameNotExistAlert);
-    }
-
-    protected void refreshSearchTextListeners() {
-        searchText.getEditor().textProperty().removeListener(onlyNumericListener);
-        searchText.getEditor().textProperty().removeListener(maxIdCharsAmountListener);
-        searchText.getEditor().textProperty().removeListener(maxNameCharsAmountListener);
-        searchText.focusedProperty().removeListener(fillWithZerosListener);
-
-        searchText.getEditor().setText("");
-
-        if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-            searchText.getEditor().textProperty().addListener(onlyNumericListener);
-            searchText.getEditor().textProperty().addListener(maxIdCharsAmountListener);
-            searchText.focusedProperty().addListener(fillWithZerosListener);
-        } else {
-            searchText.getEditor().textProperty().addListener(maxNameCharsAmountListener);
-        }
+        ComboBoxListener.removeAlertsListener(searchText, searchText.getParent(), itemNotExistAlert);
     }
 
     protected void setPriceTypeListeners(TextField priceText, ComboBox<String> priceType, Parent parent,

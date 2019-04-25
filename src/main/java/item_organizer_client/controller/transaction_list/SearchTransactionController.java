@@ -88,7 +88,7 @@ public class SearchTransactionController extends SideBarMenuViewController imple
         searchText.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(searchText, Priority.ALWAYS);
 
-        searchText.getItems().addAll(itemService.getAll().stream().map(Item::toTitle).sorted().collect(Collectors.toList()));
+        searchText.getItems().addAll(itemService.getAllTitles());
 
         TextFields.bindAutoCompletion(searchText.getEditor(), searchText.getItems());
 

@@ -41,11 +41,9 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
     public VBox buyItemPane, searchPane, detailsPane;
     public HBox buyPricePerItemPane;
     public Spinner<Integer> amountText;
-    public RadioButton idRadioButton, nameRadioButton;
-    public ToggleGroup searchGroup;
     public TextField buyPriceText, sellPriceText;
     public ComboBox<String> buyPriceType, searchText;
-    public Label idNotExistAlert, nameNotExistAlert, buyPricePerItemText, buyNullAlert,
+    public Label itemNotExistAlert, buyPricePerItemText, buyNullAlert,
             amountNullAlert, sellNullAlert, selectedItemId, selectedItemName, selectedItemAmount, selectedItemBuy,
             selectedItemBuyPerItem, selectedItemSell, itemTitle;
     public Button removeItem;
@@ -69,20 +67,17 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
 
     @Override
     protected void initFields() {
-        setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
-                itemService, idNotExistAlert, nameNotExistAlert);
+        setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
         setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
         setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
                 buyPricePerItemText, amountText);
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent().getParent(), buyNullAlert);
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent(), sellNullAlert);
-
-        refreshSearchTextListeners();
     }
 
     @Override
     protected void clearAlerts() {
-        ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
+        ((Pane) searchText.getParent()).getChildren().removeAll(itemNotExistAlert);
         ((Pane) amountText.getParent()).getChildren().removeAll(amountNullAlert);
         ((Pane) buyPriceText.getParent().getParent()).getChildren().removeAll(buyPricePerItemPane, buyNullAlert);
         ((Pane) sellPriceText.getParent()).getChildren().removeAll(sellNullAlert);
@@ -90,30 +85,20 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
 
     public void nextStepSearch(ActionEvent event) {
         try {
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                selectedItem = itemService.findById(Integer.parseInt(searchText.getEditor().getText()));
+            String text = searchText.getEditor().getText();
+            if (text.substring(0,4).matches("\\d{4}")) {
+                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
             } else {
-                selectedItem = itemService.findByName(searchText.getEditor().getText()).get(0);
+                selectedItem = itemService.findByName(text);
             }
+
             if (selectedItem == null)
                 throw new NullPointerException();
 
             goToStep(1);
-
-        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+        } catch (NumberFormatException | IndexOutOfBoundsException | NullPointerException ex) {
             ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
-            } else {
-                ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
-            }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
-            } else {
-                MyAlerts.showError("Niepoprawna nazwa", "Wprowadzono nie poprawną nazwę.");
-            }
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 

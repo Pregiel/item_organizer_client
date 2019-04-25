@@ -9,19 +9,21 @@ import java.util.List;
 public interface ItemService {
     Item add(Item item);
 
-    List<Item> addAll(Item... items) ;
+    List<Item> addAll(Item... items);
 
 //    public static List<Item> addAll(List<Item> itemList) {
 //        return Repos.addAll(itemList);
 //    }
 
-    Item findById(int id) ;
+    Item findById(int id);
 
-    List<Item> findByName(String name);
+    Item findByName(String name);
 
-    List<Item> getAll() ;
+    List<Item> getAll();
 
     List<String> getAllIDs();
+
+    List<String> getAllTitles();
 
     List<String> getAllNames();
 

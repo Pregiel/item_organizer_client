@@ -47,7 +47,7 @@ public class MainController implements Initializable {
     }
 
     public void showSummary(ActionEvent event) {
-        System.out.println(itemService.findByName("as"));
+        System.out.println(itemService.findByName("Kubek czar"));
     }
 
     public void showNotification(ActionEvent event) {

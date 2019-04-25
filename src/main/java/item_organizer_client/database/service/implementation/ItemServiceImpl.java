@@ -35,8 +35,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findByName(String name) {
-        return itemRepository.findBy(Item.class, "name", name);
+    public Item findByName(String name) {
+        List<Item> list = itemRepository.findBy(Item.class, "name", name);
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     @Override
@@ -47,6 +48,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<String> getAllIDs() {
         return itemRepository.getAllColumn(Item.class, "id").stream().map(o -> Utils.fillWithZeros(o, 4)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAllTitles() {
+        return getAll().stream().map(Item::toTitle).sorted().collect(Collectors.toList());
     }
 
     @Override

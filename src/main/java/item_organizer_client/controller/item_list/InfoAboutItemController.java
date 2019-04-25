@@ -46,11 +46,10 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public HBox selectedItemPane;
     public GridPane searchInputPane;
     public ComboBox<String> searchText;
-    public Label selectedItemTitle, idNotExistAlert, nameNotExistAlert, selectedItemId, selectedItemName,
+    public Label selectedItemTitle, itemNotExistAlert, selectedItemId, selectedItemName,
             selectedItemCategory, selectedItemAmount, selectedItemSafeAmount, selectedItemBuyPrice,
             selectedItemSellPrice;
-    public RadioButton idRadioButton, nameRadioButton;
-    public ToggleGroup searchGroup, priceHistoryGroup, transactionHistoryGroup;
+    public ToggleGroup priceHistoryGroup, transactionHistoryGroup;
     public ToggleButton sellTransactionHistoryToggle, buyTransactionHistoryToggle, allTransactionHistoryToggle,
             sellPriceHistoryToggle, buyPriceHistoryToggle, allPriceHistoryToggle;
     public TableView<PriceTableElement> priceHistoryTable;
@@ -80,8 +79,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
     @Override
     protected void initFields() {
-        setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
-                itemService, idNotExistAlert, nameNotExistAlert);
+        setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
 
         pricePriceHistoryTable.setCellFactory(TableColumnFormatter.priceFormat());
         datePriceHistoryTable.setCellFactory(TableColumnFormatter.dateFormat());
@@ -123,13 +121,11 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
                 });
             }
         });
-
-        refreshSearchTextListeners();
     }
 
     @Override
     protected void clearAlerts() {
-        ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
+        ((Pane) searchText.getParent()).getChildren().removeAll(itemNotExistAlert);
     }
 
     /**
@@ -189,30 +185,20 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
     public void nextStepSearch(ActionEvent event) {
         try {
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                selectedItem = itemService.findById(Integer.parseInt(searchText.getEditor().getText()));
+            String text = searchText.getEditor().getText();
+            if (text.substring(0,4).matches("\\d{4}")) {
+                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
             } else {
-                selectedItem = itemService.findByName(searchText.getEditor().getText()).get(0);
+                selectedItem = itemService.findByName(text);
             }
+
             if (selectedItem == null)
                 throw new NullPointerException();
 
             goToStep(1);
-
-        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+        } catch (NumberFormatException | IndexOutOfBoundsException | NullPointerException ex) {
             ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
-            } else {
-                ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
-            }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
-            } else {
-                MyAlerts.showError("Niepoprawna nazwa", "Wprowadzono nie poprawną nazwę.");
-            }
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 
@@ -230,10 +216,8 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
             goToStep(1);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
-            idRadioButton.fire();
             searchText.getEditor().setText(Utils.fillWithZeros(id, 4));
-            MyAlerts.showError("Niepoprawne ID", "Wprowadzono nie poprawny numer ID.");
-            ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 }

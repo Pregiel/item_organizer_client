@@ -41,11 +41,9 @@ public class SellItemElementController extends SideBarMenuViewController impleme
     public VBox sellItemPane, searchPane, detailsPane;
     public HBox sellPricePerItemPane;
     public Spinner<Integer> amountText;
-    public RadioButton idRadioButton, nameRadioButton;
-    public ToggleGroup searchGroup;
     public TextField sellPriceText;
     public ComboBox<String> sellPriceType, searchText;
-    public Label idNotExistAlert, nameNotExistAlert, sellPricePerItemText, amountNullAlert, sellNullAlert,
+    public Label itemNotExistAlert, sellPricePerItemText, amountNullAlert, sellNullAlert,
             selectedItemId, selectedItemName, selectedItemAmount, selectedItemSellPerItem, selectedItemSell, itemTitle;
     public Button removeItem;
     public BorderPane titlePane;
@@ -68,42 +66,36 @@ public class SellItemElementController extends SideBarMenuViewController impleme
 
     @Override
     protected void initFields() {
-        setItemSearchComboBox(searchText, 4, 250, searchGroup, idRadioButton, nameRadioButton,
-                itemService, idNotExistAlert, nameNotExistAlert);
+        setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
         setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
         setPriceTypeListeners(sellPriceText, sellPriceType, sellPriceText.getParent().getParent(), sellPricePerItemPane,
                 sellPricePerItemText, amountText);
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent().getParent(), sellNullAlert);
-
-        refreshSearchTextListeners();
     }
 
     @Override
     protected void clearAlerts() {
-        ((Pane) searchText.getParent()).getChildren().removeAll(idNotExistAlert, nameNotExistAlert);
+        ((Pane) searchText.getParent()).getChildren().removeAll(itemNotExistAlert);
         ((Pane) amountText.getParent()).getChildren().removeAll(amountNullAlert);
         ((Pane) sellPriceText.getParent().getParent()).getChildren().removeAll(sellPricePerItemPane, sellNullAlert);
     }
 
     public void nextStepSearch(ActionEvent event) {
         try {
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                selectedItem = itemService.findById(Integer.parseInt(searchText.getEditor().getText()));
+            String text = searchText.getEditor().getText();
+            if (text.substring(0,4).matches("\\d{4}")) {
+                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
             } else {
-                selectedItem = itemService.findByName(searchText.getEditor().getText()).get(0);
+                selectedItem = itemService.findByName(text);
             }
+
             if (selectedItem == null)
                 throw new NullPointerException();
 
             goToStep(1);
-
-        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+        } catch (NumberFormatException | IndexOutOfBoundsException | NullPointerException ex) {
             ex.printStackTrace();
-            if (searchGroup.getSelectedToggle().equals(idRadioButton)) {
-                ((Pane) searchText.getParent()).getChildren().add(idNotExistAlert);
-            } else {
-                ((Pane) searchText.getParent()).getChildren().add(nameNotExistAlert);
-            }
+            ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }
 

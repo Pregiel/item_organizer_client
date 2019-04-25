@@ -6,11 +6,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -34,35 +32,20 @@
                       <rowConstraints>
                           <RowConstraints vgrow="SOMETIMES" />
                           <RowConstraints vgrow="SOMETIMES" />
-                          <RowConstraints vgrow="SOMETIMES" />
                           <RowConstraints valignment="CENTER" />
                       </rowConstraints>
                       <children>
-                          <VBox spacing="2.0" GridPane.rowIndex="2">
+                          <VBox spacing="2.0" GridPane.rowIndex="1">
                               <children>
                         <ComboBox fx:id="searchText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                                  <Label fx:id="idNotExistAlert" styleClass="alert-label" text="Produkt o podanym ID nie istnieje" />
-                                  <Label fx:id="nameNotExistAlert" styleClass="alert-label" text="Produkt o podanej nazwie nie istnieje" />
+                                  <Label fx:id="itemNotExistAlert" styleClass="alert-label" text="Podany produkt nie istnieje" />
                               </children>
                               <GridPane.margin>
                                   <Insets />
                               </GridPane.margin>
                           </VBox>
                           <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Wybierz produkt" />
-                          <HBox alignment="CENTER" spacing="12.0" GridPane.rowIndex="1">
-                              <children>
-                                  <RadioButton fx:id="idRadioButton" mnemonicParsing="false" styleClass="property-label" text="ID">
-                                      <toggleGroup>
-                                          <ToggleGroup fx:id="searchGroup" />
-                                      </toggleGroup>
-                                  </RadioButton>
-                                  <RadioButton fx:id="nameRadioButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" selected="true" styleClass="property-label" text="Nazwa" toggleGroup="$searchGroup" />
-                              </children>
-                     <padding>
-                        <Insets bottom="4.0" top="4.0" />
-                     </padding>
-                          </HBox>
-                          <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                          <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                       </children>
                   </GridPane>
                   <VBox fx:id="searchPane">

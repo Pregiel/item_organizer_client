@@ -175,7 +175,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
         } else if (nameText.getText().length() > 250) {
             showAlert(nameText, nameMaxAlert);
             success = false;
-        } else if (itemService.findByName(nameText.getText()).size() > 0) {
+        } else if (itemService.findByName(nameText.getText()) != null) {
             showAlert(nameText, nameDuplicateAlert);
             success = false;
         }
