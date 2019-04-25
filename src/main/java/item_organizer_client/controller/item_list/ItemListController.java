@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class ItemListController extends SideBarController implements Initializable {
     public TableView<ItemTableElement> itemTableView;
     public AnchorPane itemMainPane;
-    public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton;
+    public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton, editButton;
     public SplitPane splitPane;
     public TableColumn<ItemTableElement, Integer> idColumn;
     public TableColumn<ItemTableElement, Price> buyPriceColumn, sellPriceColumn;
@@ -92,6 +92,9 @@ public class ItemListController extends SideBarController implements Initializab
                             case INFO_ITEM:
                                 ItemListController.this.showInfoAbout(item.getId());
                                 break;
+                            case EDIT_ITEM:
+                                ItemListController.this.showEditItem(item.getId());
+                                break;
                             case BUY_ITEM:
                                 ((BuyItemController) ItemListController.this.getCurrentController()).addNewItem(new Item(item));
                                 break;
@@ -141,6 +144,7 @@ public class ItemListController extends SideBarController implements Initializab
         getButtonMap().put(MenuView.BUY_ITEM, buyButton);
         getButtonMap().put(MenuView.SELL_ITEM, sellButton);
         getButtonMap().put(MenuView.INFO_ITEM, infoButton);
+        getButtonMap().put(MenuView.EDIT_ITEM, editButton);
 
         setSplitPane(splitPane);
 
@@ -185,12 +189,25 @@ public class ItemListController extends SideBarController implements Initializab
         toggleView(MenuView.INFO_ITEM);
     }
 
+    public void showEditView(ActionEvent event) {
+        toggleView(MenuView.EDIT_ITEM);
+    }
+
     public void showInfoAbout(int id) {
         if (!getCurrentView().equals(MenuView.INFO_ITEM)) {
             hideView();
             showView(MenuView.INFO_ITEM);
         }
         ((InfoAboutItemController) getCurrentController()).showInfoAbout(id);
+    }
+
+    public void showEditItem(int id) {
+        if (!getCurrentView().equals(MenuView.EDIT_ITEM)) {
+            hideView();
+            showView(MenuView.EDIT_ITEM);
+        }
+        ((EditItemController) getCurrentController()).showEditItem(id);
+
     }
 
     public CustomTextField getHeaderSearchText() {

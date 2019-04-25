@@ -14,7 +14,7 @@ public class Icon {
     private static final String DEFAULT_ICON_COLOR = "#000000";
 
     public enum IconPath {
-        ELEMENT_EDIT, ELEMENT_BUY, ELEMENT_SELL, ELEMENT_INFO, ELEMENT_HIDE, ELEMENT_SHOW;
+        ELEMENT_EDIT, ELEMENT_BUY, ELEMENT_SELL, ELEMENT_INFO, ELEMENT_HIDE, ELEMENT_SHOW, RESTORE;
 
         public String getSVGPath() {
             ResourceBundle resourceBundle = ResourceBundle.getBundle("svgPaths");
@@ -36,9 +36,19 @@ public class Icon {
 
                 case ELEMENT_SHOW:
                     return resourceBundle.getString("icon.element.show");
+
+                case RESTORE:
+                    return resourceBundle.getString("icon.restore");
             }
             return null;
         }
+    }
+
+    public static Button setIconButton(Button button, Node graphic) {
+        button.getStyleClass().add("no-background-button");
+        button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        button.setGraphic(graphic);
+        return button;
     }
 
     public static Button createIconButton(Node graphic) {
@@ -86,6 +96,10 @@ public class Icon {
 
     public static Group createSVGIcon(IconPath path, String fill) {
         return createSVGIcon(path, fill, fill);
+    }
+
+    public static Group createSVGIcon(IconPath path, String fill, int size) {
+        return createSVGIcon(path, fill, fill, size);
     }
 
     public static Group createSVGIcon(IconPath path) {

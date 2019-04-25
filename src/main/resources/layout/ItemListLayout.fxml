@@ -188,6 +188,19 @@
                                 <Tooltip text="Informacje o produkcie" />
                             </tooltip>
                         </Button>
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#showEditView" styleClass="side-icon-button">
+                     <graphic>
+                        <StackPane>
+                           <children>
+                              <SVGPath content="M 16.899,0 C 7.5660005,0 5e-7,7.5659997 5e-7,16.9 c 0,9.333002 7.566,16.899 16.8989995,16.899 9.333001,0 16.899999,-7.565998 16.899999,-16.899 C 33.798999,7.5659997 26.233002,0 16.899,0 Z" fill="TRANSPARENT" stroke="BLACK" strokeWidth="2.0" styleClass="icon-back" />
+                              <SVGPath content="m 19.159096,11.109926 3.572737,3.572704 -9.043584,9.043584 -3.570711,-3.572704 z m 6.283753,-0.861654 -1.593303,-1.5933033 c -0.615756,-0.6157566 -1.615618,-0.6157566 -2.233467,0 l -1.526225,1.5262253 3.572737,3.572737 1.780258,-1.780259 c 0.477583,-0.477615 0.477583,-1.247818 0,-1.7254 z M 8.2478531,25.175233 c -0.065019,0.29262 0.1991753,0.554822 0.4918283,0.483659 L 12.720897,24.693599 9.1501858,21.120895 Z" fill="TRANSPARENT" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" styleClass="icon-front" />
+                           </children>
+                        </StackPane>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Edytuj produkt" />
+                     </tooltip>
+                  </Button>
                     </children>
                     <padding>
                         <Insets top="12.0" />
