@@ -42,6 +42,14 @@
     -fx-alignment: CENTER-RIGHT;
 }
 
+.alert-info {
+    -fx-background-color: -alert-info-color;
+}
+
+.alert-info:odd {
+    -fx-background-color: -alert-info-odd-color;
+}
+
 .alert-danger {
     -fx-background-color: -alert-danger-color;
 }
@@ -58,7 +66,8 @@
     -fx-background-color: -alert-warning-odd-color;
 }
 
-.alert-danger:selected,
- .alert-warning:selected{
+.table-row-cell:selected .alert-danger,
+.table-row-cell:selected .alert-warning,
+.table-row-cell:selected .alert-info {
     -fx-background-color: -fx-table-cell-border-color, -fx-background;
 }

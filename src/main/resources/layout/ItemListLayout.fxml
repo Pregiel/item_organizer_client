@@ -44,7 +44,7 @@
                                               <PropertyValueFactory property="category" />
                                           </cellValueFactory>
                                       </TableColumn>
-                                      <TableColumn minWidth="40.0" prefWidth="75.0" styleClass="numeric-column" text="Sztuk">
+                                      <TableColumn fx:id="amountColumn" minWidth="40.0" prefWidth="75.0" styleClass="numeric-column" text="Sztuk">
                                           <cellValueFactory>
                                               <PropertyValueFactory property="amount" />
                                           </cellValueFactory>

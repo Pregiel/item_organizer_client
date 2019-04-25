@@ -25,6 +25,7 @@ import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -37,7 +38,7 @@ public class ItemListController extends SideBarController implements Initializab
     public AnchorPane itemMainPane;
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton, editButton;
     public SplitPane splitPane;
-    public TableColumn<ItemTableElement, Integer> idColumn;
+    public TableColumn<ItemTableElement, Integer> idColumn, amountColumn;
     public TableColumn<ItemTableElement, Price> buyPriceColumn, sellPriceColumn;
     public Label headerTitleText;
     public Label headerAmountText;
@@ -63,23 +64,7 @@ public class ItemListController extends SideBarController implements Initializab
         itemTableView.setRowFactory(new Callback<TableView<ItemTableElement>, TableRow<ItemTableElement>>() {
             @Override
             public TableRow<ItemTableElement> call(TableView<ItemTableElement> param) {
-                TableRow<ItemTableElement> row = new TableRow<ItemTableElement>() {
-                    @Override
-                    protected void updateItem(ItemTableElement item, boolean empty) {
-                        super.updateItem(item, empty);
-                        getStyleClass().removeAll("alert-danger", "alert-warning");
-                        if (item != null) {
-
-                            if (item.getAmount() <= 0) {
-                                getStyleClass().add("alert-danger");
-                            } else {
-                                if (item.getAmount() < item.getSafeAmount()) {
-                                    getStyleClass().add("alert-warning");
-                                }
-                            }
-                        }
-                    }
-                };
+                TableRow<ItemTableElement> row = new TableRow<>();
 
                 row.setOnMouseClicked(event -> {
                     ItemTableElement item = row.getItem();
@@ -110,8 +95,60 @@ public class ItemListController extends SideBarController implements Initializab
         });
 
         idColumn.setCellFactory(TableColumnFormatter.idFormat());
-        buyPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
-        sellPriceColumn.setCellFactory(TableColumnFormatter.priceFormat());
+        buyPriceColumn.setCellFactory(param -> new TableCell<ItemTableElement, Price>() {
+            @Override
+            protected void updateItem(Price price, boolean empty) {
+                super.updateItem(price, empty);
+                ItemTableElement item = (ItemTableElement) getTableRow().getItem();
+                getStyleClass().removeAll("alert-info");
+                if (item == null ||price == null || empty) {
+                    setText(null);
+                } else {
+                    setText(price.priceFormat());
+                    if (price.compareTo(item.getSellPrice()) > 0) {
+                        getStyleClass().add("alert-info");
+                    }
+                }
+            }
+        });
+
+        sellPriceColumn.setCellFactory(param -> new TableCell<ItemTableElement, Price>() {
+            @Override
+            protected void updateItem(Price price, boolean empty) {
+                super.updateItem(price, empty);
+                ItemTableElement item = (ItemTableElement) getTableRow().getItem();
+                getStyleClass().removeAll("alert-info");
+                if (item == null ||price == null || empty) {
+                    setText(null);
+                } else {
+                    setText(price.priceFormat());
+                    if (price.compareTo(item.getBuyPrice()) < 0) {
+                        getStyleClass().add("alert-info");
+                    }
+                }
+            }
+        });
+
+        amountColumn.setCellFactory(param -> new TableCell<ItemTableElement, Integer>() {
+            @Override
+            protected void updateItem(Integer amount, boolean empty) {
+                super.updateItem(amount, empty);
+                ItemTableElement item = (ItemTableElement) getTableRow().getItem();
+                getStyleClass().removeAll("alert-danger", "alert-warning");
+                if (item == null || amount == null || empty) {
+                    setText(null);
+                } else {
+                    setText(String.valueOf(amount));
+                    if (amount <= 0) {
+                        getStyleClass().add("alert-danger");
+                    } else {
+                        if (amount < item.getSafeAmount()) {
+                            getStyleClass().add("alert-warning");
+                        }
+                    }
+                }
+            }
+        });
 
         Button searchClearButton = new Button("", new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
         searchClearButton.getStyleClass().add("clear-button");
@@ -133,9 +170,9 @@ public class ItemListController extends SideBarController implements Initializab
         itemTableView.getItems().addListener((InvalidationListener) c -> {
             headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
             if (itemTableView.getItems().size() == ItemList.getInstance().getItemList().size()) {
-                headerTitleText.setText(ResourceBundle.getBundle("strings").getString("item_list.header.all_items"));
+                headerTitleText.setText(Utils.getString("item_list.header.all_items"));
             } else {
-                headerTitleText.setText(ResourceBundle.getBundle("strings").getString("item_list.header.founded"));
+                headerTitleText.setText(Utils.getString("item_list.header.founded"));
             }
         });
 
