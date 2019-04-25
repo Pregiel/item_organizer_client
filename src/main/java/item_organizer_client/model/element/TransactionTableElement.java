@@ -1,11 +1,9 @@
-package item_organizer_client.model.table_item;
+package item_organizer_client.model.element;
 
 import item_organizer_client.controller.transaction_list.TransactionListController;
-import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.TransactionItem;
 import item_organizer_client.utils.Icon;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 

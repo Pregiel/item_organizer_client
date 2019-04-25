@@ -5,11 +5,6 @@ import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.list.ItemList;
-import item_organizer_client.model.table_item.ItemTableElement;
-import item_organizer_client.utils.Utils;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -18,11 +13,9 @@ import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.prefs.Preferences;
 
 @FXMLController

@@ -2,7 +2,7 @@ package item_organizer_client.model.list;
 
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
-import item_organizer_client.model.table_item.ItemTableElement;
+import item_organizer_client.model.element.ItemTableElement;
 import item_organizer_client.utils.Utils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;

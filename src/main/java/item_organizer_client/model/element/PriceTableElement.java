@@ -1,4 +1,4 @@
-package item_organizer_client.model.table_item;
+package item_organizer_client.model.element;
 
 import item_organizer_client.model.Price;
 

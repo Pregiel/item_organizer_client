@@ -5,9 +5,11 @@ import javafx.scene.control.TableView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
@@ -70,5 +72,9 @@ public class Utils {
 
     public static <T> List<T> convertSetToList(Set<T> set) {
         return new ArrayList<>(set);
+    }
+
+    public static String getString(String key, Object... params) {
+        return MessageFormat.format(ResourceBundle.getBundle("strings").getString(key), params);
     }
 }

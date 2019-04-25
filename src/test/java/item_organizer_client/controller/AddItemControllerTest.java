@@ -6,7 +6,7 @@ import item_organizer_client.category.DatabaseTestCategory;
 import item_organizer_client.category.ValidationTestCategory;
 import item_organizer_client.database.ItemOrganizerDatabase;
 import item_organizer_client.database.service.ItemService;
-import item_organizer_client.model.table_item.ItemTableElement;
+import item_organizer_client.model.element.ItemTableElement;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;

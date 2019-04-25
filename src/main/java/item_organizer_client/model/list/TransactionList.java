@@ -2,7 +2,7 @@ package item_organizer_client.model.list;
 
 import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.model.Transaction;
-import item_organizer_client.model.table_item.TransactionTableElement;
+import item_organizer_client.model.element.TransactionTableElement;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

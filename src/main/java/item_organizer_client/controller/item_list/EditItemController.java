@@ -7,28 +7,20 @@ import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
-import item_organizer_client.model.table_item.PriceTableElement;
-import item_organizer_client.model.table_item.TransactionItemInfoItemTableElement;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 
 @FXMLController
 @Component

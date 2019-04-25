@@ -1,9 +1,7 @@
-package item_organizer_client.model.table_item;
+package item_organizer_client.model.element;
 
-import item_organizer_client.model.Price;
 import item_organizer_client.model.TransactionItem;
 import item_organizer_client.model.type.TransactionType;
-import item_organizer_client.utils.Utils;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

@@ -1,0 +1,31 @@
+* {
+
+}
+
+.notification-info {
+    -fx-background-color: -alert-info-color;
+}
+
+.notification-info-odd {
+    -fx-background-color: -alert-info-odd-color;
+}
+
+.notification-warning {
+    -fx-background-color: -alert-warning-color;
+}
+
+.notification-warning-odd {
+    -fx-background-color: -alert-warning-odd-color;
+}
+
+.notification-danger {
+    -fx-background-color: -alert-danger-color;
+}
+
+.notification-danger-odd {
+    -fx-background-color: -alert-danger-odd-color;
+}
+
+.notification-tag {
+    -fx-font-weight: bold;
+}

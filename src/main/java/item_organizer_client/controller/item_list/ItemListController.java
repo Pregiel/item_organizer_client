@@ -8,7 +8,8 @@ import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.list.ItemList;
-import item_organizer_client.model.table_item.ItemTableElement;
+import item_organizer_client.model.element.ItemTableElement;
+import item_organizer_client.model.list.NotificationList;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
 import javafx.beans.InvalidationListener;
@@ -161,6 +162,8 @@ public class ItemListController extends SideBarController implements Initializab
         sortedItemList.comparatorProperty().bind(itemTableView.comparatorProperty());
 
         itemTableView.setItems(sortedItemList);
+
+        NotificationList.getInstance().check();
 
         ItemList.getInstance().addListener(this::setTableItems);
     }

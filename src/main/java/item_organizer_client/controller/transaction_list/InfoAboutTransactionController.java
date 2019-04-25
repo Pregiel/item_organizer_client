@@ -2,12 +2,10 @@ package item_organizer_client.controller.transaction_list;
 
 import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.TransactionService;
-import item_organizer_client.listeners.ComboBoxListener;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.TransactionItem;
-import item_organizer_client.model.table_item.TransactionItemInfoItemTableElement;
-import item_organizer_client.model.table_item.TransactionItemInfoTransactionTableElement;
+import item_organizer_client.model.element.TransactionItemInfoTransactionTableElement;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
 import javafx.collections.FXCollections;
@@ -21,7 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

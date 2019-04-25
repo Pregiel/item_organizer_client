@@ -3,10 +3,14 @@ package item_organizer_client.controller;
 import item_organizer_client.controller.item_list.SearchItemController;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.ItemOrganizerDatabase;
+import item_organizer_client.database.service.PriceService;
+import item_organizer_client.model.element.NotificationElement;
+import item_organizer_client.model.list.NotificationList;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Component
 public class MainController implements Initializable {
@@ -24,11 +29,13 @@ public class MainController implements Initializable {
 
     private Node currentNode;
 
+    public Label notificationCount;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ItemOrganizerDatabase.configureSessionFactory();
         showItemList(null);
+        NotificationList.getInstance().setNotificationCount(notificationCount);
     }
 
     public void showItemList(ActionEvent event) {
@@ -44,7 +51,16 @@ public class MainController implements Initializable {
     }
 
     public void showNotification(ActionEvent event) {
-
+        if (mainPane.getRight() == null) {
+            try {
+                Node node = new SpringFXMLLoader(getClass().getResource("/layout/NotificationLayout.fxml")).load();
+                mainPane.setRight(node);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mainPane.setRight(null);
+        }
     }
 
     private void setupStage(String fxml) {

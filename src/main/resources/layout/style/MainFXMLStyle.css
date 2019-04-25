@@ -33,6 +33,15 @@
 
 	-icon-color: #3b4e7c;
 	-icon-hover-color: #657cb5;
+
+	-alert-info-color: #3a84fc;
+	-alert-info-odd-color: #2e6cd1;
+
+	-alert-warning-color: #fff359;
+	-alert-warning-odd-color: #ffee0c;
+
+	-alert-danger-color: #ea7419;
+	-alert-danger-odd-color: #e56300;
 }
 
 .background {
@@ -59,6 +68,15 @@
 /***.top-menu > .button:focused ***/
 .top-menu > .button:hover {
 	-fx-background-color: -background-hover-color;
+}
+
+.top-menu > .button > .label {
+    -fx-background-color: #ffbd16;
+    -fx-background-radius: 10px;
+    -fx-font-size: 15px;
+	-fx-font-family: 'Arial';
+    -fx-font-weight: bold;
+    -fx-padding: 3 4 3 4;
 }
 
 .title {

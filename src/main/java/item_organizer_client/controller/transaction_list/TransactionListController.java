@@ -2,17 +2,11 @@ package item_organizer_client.controller.transaction_list;
 
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
-import item_organizer_client.controller.item_list.BuyItemController;
-import item_organizer_client.controller.item_list.InfoAboutItemController;
-import item_organizer_client.controller.item_list.SellItemController;
-import item_organizer_client.model.Item;
 import item_organizer_client.model.Transaction;
 import item_organizer_client.model.list.TransactionList;
-import item_organizer_client.model.table_item.ItemTableElement;
-import item_organizer_client.model.table_item.TransactionTableElement;
+import item_organizer_client.model.element.TransactionTableElement;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;

@@ -1,4 +1,4 @@
-package item_organizer_client.model.table_item;
+package item_organizer_client.model.element;
 
 import item_organizer_client.controller.item_list.ItemListController;
 import item_organizer_client.model.Item;
@@ -7,8 +7,6 @@ import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class ItemTableElement extends Item {
