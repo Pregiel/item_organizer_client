@@ -5,12 +5,14 @@ import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
+import item_organizer_client.listeners.TextFieldListener;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
 import item_organizer_client.utils.IconGraphic;
 import item_organizer_client.utils.Utils;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -61,7 +63,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     protected void initFields() {
         setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
 
-        setIdTextFieldListeners(idText, 4, idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
+        setIdTextFieldListeners(idText, Item.ID_DIGITS, idText.getParent(), idNullAlert, idDuplicateAlert, idMaxAlert);
         setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
@@ -152,8 +154,9 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     }
 
     public void submit(ActionEvent event) {
-
     }
+
+    private ChangeListener<Boolean> checkIdIfExistListener;
 
     /**
      * @param step 0 - search item, 1 - details
@@ -171,6 +174,13 @@ public class EditItemController extends SideBarMenuViewController implements Ini
                 editItemPane.getChildren().addAll(editValuePane);
                 headerPane.getChildren().add(selectedItemPane);
                 editPane.setBottom(footerPane);
+
+                if (checkIdIfExistListener != null) {
+                    idText.focusedProperty().removeListener(checkIdIfExistListener);
+                }
+                checkIdIfExistListener = TextFieldListener.onlyReturn().checkIdIfExistListener(idText,
+                        itemService, selectedItem.getId(), idText.getParent(), idDuplicateAlert);
+                idText.focusedProperty().addListener(checkIdIfExistListener);
 
                 selectedItemTitle.setText(selectedItem.toTitle());
                 idText.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
@@ -195,7 +205,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     public void nextStepSearch(ActionEvent event) {
         try {
             String text = searchText.getEditor().getText();
-            if (text.substring(0,4).matches("\\d{4}")) {
+            if (text.substring(0, 4).matches("\\d{4}")) {
                 selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
             } else {
                 selectedItem = itemService.findByName(text);

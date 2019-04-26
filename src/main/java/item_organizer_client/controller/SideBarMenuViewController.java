@@ -35,10 +35,15 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.autoTrimListener(idText);
     }
 
-    protected void setIdTextFieldListeners(TextField idText, int digits, Parent parent, Label nullAlert, Label... alerts) {
+    protected void setIdTextFieldListeners(TextField idText, int digits, Parent parent, Label nullAlert, Label duplicateAlert, Label... alerts) {
         setIdTextFieldListeners(idText, digits, true);
         TextFieldListener.isNullListener(idText, nullAlert);
-        TextFieldListener.removeAlertsListener(idText, parent, ArrayUtils.addAll(new Label[]{nullAlert}, alerts));
+        TextFieldListener.removeAlertsListener(idText, parent, ArrayUtils.addAll(new Label[]{nullAlert, duplicateAlert}, alerts));
+    }
+
+    protected void setIdTextFieldListeners(TextField idText, int digits, ItemService itemService, Parent parent, Label nullAlert, Label duplicateAlert, Label... alerts) {
+        setIdTextFieldListeners(idText, digits, parent, nullAlert, duplicateAlert, alerts);
+        TextFieldListener.checkIdIfExistListener(idText, itemService, parent, duplicateAlert);
     }
 
     protected void setIdComboBoxListeners(ComboBox<String> searchText, TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {

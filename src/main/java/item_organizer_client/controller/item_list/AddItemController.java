@@ -68,7 +68,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
     @Override
     protected void initFields() {
-        setIdTextFieldListeners(idText, 4, idText.getParent(), idNullAlert, idMaxAlert, idDuplicateAlert);
+        setIdTextFieldListeners(idText, Item.ID_DIGITS, itemService, idText.getParent(), idNullAlert, idDuplicateAlert, idMaxAlert);
         setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),

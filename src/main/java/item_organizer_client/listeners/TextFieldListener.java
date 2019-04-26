@@ -1,7 +1,13 @@
 package item_organizer_client.listeners;
 
+import item_organizer_client.database.service.ItemService;
+import item_organizer_client.model.Item;
+import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 
 
 public class TextFieldListener extends TextInputControlListener {
@@ -48,6 +54,30 @@ public class TextFieldListener extends TextInputControlListener {
                 }
             }
         });
+    }
+
+    public static ChangeListener<Boolean> checkIdIfExistListener(TextField textField, ItemService itemService, Integer exclude,
+                                                                 Parent parent, Label duplicateAlert) {
+        return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
+            if (!newValue) {
+                if (textField.getText().matches("\\d{4}")) {
+                    if (exclude != null) {
+                        if (Utils.fillWithZeros(exclude, Item.ID_DIGITS).equals(textField.getText())) {
+                            return;
+                        }
+                    }
+
+                    if (itemService.findById(Integer.parseInt(textField.getText())) != null) {
+                        ((Pane) parent).getChildren().add(duplicateAlert);
+                    }
+                }
+            }
+        });
+    }
+
+    public static ChangeListener<Boolean> checkIdIfExistListener(TextField textField, ItemService itemService,
+                                                                 Parent parent, Label duplicateAlert) {
+        return checkIdIfExistListener(textField, itemService, null, parent, duplicateAlert);
     }
 
     public static TextFieldListener onlyReturn() {
