@@ -67,7 +67,7 @@ public class TextFieldListener extends TextInputControlListener {
                         }
                     }
 
-                    if (itemService.findById(Integer.parseInt(textField.getText())) != null) {
+                    if (itemService.findByNumber(Integer.parseInt(textField.getText())) != null) {
                         ((Pane) parent).getChildren().add(duplicateAlert);
                     }
                 }

@@ -87,7 +87,7 @@ public class ItemList {
             }
 
             for (String s : value.split(" ")) {
-                if (!Utils.fillWithZeros(item.getId(), Item.ID_DIGITS).contains(s) &&
+                if (!Utils.fillWithZeros(item.getNumber(), Item.ID_DIGITS).contains(s) &&
                         !item.getName().toLowerCase().contains(s) &&
                         !item.getCategory().getName().toLowerCase().contains(s)) {
                     return false;
@@ -111,7 +111,7 @@ public class ItemList {
             }
 
             for (String s : value.split(" ")) {
-                if (!Utils.fillWithZeros(item.getId(), Item.ID_DIGITS).contains(s) &&
+                if (!Utils.fillWithZeros(item.getNumber(), Item.ID_DIGITS).contains(s) &&
                         !item.getName().toLowerCase().contains(s) &&
                         !item.getCategory().getName().toLowerCase().contains(s)) {
                     return false;
@@ -125,7 +125,7 @@ public class ItemList {
             if (idText.getText().equals("")) {
                 return true;
             } else if (idText.getText().matches("\\d*"))
-                return Utils.fillWithZeros(item.getId(), Item.ID_DIGITS).contains(idText.getText());
+                return Utils.fillWithZeros(item.getNumber(), Item.ID_DIGITS).contains(idText.getText());
             return false;
         }, idText.textProperty()));
 

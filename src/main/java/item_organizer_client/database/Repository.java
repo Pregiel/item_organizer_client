@@ -72,7 +72,7 @@ public class Repository<T> {
         return object;
     }
 
-    public List<T> findBy(Class<T> tClass, String fieldName, String fieldValue) {
+    public List<T> findBy(Class<T> tClass, String fieldName, Object fieldValue) {
         configureSessionFactory();
 
         List<T> list = null;

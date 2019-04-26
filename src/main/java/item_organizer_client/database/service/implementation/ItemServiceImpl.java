@@ -1,6 +1,5 @@
 package item_organizer_client.database.service.implementation;
 
-import item_organizer_client.database.Repository;
 import item_organizer_client.database.repository.ItemRepository;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
@@ -31,8 +30,9 @@ public class ItemServiceImpl implements ItemService {
 //    }
 
     @Override
-    public Item findById(int id) {
-        return itemRepository.findById(Item.class, id);
+    public Item findByNumber(Integer number) {
+        List<Item> list = itemRepository.findBy(Item.class, "number", number);
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item updateId(Item item, Integer id) {
         itemRepository.updateId(item, id);
-        return findById(id);
+        return findByNumber(id);
     }
 
 }

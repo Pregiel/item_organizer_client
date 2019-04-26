@@ -23,7 +23,7 @@ public class ItemRepository extends Repository<Item> {
             transaction = session.beginTransaction();
 
             Query query = session.createQuery("UPDATE Item SET id = :newId WHERE id = :oldId");
-            query.setParameter("oldId", item.getId());
+            query.setParameter("oldId", item.getNumber());
             query.setParameter("newId", newId);
 
             result = query.executeUpdate();

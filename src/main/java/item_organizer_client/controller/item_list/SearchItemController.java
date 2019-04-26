@@ -85,7 +85,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
 
     public void saveValues() {
         savedValues.clear();
-        savedValues.put("idText", idText.getText());
+        savedValues.put("numberText", idText.getText());
         savedValues.put("nameText", nameText.getText());
         savedValues.put("categoryText", categoryText.getEditor().getText());
         savedValues.put("amountFromText", amountFromText.getEditor().getText());
@@ -97,7 +97,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
     }
 
     public void backupValues() {
-        idText.setText(savedValues.get("idText"));
+        idText.setText(savedValues.get("numberText"));
         nameText.setText(savedValues.get("nameText"));
         categoryText.getEditor().setText(savedValues.get("categoryText"));
         amountFromText.getEditor().setText(savedValues.get("amountFromText"));

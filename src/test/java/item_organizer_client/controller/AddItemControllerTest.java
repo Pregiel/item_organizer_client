@@ -62,7 +62,7 @@ public class AddItemControllerTest extends ApplicationTest {
     }
 
     private void writeItem(String id, String name, String category, String amount, String date, String buyPrice, String sellPrice) {
-        clickOn("#idText").write(id);
+        clickOn("#numberText").write(id);
         clickOn("#nameText").write(name);
         clickOn("#categoryText").write(category);
         clickOn("#amountText").write(amount);
@@ -87,52 +87,52 @@ public class AddItemControllerTest extends ApplicationTest {
     @Category(ValidationTestCategory.class)
     @Test
     public void idText_ValidId() {
-        clickOn("#addButton").clickOn("#idText");
+        clickOn("#addButton").clickOn("#numberText");
         write("1234");
 
         clickOn("#submit");
-        assertEquals("1234", ((TextField) lookup("#idText").query()).getText());
+        assertEquals("1234", ((TextField) lookup("#numberText").query()).getText());
     }
 
     @Category(ValidationTestCategory.class)
     @Test
     public void idText_Null() {
-        clickOn("#addButton").clickOn("#idText");
+        clickOn("#addButton").clickOn("#numberText");
         press(KeyCode.BACK_SPACE);
 
 
         clickOn("#submit");
-        assertTrue(lookup("#idNullAlert").query().isVisible());
+        assertTrue(lookup("#numberNullAlert").query().isVisible());
     }
 
     @Category(ValidationTestCategory.class)
     @Test
     public void idText_InvalidChars() {
-        clickOn("#addButton").clickOn("#idText");
+        clickOn("#addButton").clickOn("#numberText");
         write("abcABC!@#$%^&*()-_=+[{]};:'\",<.>/?\\|`~ ", 2);
 
         clickOn("#submit");
-        assertEquals("", ((TextField) lookup("#idText").query()).getText());
+        assertEquals("", ((TextField) lookup("#numberText").query()).getText());
     }
 
     @Category(ValidationTestCategory.class)
     @Test
     public void idText_TooMuchValidChars() {
-        clickOn("#addButton").clickOn("#idText");
+        clickOn("#addButton").clickOn("#numberText");
         write("1234567890");
 
         clickOn("#submit");
-        assertEquals("1234", ((TextField) lookup("#idText").query()).getText());
+        assertEquals("1234", ((TextField) lookup("#numberText").query()).getText());
     }
 
     @Category(ValidationTestCategory.class)
     @Test
     public void idText_MixedChars() {
-        clickOn("#addButton").clickOn("#idText");
+        clickOn("#addButton").clickOn("#numberText");
         write("sf2cvbdf6dfgdf7cvbcbc9cvbd");
 
         clickOn("#submit");
-        assertEquals("2679", ((TextField) lookup("#idText").query()).getText());
+        assertEquals("2679", ((TextField) lookup("#numberText").query()).getText());
     }
 
     @Category({ValidationTestCategory.class, DatabaseTestCategory.class})
@@ -140,11 +140,11 @@ public class AddItemControllerTest extends ApplicationTest {
     public void idText_DuplicatedId() {
         addItem();
 
-        clickOn("#idText");
+        clickOn("#numberText");
         write(defaultId);
 
         clickOn("#submit");
-        assertTrue((lookup("#idDuplicateAlert").query()).isVisible());
+        assertTrue((lookup("#numberDuplicateAlert").query()).isVisible());
     }
 
     @Category(ValidationTestCategory.class)
@@ -476,7 +476,7 @@ public class AddItemControllerTest extends ApplicationTest {
         ObservableList<ItemTableElement> itemList = ((TableView<ItemTableElement>) lookup("#itemTableView").query()).getItems();
 
         for (ItemTableElement item : itemList) {
-            assertEquals(id, item.getId().toString());
+            assertEquals(id, item.getNumber().toString());
             assertEquals(name, item.getName());
             assertEquals(category, item.getCategory().getName());
             assertEquals(amount, item.getAmount().toString());

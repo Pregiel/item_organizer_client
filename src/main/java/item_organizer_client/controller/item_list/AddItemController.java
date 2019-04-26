@@ -8,6 +8,7 @@ import item_organizer_client.model.*;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
+import item_organizer_client.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -46,14 +47,15 @@ public class AddItemController extends SideBarMenuViewController implements Init
     @Autowired
     private TransactionItemService transactionItemService;
 
-    public TextField idText, nameText, buyPriceText, sellPriceText;
+    public TextField numberText, nameText, buyPriceText, sellPriceText;
     public Spinner<Integer> amountText, safeAmountText;
     public DateTimePicker dateText;
     public ComboBox<String> categoryText;
     public VBox addItemPane;
-    public Label nameMinAlert, categoryMinAlert, idNullAlert, idDuplicateAlert, nameNullAlert, nameDuplicateAlert,
+    public Label nameMinAlert, categoryMinAlert, numberNullAlert, numberDuplicateAlert, nameNullAlert,
+            nameDuplicateAlert,
             amountNullAlert, sellPriceSmallerInfo, categoryMaxAlert, nameMaxAlert, buyNullAlert, sellNullAlert,
-            categoryNullAlert, idMaxAlert, buyPricePerItemText, safeAmountNullAlert;
+            categoryNullAlert, numberMaxAlert, buyPricePerItemText, safeAmountNullAlert;
     public ComboBox<String> buyPriceType;
     public HBox buyPricePerItemPane;
 
@@ -68,8 +70,8 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
     @Override
     protected void initFields() {
-        setIdTextFieldListeners(idText, Item.ID_DIGITS, itemService, idText.getParent(), idNullAlert, idDuplicateAlert,
-                idMaxAlert);
+        setIdTextFieldListeners(numberText, Item.ID_DIGITS, itemService, numberText.getParent(), numberNullAlert, numberDuplicateAlert,
+                numberMaxAlert);
         setNameTextFieldListeners(nameText, itemService, nameText.getParent(), nameNullAlert, nameMinAlert, nameDuplicateAlert,
                 nameMaxAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(), categoryNullAlert,
@@ -85,7 +87,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
     }
 
     public void clearAll(ActionEvent event) {
-        idText.setText("");
+        numberText.setText("");
         nameText.setText("");
         categoryText.setValue("");
         amountText.getEditor().setText(String.valueOf(Item.INITIAL_AMOUNT_VALUE));
@@ -97,7 +99,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
     @Override
     protected void clearAlerts() {
-        ((Pane) idText.getParent()).getChildren().removeAll(idNullAlert, idMaxAlert, idDuplicateAlert);
+        ((Pane) numberText.getParent()).getChildren().removeAll(numberNullAlert, numberMaxAlert, numberDuplicateAlert);
         ((Pane) nameText.getParent()).getChildren().removeAll(nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
         ((Pane) categoryText.getParent()).getChildren().removeAll(categoryNullAlert, categoryMinAlert,
@@ -110,7 +112,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
 
     public void submit(ActionEvent event) {
-        idText.setText(idText.getText().trim());
+        numberText.setText(numberText.getText().trim());
         nameText.setText(nameText.getText().trim());
         categoryText.getEditor().setText(categoryText.getEditor().getText().trim());
         buyPriceText.setText(buyPriceText.getText().trim());
@@ -127,7 +129,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
                 buyPriceValue = buyPriceValue.divide(BigDecimal.valueOf(amountValue), 2, RoundingMode.CEILING);
             }
 
-            Item item = new Item(Integer.valueOf(idText.getText()), nameText.getText(),
+            Item item = new Item(Integer.valueOf(numberText.getText()), nameText.getText(),
                     categoryService.findOrAdd(new Category(categoryText.getValue())), amountValue, safeAmountValue);
             Price sellPrice = new Price(sellPriceValue, PriceType.SELL, item, date);
             Price buyPrice = new Price(buyPriceValue, PriceType.BUY, item, date);
@@ -141,8 +143,12 @@ public class AddItemController extends SideBarMenuViewController implements Init
             transactionItemService.add(transactionItem);
 
             clearAll(null);
-            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            MyAlerts.showInfo(Utils.getString("alert.operation.success.title"),
+                    Utils.getString("alert.operation.success"));
             refresh();
+        } else {
+            MyAlerts.showError(Utils.getString("alert.operation.failed.title"),
+                    Utils.getString("alert.operation.failed"));
         }
     }
 
@@ -157,14 +163,14 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
     private boolean validate() {
         boolean success = true;
-        if (idText.getText().length() == 0) {
-            showAlert(idText, idNullAlert);
+        if (numberText.getText().length() == 0) {
+            showAlert(numberText, numberNullAlert);
             success = false;
-        } else if (idText.getText().length() > 4) {
-            showAlert(idText, idMaxAlert);
+        } else if (numberText.getText().length() > 4) {
+            showAlert(numberText, numberMaxAlert);
             success = false;
-        } else if (itemService.findById(Integer.parseInt(idText.getText())) != null) {
-            showAlert(idText, idDuplicateAlert);
+        } else if (itemService.findByNumber(Integer.parseInt(numberText.getText())) != null) {
+            showAlert(numberText, numberDuplicateAlert);
             success = false;
         }
 

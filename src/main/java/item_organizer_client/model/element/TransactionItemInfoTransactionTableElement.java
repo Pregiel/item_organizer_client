@@ -13,7 +13,7 @@ public class TransactionItemInfoTransactionTableElement extends TransactionItem 
         super(transactionItem);
 
         name = transactionItem.getItem().getName();
-        id = Utils.fillWithZeros(transactionItem.getItem().getId(), 4);
+        id = Utils.fillWithZeros(transactionItem.getItem().getNumber(), 4);
         pricePerItem = transactionItem.getPrice().toString();
         totalPrice = Price.priceFormat(getPrice().getValue().multiply(BigDecimal.valueOf(getAmount())));
         category = transactionItem.getItem().getCategory().getName();
@@ -41,9 +41,9 @@ public class TransactionItemInfoTransactionTableElement extends TransactionItem 
 
     @Override
     public int compareTo(TransactionItem o) {
-        if (getItem().getId() == null || o.getItem().getId() == null) {
+        if (getItem().getNumber() == null || o.getItem().getNumber() == null) {
             return 0;
-        } else if (getItem().getId().compareTo(o.getItem().getId()) == 0) {
+        } else if (getItem().getNumber().compareTo(o.getItem().getNumber()) == 0) {
             if (getAmount() == null || o.getAmount() == null) {
                 return 0;
             } else if (getAmount().compareTo(o.getAmount()) == 0) {
@@ -54,6 +54,6 @@ public class TransactionItemInfoTransactionTableElement extends TransactionItem 
             }
             return getAmount().compareTo(o.getAmount());
         }
-        return getItem().getId().compareTo(o.getItem().getId());
+        return getItem().getNumber().compareTo(o.getItem().getNumber());
     }
 }

@@ -87,7 +87,7 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
         try {
             String text = searchText.getEditor().getText();
             if (text.substring(0,4).matches("\\d{4}")) {
-                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
+                selectedItem = itemService.findByNumber(Integer.parseInt(text.substring(0, 4)));
             } else {
                 selectedItem = itemService.findByName(text);
             }
@@ -105,7 +105,7 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
     private boolean checkIfItemIsAlreadyAdded(Item item) {
         for (BuyItemElementController controller : buyItemController.getControllerList()) {
             if (getElementId() != controller.getElementId()) {
-                if (item.getId() == controller.getSelectedId()) {
+                if (item.getNumber() == controller.getSelectedId()) {
                     if (item.getName().equals(controller.getSelectedName())) {
                         return true;
                     }
@@ -179,7 +179,7 @@ public class BuyItemElementController extends SideBarMenuViewController implemen
                 break;
             case 1:
                 buyItemPane.getChildren().addAll(searchPane, detailsInputPane);
-                selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
+                selectedItemId.setText(Utils.fillWithZeros(selectedItem.getNumber(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
 
                 if (buyPriceType.getSelectionModel().getSelectedIndex() != 0) {

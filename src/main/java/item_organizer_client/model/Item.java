@@ -14,13 +14,18 @@ public class Item implements Comparable<Item> {
     public static final int INITIAL_SAFE_AMOUNT_VALUE = 5;
 
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_item")
+    @SequenceGenerator(name = "id_item", sequenceName = "ID_ITE")
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "number", nullable = false, unique = true)
+    private Integer number;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -30,17 +35,17 @@ public class Item implements Comparable<Item> {
     @Column(name = "safe_amount")
     private Integer safeAmount;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<TransactionItem> transactionItems;
 
     public Item() {
     }
 
-    public Item(Integer id, String name, Category category, Integer amount, Integer safeAmount) {
-        this.id = id;
+    public Item(Integer number, String name, Category category, Integer amount, Integer safeAmount) {
+        this.number = number;
         this.name = name;
         this.category = category;
         this.amount = amount;
@@ -49,6 +54,7 @@ public class Item implements Comparable<Item> {
 
     public Item(Item item) {
         this.id = item.id;
+        this.number = item.number;
         this.name = item.name;
         this.category = item.category;
         this.amount = item.amount;
@@ -63,6 +69,14 @@ public class Item implements Comparable<Item> {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getName() {
@@ -114,14 +128,14 @@ public class Item implements Comparable<Item> {
     }
 
     public String toTitle() {
-        return Utils.fillWithZeros(id, 4) + ". " + name;
+        return Utils.fillWithZeros(number, 4) + ". " + name;
     }
 
     @Override
     public int compareTo(Item o) {
-        if (getId() == null || o.getId() == null) {
+        if (getNumber() == null || o.getNumber() == null) {
             return 0;
         }
-        return getId().compareTo(o.getId());
+        return getNumber().compareTo(o.getNumber());
     }
 }

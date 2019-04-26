@@ -62,7 +62,7 @@ public class SearchTransactionController extends SideBarMenuViewController imple
         setPriceTextFieldListeners(priceFromText, false);
         setPriceTextFieldListeners(priceToText, false);
 
-//        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), idText,
+//        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), numberText,
 //                nameText, categoryText, amountFromText, amountToText, buyPriceFromText, buyPriceToText,
 //                sellPriceFromText, sellPriceToText);
     }
@@ -106,13 +106,13 @@ public class SearchTransactionController extends SideBarMenuViewController imple
 
     public void saveValues() {
         savedValues.clear();
-        savedValues.put("idText", idText.getText());
+        savedValues.put("numberText", idText.getText());
         savedValues.put("priceFromText", priceFromText.getText());
         savedValues.put("priceToText", priceToText.getText());
     }
 
     public void backupValues() {
-        idText.setText(savedValues.get("idText"));
+        idText.setText(savedValues.get("numberText"));
         priceFromText.setText(savedValues.get("priceFromText"));
         priceToText.setText(savedValues.get("priceToText"));
     }

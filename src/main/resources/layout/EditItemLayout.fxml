@@ -67,10 +67,10 @@
                                               <Button fx:id="idReset" mnemonicParsing="false" onAction="#resetId" text="Przywróć" />
                                           </children>
                                       </HBox>
-                                      <TextField fx:id="idText" />
-                                      <Label fx:id="idNullAlert" styleClass="alert-label" text="Wprowadź ID produktu" />
-                                      <Label fx:id="idDuplicateAlert" styleClass="alert-label" text="Istnieje już produkt o tym ID" />
-                                      <Label fx:id="idMaxAlert" styleClass="alert-label" text="ID produktu może mieć co najwyżej 4 cyfry" />
+                                      <TextField fx:id="numberText" />
+                                      <Label fx:id="numberNullAlert" styleClass="alert-label" text="Wprowadź ID produktu" />
+                                      <Label fx:id="numberDuplicateAlert" styleClass="alert-label" text="Istnieje już produkt o tym ID" />
+                                      <Label fx:id="numberMaxAlert" styleClass="alert-label" text="ID produktu może mieć co najwyżej 4 cyfry" />
                                   </children>
                                   <GridPane.margin>
                                       <Insets />

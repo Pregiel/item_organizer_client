@@ -116,12 +116,12 @@
 
     <repositories>
         <repository>
-            <id>mvnrepository</id>
+            <number>mvnrepository</number>
             <name>mvnrepository</name>
             <url>http://central.maven.org/maven2/</url>
         </repository>
         <repository>
-            <id>hibernatesqlite-maven</id>
+            <number>hibernatesqlite-maven</number>
             <url>https://hibernate-sqlite.googlecode.com/svn/trunk/mavenrepo</url>
         </repository>
     </repositories>

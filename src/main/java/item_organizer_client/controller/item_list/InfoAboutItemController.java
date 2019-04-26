@@ -10,7 +10,6 @@ import item_organizer_client.model.element.PriceTableElement;
 import item_organizer_client.model.element.TransactionItemInfoItemTableElement;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
-import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
 import javafx.collections.FXCollections;
@@ -144,7 +143,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
                 headerPane.getChildren().add(selectedItemPane);
 
                 selectedItemTitle.setText(selectedItem.toTitle());
-                selectedItemId.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
+                selectedItemId.setText(Utils.fillWithZeros(selectedItem.getNumber(), 4));
                 selectedItemName.setText(String.valueOf(selectedItem.getName()));
                 selectedItemCategory.setText(selectedItem.getCategory().getName());
                 selectedItemAmount.setText(String.valueOf(selectedItem.getAmount()));
@@ -187,7 +186,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
         try {
             String text = searchText.getEditor().getText();
             if (text.substring(0,4).matches("\\d{4}")) {
-                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
+                selectedItem = itemService.findByNumber(Integer.parseInt(text.substring(0, 4)));
             } else {
                 selectedItem = itemService.findByName(text);
             }
@@ -208,7 +207,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
 
     public void showInfoAbout(int id) {
         try {
-            selectedItem = itemService.findById(id);
+            selectedItem = itemService.findByNumber(id);
 
             if (selectedItem == null)
                 throw new NullPointerException();

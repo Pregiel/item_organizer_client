@@ -241,7 +241,7 @@ public class ItemListController extends SideBarController implements Initializab
 
     public void showInfoView(Item item) {
         changeView(MenuView.INFO_ITEM);
-        ((InfoAboutItemController) getCurrentController()).showInfoAbout(item.getId());
+        ((InfoAboutItemController) getCurrentController()).showInfoAbout(item.getNumber());
     }
 
     public void showEditView(Item item) {

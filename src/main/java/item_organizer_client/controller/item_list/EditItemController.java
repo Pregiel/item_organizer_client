@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -50,11 +49,13 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     public Button sellPriceReset, buyPriceReset, safeAmountReset, amountReset, categoryReset, nameReset, idReset;
     public GridPane searchInputPane, editValuePane;
     public BorderPane editPane;
-    public TextField idText, nameText, buyPriceText, sellPriceText;
+    public TextField numberText, nameText, buyPriceText, sellPriceText;
     public Spinner<Integer> amountText, safeAmountText;
     public ComboBox<String> searchText, categoryText;
-    public Label nameMinAlert, categoryMinAlert, idNullAlert, idDuplicateAlert, nameNullAlert, nameDuplicateAlert,
-            amountNullAlert, categoryMaxAlert, nameMaxAlert, buyNullAlert, sellNullAlert, categoryNullAlert, idMaxAlert,
+    public Label nameMinAlert, categoryMinAlert, numberNullAlert, numberDuplicateAlert, nameNullAlert,
+            nameDuplicateAlert,
+            amountNullAlert, categoryMaxAlert, nameMaxAlert, buyNullAlert, sellNullAlert, categoryNullAlert,
+            numberMaxAlert,
             safeAmountNullAlert, selectedItemTitle, itemNotExistAlert;
 
     private Item selectedItem;
@@ -73,7 +74,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     protected void initFields() {
         setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
 
-        setIdTextFieldListeners(idText, Item.ID_DIGITS, idText.getParent(), idNullAlert, idDuplicateAlert, idMaxAlert);
+        setIdTextFieldListeners(numberText, Item.ID_DIGITS, numberText.getParent(), numberNullAlert, numberDuplicateAlert, numberMaxAlert);
         setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert, nameMaxAlert,
                 nameDuplicateAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
@@ -97,7 +98,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     protected void clearAlerts() {
         ((Pane) searchText.getParent()).getChildren().removeAll(itemNotExistAlert);
 
-        ((Pane) idText.getParent()).getChildren().removeAll(idNullAlert, idMaxAlert, idDuplicateAlert);
+        ((Pane) numberText.getParent()).getChildren().removeAll(numberNullAlert, numberMaxAlert, numberDuplicateAlert);
         ((Pane) nameText.getParent()).getChildren().removeAll(nameNullAlert, nameMinAlert,
                 nameMaxAlert, nameDuplicateAlert);
         ((Pane) categoryText.getParent()).getChildren().removeAll(categoryNullAlert, categoryMinAlert,
@@ -123,8 +124,8 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     }
 
     public void resetId(ActionEvent event) {
-        idText.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
-        ((Pane) idText.getParent()).getChildren().removeAll(idNullAlert, idMaxAlert, idDuplicateAlert);
+        numberText.setText(Utils.fillWithZeros(selectedItem.getNumber(), 4));
+        ((Pane) numberText.getParent()).getChildren().removeAll(numberNullAlert, numberMaxAlert, numberDuplicateAlert);
     }
 
     public void resetName(ActionEvent event) {
@@ -166,7 +167,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     }
 
     public void submit(ActionEvent event) {
-        idText.setText(idText.getText().trim());
+        numberText.setText(numberText.getText().trim());
         nameText.setText(nameText.getText().trim());
         categoryText.getEditor().setText(categoryText.getEditor().getText().trim());
         buyPriceText.setText(buyPriceText.getText().trim());
@@ -179,36 +180,35 @@ public class EditItemController extends SideBarMenuViewController implements Ini
             BigDecimal buyPriceValue = new BigDecimal(buyPriceText.getText());
             Timestamp date = Timestamp.valueOf(LocalDateTime.now());
 
+            selectedItem.setNumber(Integer.valueOf(numberText.getText()));
+            selectedItem.setName(nameText.getText());
+            selectedItem.setCategory(categoryService.findOrAdd(new Category(categoryText.getEditor().getText())));
+            selectedItem.setAmount(amountValue);
+            selectedItem.setSafeAmount(safeAmountValue);
 
-            Item item = new Item(selectedItem.getId(), nameText.getText(),
-                    categoryService.findOrAdd(new Category(categoryText.getEditor().getText())), amountValue, safeAmountValue);
-
-            Price buyPrice = priceService.getLastedForItem(item, PriceType.BUY);
+            Price buyPrice = priceService.getLastedForItem(selectedItem, PriceType.BUY);
             if (buyPrice.getValue().compareTo(buyPriceValue) != 0) {
-                buyPrice = new Price(buyPriceValue, PriceType.BUY, item, date);
+                buyPrice = new Price(buyPriceValue, PriceType.BUY, selectedItem, date);
                 priceService.add(buyPrice);
             }
 
-            Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
+            Price sellPrice = priceService.getLastedForItem(selectedItem, PriceType.SELL);
             if (sellPrice.getValue().compareTo(sellPriceValue) != 0) {
-                sellPrice = new Price(sellPriceValue, PriceType.SELL, item, date);
+                sellPrice = new Price(sellPriceValue, PriceType.SELL, selectedItem, date);
                 priceService.add(sellPrice);
             }
 
-            itemService.update(item);
-
-//            if (!item.getId().equals(Integer.parseInt(idText.getText()))) {
-//                selectedItem = itemService.updateId(item, Integer.parseInt(idText.getText()));
-//            } else {
-                selectedItem = item;
-//            }
+            itemService.update(selectedItem);
 
             reset(null);
-            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            MyAlerts.showInfo(Utils.getString("alert.operation.success.title"),
+                    Utils.getString("alert.operation.success"));
             refresh();
+        } else {
+            MyAlerts.showError(Utils.getString("alert.operation.failed.title"),
+                    Utils.getString("alert.operation.failed"));
         }
     }
-
 
     private void refresh() {
         ItemList.getInstance().refresh();
@@ -221,12 +221,20 @@ public class EditItemController extends SideBarMenuViewController implements Ini
 
     private boolean validate() {
         boolean success = true;
-        if (idText.getText().length() == 0) {
-            showAlert(idText, idNullAlert);
+        if (numberText.getText().length() == 0) {
+            showAlert(numberText, numberNullAlert);
             success = false;
-        } else if (idText.getText().length() > 4) {
-            showAlert(idText, idMaxAlert);
+        } else if (numberText.getText().length() > 4) {
+            showAlert(numberText, numberMaxAlert);
             success = false;
+        } else {
+            Item item = itemService.findByNumber(Integer.parseInt(numberText.getText()));
+            if (item != null) {
+                if (!item.getId().equals(selectedItem.getId())) {
+                    showAlert(numberText, numberDuplicateAlert);
+                    success = false;
+                }
+            }
         }
 
         if (nameText.getText().length() == 0) {
@@ -238,6 +246,14 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         } else if (nameText.getText().length() > 250) {
             showAlert(nameText, nameMaxAlert);
             success = false;
+        } else {
+            Item item = itemService.findByName(nameText.getText());
+            if (item != null) {
+                if (!item.getName().equals(selectedItem.getName())) {
+                    showAlert(nameText, nameDuplicateAlert);
+                    success = false;
+                }
+            }
         }
 
         if (categoryText.getEditor().getText() == null) {
@@ -303,11 +319,11 @@ public class EditItemController extends SideBarMenuViewController implements Ini
                 editPane.setBottom(footerPane);
 
                 if (checkDuplicatedIdListener != null) {
-                    idText.focusedProperty().removeListener(checkDuplicatedIdListener);
+                    numberText.focusedProperty().removeListener(checkDuplicatedIdListener);
                 }
-                checkDuplicatedIdListener = TextFieldListener.onlyReturn().checkItemIdIfExistListener(idText,
-                        itemService, selectedItem.getId(), idText.getParent(), idDuplicateAlert);
-                idText.focusedProperty().addListener(checkDuplicatedIdListener);
+                checkDuplicatedIdListener = TextFieldListener.onlyReturn().checkItemIdIfExistListener(numberText,
+                        itemService, selectedItem.getNumber(), numberText.getParent(), numberDuplicateAlert);
+                numberText.focusedProperty().addListener(checkDuplicatedIdListener);
 
                 if (checkDuplicatedNameListener != null) {
                     nameText.focusedProperty().removeListener(checkDuplicatedNameListener);
@@ -317,7 +333,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
                 nameText.focusedProperty().addListener(checkDuplicatedNameListener);
 
                 selectedItemTitle.setText(selectedItem.toTitle());
-                idText.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
+                numberText.setText(Utils.fillWithZeros(selectedItem.getNumber(), 4));
                 nameText.setText(String.valueOf(selectedItem.getName()));
                 categoryText.getEditor().setText(selectedItem.getCategory().getName());
                 amountText.getEditor().setText(String.valueOf(selectedItem.getAmount()));
@@ -340,7 +356,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         try {
             String text = searchText.getEditor().getText();
             if (text.substring(0, 4).matches("\\d{4}")) {
-                selectedItem = itemService.findById(Integer.parseInt(text.substring(0, 4)));
+                selectedItem = itemService.findByNumber(Integer.parseInt(text.substring(0, 4)));
             } else {
                 selectedItem = itemService.findByName(text);
             }
@@ -369,7 +385,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
             goToStep(1);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
-            searchText.getEditor().setText(Utils.fillWithZeros(item.getId(), 4));
+            searchText.getEditor().setText(Utils.fillWithZeros(item.getNumber(), 4));
             ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }

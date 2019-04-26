@@ -98,7 +98,7 @@ public class BuyItemController extends SideBarMenuViewController implements Init
                 int amount = controller.getSelectedAmount();
 
                 for (Item element : itemList) {
-                    if (element.getId().compareTo(item.getId()) == 0) {
+                    if (element.getNumber().compareTo(item.getNumber()) == 0) {
                         item = element;
                         duplicatedItem = true;
                         break;
@@ -120,7 +120,7 @@ public class BuyItemController extends SideBarMenuViewController implements Init
                 }
 
                 for (TransactionItem transactionItem : transactionItemList) {
-                    if (transactionItem.getItem().getId().compareTo(item.getId()) == 0 &&
+                    if (transactionItem.getItem().getNumber().compareTo(item.getNumber()) == 0 &&
                             transactionItem.getPrice().getValue().compareTo(buyPrice.getValue()) == 0) {
                         duplicatedTransactionItem = true;
                         transactionItem.setAmount(transactionItem.getAmount() + amount);
