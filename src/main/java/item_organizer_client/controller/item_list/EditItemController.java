@@ -215,9 +215,9 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         goToStep(0);
     }
 
-    public void showEditItem(int id) {
+    public void setEditItem(Item item) {
         try {
-            selectedItem = itemService.findById(id);
+            selectedItem = item;
 
             if (selectedItem == null)
                 throw new NullPointerException();
@@ -225,7 +225,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
             goToStep(1);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
-            searchText.getEditor().setText(Utils.fillWithZeros(id, 4));
+            searchText.getEditor().setText(Utils.fillWithZeros(item.getId(), 4));
             ((Pane) searchText.getParent()).getChildren().add(itemNotExistAlert);
         }
     }

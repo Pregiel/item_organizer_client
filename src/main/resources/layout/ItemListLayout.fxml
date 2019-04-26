@@ -113,7 +113,7 @@
                                 <Insets bottom="4.0" left="3.0" right="3.0" top="4.0" />
                             </VBox.margin>
                         </Pane>
-                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#showSearchView" styleClass="side-icon-button">
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#toggleSearchView" styleClass="side-icon-button">
                             <graphic>
                                 <StackPane>
                                     <children>
@@ -131,7 +131,7 @@
                                 <Insets bottom="4.0" left="3.0" right="3.0" top="4.0" />
                             </VBox.margin>
                         </Pane>
-                        <Button fx:id="addButton" mnemonicParsing="false" onAction="#showAddView" styleClass="side-icon-button">
+                        <Button fx:id="addButton" mnemonicParsing="false" onAction="#toggleAddView" styleClass="side-icon-button">
                             <graphic>
                                 <StackPane>
                                     <children>
@@ -144,7 +144,7 @@
                                 <Tooltip text="Dodaj produkt" />
                             </tooltip>
                         </Button>
-                        <Button fx:id="buyButton" mnemonicParsing="false" onAction="#showBuyView" styleClass="side-icon-button">
+                        <Button fx:id="buyButton" mnemonicParsing="false" onAction="#toggleBuyView" styleClass="side-icon-button">
                             <graphic>
                                 <StackPane>
                                     <children>
@@ -157,7 +157,7 @@
                                 <Tooltip text="Dokup produkt" />
                             </tooltip>
                         </Button>
-                        <Button fx:id="sellButton" mnemonicParsing="false" onAction="#showSellView" styleClass="side-icon-button">
+                        <Button fx:id="sellButton" mnemonicParsing="false" onAction="#toggleSellView" styleClass="side-icon-button">
                             <graphic>
                                 <StackPane>
                                     <children>
@@ -175,7 +175,7 @@
                                 <Insets bottom="4.0" left="3.0" right="3.0" top="4.0" />
                             </VBox.margin>
                         </Pane>
-                        <Button fx:id="infoButton" layoutX="15.0" layoutY="175.0" mnemonicParsing="false" onAction="#showInfoView" styleClass="side-icon-button">
+                        <Button fx:id="infoButton" layoutX="15.0" layoutY="175.0" mnemonicParsing="false" onAction="#toggleInfoView" styleClass="side-icon-button">
                             <graphic>
                                 <StackPane>
                                     <children>
@@ -188,7 +188,7 @@
                                 <Tooltip text="Informacje o produkcie" />
                             </tooltip>
                         </Button>
-                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#showEditView" styleClass="side-icon-button">
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#toggleEditView" styleClass="side-icon-button">
                      <graphic>
                         <StackPane>
                            <children>

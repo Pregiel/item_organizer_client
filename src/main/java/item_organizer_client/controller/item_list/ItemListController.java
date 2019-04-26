@@ -25,7 +25,6 @@ import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -67,25 +66,26 @@ public class ItemListController extends SideBarController implements Initializab
                 TableRow<ItemTableElement> row = new TableRow<>();
 
                 row.setOnMouseClicked(event -> {
-                    ItemTableElement item = row.getItem();
+                    ItemTableElement itemTableElement = row.getItem();
                     if (row.isEmpty()) {
                         itemTableView.getSelectionModel().clearSelection();
                     } else if (event.getClickCount() == 2) {
+                        Item item = new Item(itemTableElement);
                         switch (ItemListController.this.getCurrentView()) {
                             case NONE:
                             case SEARCH_ITEM:
                             case ADD_ITEM:
                             case INFO_ITEM:
-                                ItemListController.this.showInfoAbout(item.getId());
+                                showInfoView(item);
                                 break;
                             case EDIT_ITEM:
-                                ItemListController.this.showEditItem(item.getId());
+                                showEditView(item);
                                 break;
                             case BUY_ITEM:
-                                ((BuyItemController) ItemListController.this.getCurrentController()).addNewItem(new Item(item));
+                                showBuyView(item);
                                 break;
                             case SELL_ITEM:
-                                ((SellItemController) ItemListController.this.getCurrentController()).addNewItem(new Item(item));
+                                showSellView(item);
                                 break;
                         }
                     }
@@ -209,45 +209,54 @@ public class ItemListController extends SideBarController implements Initializab
         hideView();
     }
 
-    public void showSearchView(ActionEvent event) {
+    public void toggleSearchView(ActionEvent event) {
         toggleView(MenuView.SEARCH_ITEM);
     }
 
-    public void showAddView(ActionEvent event) {
+    public void toggleAddView(ActionEvent event) {
         toggleView(MenuView.ADD_ITEM);
     }
 
-    public void showBuyView(ActionEvent event) {
+    public void toggleBuyView(ActionEvent event) {
         toggleView(MenuView.BUY_ITEM);
     }
 
-    public void showSellView(ActionEvent event) {
+    public void toggleSellView(ActionEvent event) {
         toggleView(MenuView.SELL_ITEM);
     }
 
-    public void showInfoView(ActionEvent event) {
+    public void toggleInfoView(ActionEvent event) {
         toggleView(MenuView.INFO_ITEM);
     }
 
-    public void showEditView(ActionEvent event) {
+    public void toggleEditView(ActionEvent event) {
         toggleView(MenuView.EDIT_ITEM);
     }
 
-    public void showInfoAbout(int id) {
-        if (!getCurrentView().equals(MenuView.INFO_ITEM)) {
-            hideView();
-            showView(MenuView.INFO_ITEM);
+    private void changeView(MenuView menuView) {
+        if (!getCurrentView().equals(menuView)) {
+            showView(menuView);
         }
-        ((InfoAboutItemController) getCurrentController()).showInfoAbout(id);
     }
 
-    public void showEditItem(int id) {
-        if (!getCurrentView().equals(MenuView.EDIT_ITEM)) {
-            hideView();
-            showView(MenuView.EDIT_ITEM);
-        }
-        ((EditItemController) getCurrentController()).showEditItem(id);
+    public void showInfoView(Item item) {
+        changeView(MenuView.INFO_ITEM);
+        ((InfoAboutItemController) getCurrentController()).showInfoAbout(item.getId());
+    }
 
+    public void showEditView(Item item) {
+        changeView(MenuView.EDIT_ITEM);
+        ((EditItemController) getCurrentController()).setEditItem(item);
+    }
+
+    public void showBuyView(Item item) {
+        changeView(MenuView.BUY_ITEM);
+        ((BuyItemController) getCurrentController()).addNewItem(item);
+    }
+
+    public void showSellView(Item item) {
+        changeView(MenuView.SELL_ITEM);
+        ((SellItemController) getCurrentController()).addNewItem(item);
     }
 
     public CustomTextField getHeaderSearchText() {

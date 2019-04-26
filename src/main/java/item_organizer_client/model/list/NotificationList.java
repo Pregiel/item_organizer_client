@@ -2,7 +2,6 @@ package item_organizer_client.model.list;
 
 import item_organizer_client.controller.NotificationController;
 import item_organizer_client.controller.item_list.ItemListController;
-import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -107,13 +105,13 @@ public class NotificationList {
                             NotificationType.WARNING,
                             NotificationTag.ITEM_AMOUNT,
                             Utils.getString("notification.amountLessThanSafe", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoAbout(item.getId())));
+                            () -> ItemListController.getInstance().showInfoView(item)));
                 } else {
                     notificationList.add(new NotificationElement(
                             NotificationType.DANGER,
                             NotificationTag.ITEM_AMOUNT,
                             Utils.getString("notification.amountOut", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoAbout(item.getId())));
+                            () -> ItemListController.getInstance().showInfoView(item)));
                 }
             }
 
@@ -129,7 +127,7 @@ public class NotificationList {
                             NotificationType.INFO,
                             NotificationTag.ITEM_PRICE,
                             Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoAbout(item.getId())));
+                            () -> ItemListController.getInstance().showInfoView(item)));
                 }
             }
         }

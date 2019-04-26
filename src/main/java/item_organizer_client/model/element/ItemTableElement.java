@@ -33,36 +33,16 @@ public class ItemTableElement extends Item {
         }
 
         Button editButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_EDIT, "#ffae00", "#e29a00"));
-        editButton.setOnAction((event) -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.setContentText("You're editing \"" + getId() + "\"");
-            alert.showAndWait();
-        });
+        editButton.setOnAction((event) -> ItemListController.getInstance().showEditView(new Item(this)));
 
         Button moreInfoButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_INFO, "#3f59ea", "#26368e"));
-        moreInfoButton.setOnAction((event) -> {
-            ItemListController.getInstance().showInfoAbout(getId());
-        });
+        moreInfoButton.setOnAction((event) -> ItemListController.getInstance().showInfoView(new Item(this)));
 
         Button buyButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_BUY, "#00c3e5", "#00a5c1"));
-        buyButton.setOnAction((event) -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.setContentText("Item hidden");
-            alert.showAndWait();
-        });
+        buyButton.setOnAction((event) -> ItemListController.getInstance().showBuyView(new Item(this)));
 
         Button sellButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_SELL, "#00cc03", "#00aa02"));
-        sellButton.setOnAction((event) -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hey!");
-            alert.setHeaderText(null);
-            alert.setContentText("Item hidden");
-            alert.showAndWait();
-        });
+        sellButton.setOnAction((event) -> ItemListController.getInstance().showSellView(new Item(this)));
 
         Button hideButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_HIDE, "#5b5b5b", "#303030"));
         hideButton.setOnAction((event) -> {
