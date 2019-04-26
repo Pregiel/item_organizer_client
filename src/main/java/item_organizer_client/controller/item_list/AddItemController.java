@@ -112,7 +112,7 @@ public class AddItemController extends SideBarMenuViewController implements Init
     public void submit(ActionEvent event) {
         idText.setText(idText.getText().trim());
         nameText.setText(nameText.getText().trim());
-        categoryText.setValue(categoryText.getValue().trim());
+        categoryText.getEditor().setText(categoryText.getEditor().getText().trim());
         buyPriceText.setText(buyPriceText.getText().trim());
         sellPriceText.setText(sellPriceText.getText().trim());
 
@@ -182,22 +182,27 @@ public class AddItemController extends SideBarMenuViewController implements Init
             success = false;
         }
 
-        if (categoryText.getValue() == null) {
-            categoryText.setValue("");
+        if (categoryText.getEditor().getText() == null) {
+            categoryText.getEditor().setText("");
             showAlert(categoryText, categoryNullAlert);
-        } else if (categoryText.getValue().length() == 0) {
+        } else if (categoryText.getEditor().getText().length() == 0) {
             showAlert(categoryText, categoryNullAlert);
             success = false;
-        } else if (categoryText.getValue().length() < 3) {
+        } else if (categoryText.getEditor().getText().length() < 3) {
             showAlert(categoryText, categoryMinAlert);
             success = false;
-        } else if (categoryText.getValue().length() > 250) {
+        } else if (categoryText.getEditor().getText().length() > 250) {
             showAlert(categoryText, categoryMaxAlert);
             success = false;
         }
 
-        if (amountText.getValue().toString().length() == 0) {
+        if (amountText.getEditor().getText().length() == 0) {
             showAlert(amountText, amountNullAlert);
+            success = false;
+        }
+
+        if (safeAmountText.getEditor().getText().length() == 0) {
+            showAlert(safeAmountText, safeAmountNullAlert);
             success = false;
         }
 

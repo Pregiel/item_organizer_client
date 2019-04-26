@@ -20,7 +20,7 @@ public class Item implements Comparable<Item> {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -30,10 +30,10 @@ public class Item implements Comparable<Item> {
     @Column(name = "safe_amount")
     private Integer safeAmount;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "item")
     private Set<TransactionItem> transactionItems;
 
     public Item() {

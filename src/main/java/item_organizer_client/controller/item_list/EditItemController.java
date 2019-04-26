@@ -6,23 +6,32 @@ import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.database.service.PriceService;
 import item_organizer_client.listeners.TextFieldListener;
+import item_organizer_client.model.Category;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
 import item_organizer_client.utils.IconGraphic;
+import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import org.controlsfx.control.textfield.TextFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
 @FXMLController
 @Component
@@ -49,6 +58,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
             safeAmountNullAlert, selectedItemTitle, itemNotExistAlert;
 
     private Item selectedItem;
+    private ChangeListener<Boolean> checkDuplicatedIdListener, checkDuplicatedNameListener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -156,9 +166,123 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     }
 
     public void submit(ActionEvent event) {
+        idText.setText(idText.getText().trim());
+        nameText.setText(nameText.getText().trim());
+        categoryText.getEditor().setText(categoryText.getEditor().getText().trim());
+        buyPriceText.setText(buyPriceText.getText().trim());
+        sellPriceText.setText(sellPriceText.getText().trim());
+
+        if (validate()) {
+            int amountValue = Integer.parseInt(amountText.getEditor().getText());
+            int safeAmountValue = Integer.parseInt(safeAmountText.getEditor().getText());
+            BigDecimal sellPriceValue = new BigDecimal(sellPriceText.getText());
+            BigDecimal buyPriceValue = new BigDecimal(buyPriceText.getText());
+            Timestamp date = Timestamp.valueOf(LocalDateTime.now());
+
+
+            Item item = new Item(selectedItem.getId(), nameText.getText(),
+                    categoryService.findOrAdd(new Category(categoryText.getEditor().getText())), amountValue, safeAmountValue);
+
+            Price buyPrice = priceService.getLastedForItem(item, PriceType.BUY);
+            if (buyPrice.getValue().compareTo(buyPriceValue) != 0) {
+                buyPrice = new Price(buyPriceValue, PriceType.BUY, item, date);
+                priceService.add(buyPrice);
+            }
+
+            Price sellPrice = priceService.getLastedForItem(item, PriceType.SELL);
+            if (sellPrice.getValue().compareTo(sellPriceValue) != 0) {
+                sellPrice = new Price(sellPriceValue, PriceType.SELL, item, date);
+                priceService.add(sellPrice);
+            }
+
+            itemService.update(item);
+
+//            if (!item.getId().equals(Integer.parseInt(idText.getText()))) {
+//                selectedItem = itemService.updateId(item, Integer.parseInt(idText.getText()));
+//            } else {
+                selectedItem = item;
+//            }
+
+            reset(null);
+            MyAlerts.showInfo("Sukces", "Operacja zakończona sukcesem.");
+            refresh();
+        }
     }
 
-    private ChangeListener<Boolean> checkDuplicatedIdListener, checkDuplicatedNameListener;
+
+    private void refresh() {
+        ItemList.getInstance().refresh();
+
+        categoryText.getItems().clear();
+        categoryText.getItems().addAll(categoryService.getAll()
+                .stream().map(Category::getName).collect(Collectors.toList()));
+        TextFields.bindAutoCompletion(categoryText.getEditor(), categoryText.getItems());
+    }
+
+    private boolean validate() {
+        boolean success = true;
+        if (idText.getText().length() == 0) {
+            showAlert(idText, idNullAlert);
+            success = false;
+        } else if (idText.getText().length() > 4) {
+            showAlert(idText, idMaxAlert);
+            success = false;
+        }
+
+        if (nameText.getText().length() == 0) {
+            showAlert(nameText, nameNullAlert);
+            success = false;
+        } else if (nameText.getText().length() < 3) {
+            showAlert(nameText, nameMinAlert);
+            success = false;
+        } else if (nameText.getText().length() > 250) {
+            showAlert(nameText, nameMaxAlert);
+            success = false;
+        }
+
+        if (categoryText.getEditor().getText() == null) {
+            categoryText.getEditor().setText("");
+            showAlert(categoryText, categoryNullAlert);
+        } else if (categoryText.getEditor().getText().length() == 0) {
+            showAlert(categoryText, categoryNullAlert);
+            success = false;
+        } else if (categoryText.getEditor().getText().length() < 3) {
+            showAlert(categoryText, categoryMinAlert);
+            success = false;
+        } else if (categoryText.getEditor().getText().length() > 250) {
+            showAlert(categoryText, categoryMaxAlert);
+            success = false;
+        }
+
+        if (amountText.getEditor().getText().length() == 0) {
+            showAlert(amountText, amountNullAlert);
+            success = false;
+        }
+
+        if (safeAmountText.getEditor().getText().length() == 0) {
+            showAlert(safeAmountText, safeAmountNullAlert);
+            success = false;
+        }
+
+        if (buyPriceText.getText().length() == 0) {
+            showAlert(buyPriceText, buyNullAlert);
+            success = false;
+        }
+
+        if (sellPriceText.getText().length() == 0) {
+            showAlert(sellPriceText, sellNullAlert);
+            success = false;
+        }
+
+        return success;
+    }
+
+
+    private void showAlert(Control control, Label label) {
+        if (!((Pane) control.getParent()).getChildren().contains(label)) {
+            ((Pane) control.getParent()).getChildren().add(label);
+        }
+    }
 
     /**
      * @param step 0 - search item, 1 - details

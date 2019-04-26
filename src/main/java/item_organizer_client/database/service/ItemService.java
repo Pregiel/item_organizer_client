@@ -30,4 +30,6 @@ public interface ItemService {
     Item update(Item item);
 
     List<Item> updateAll(List<Item> itemList);
+
+    Item updateId(Item item, Integer id);
 }

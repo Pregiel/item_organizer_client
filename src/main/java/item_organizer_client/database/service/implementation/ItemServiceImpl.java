@@ -1,6 +1,7 @@
 package item_organizer_client.database.service.implementation;
 
 import item_organizer_client.database.Repository;
+import item_organizer_client.database.repository.ItemRepository;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
 import item_organizer_client.utils.Utils;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class ItemServiceImpl implements ItemService {
     @Autowired
-    private Repository<Item> itemRepository;
+    private ItemRepository itemRepository;
 
     @Override
     public Item add(Item item) {
@@ -68,6 +69,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> updateAll(List<Item> itemList) {
         return itemRepository.updateAll(itemList);
+    }
+
+    @Override
+    public Item updateId(Item item, Integer id) {
+        itemRepository.updateId(item, id);
+        return findById(id);
     }
 
 }
