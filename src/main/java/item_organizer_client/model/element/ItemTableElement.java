@@ -5,6 +5,7 @@ import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
+import item_organizer_client.utils.IconGraphic;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -32,19 +33,19 @@ public class ItemTableElement extends Item {
             }
         }
 
-        Button editButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_EDIT, "#ffae00", "#e29a00"));
+        Button editButton = Icon.createIconButton(Icon.createSVGIcon(IconGraphic.ELEMENT_EDIT));
         editButton.setOnAction((event) -> ItemListController.getInstance().showEditView(new Item(this)));
 
-        Button moreInfoButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_INFO, "#3f59ea", "#26368e"));
+        Button moreInfoButton = Icon.createIconButton(Icon.createSVGIcon(IconGraphic.ELEMENT_INFO));
         moreInfoButton.setOnAction((event) -> ItemListController.getInstance().showInfoView(new Item(this)));
 
-        Button buyButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_BUY, "#00c3e5", "#00a5c1"));
+        Button buyButton = Icon.createIconButton(Icon.createSVGIcon(IconGraphic.ELEMENT_BUY));
         buyButton.setOnAction((event) -> ItemListController.getInstance().showBuyView(new Item(this)));
 
-        Button sellButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_SELL, "#00cc03", "#00aa02"));
+        Button sellButton = Icon.createIconButton(Icon.createSVGIcon(IconGraphic.ELEMENT_SELL));
         sellButton.setOnAction((event) -> ItemListController.getInstance().showSellView(new Item(this)));
 
-        Button hideButton = Icon.createIconButton(Icon.createSVGIcon(Icon.IconPath.ELEMENT_HIDE, "#5b5b5b", "#303030"));
+        Button hideButton = Icon.createIconButton(Icon.createSVGIcon(IconGraphic.ELEMENT_HIDE));
         hideButton.setOnAction((event) -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Hey!");

@@ -7,42 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.shape.SVGPath;
 
-import java.util.ResourceBundle;
-
 public class Icon {
     private static final int DEFAULT_ICON_SIZE = 16;
-    private static final String DEFAULT_ICON_COLOR = "#000000";
-
-    public enum IconPath {
-        ELEMENT_EDIT, ELEMENT_BUY, ELEMENT_SELL, ELEMENT_INFO, ELEMENT_HIDE, ELEMENT_SHOW, RESTORE;
-
-        public String getSVGPath() {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("svgPaths");
-            switch (this) {
-                case ELEMENT_EDIT:
-                    return resourceBundle.getString("icon.element.edit");
-
-                case ELEMENT_BUY:
-                    return resourceBundle.getString("icon.element.buy");
-
-                case ELEMENT_SELL:
-                    return resourceBundle.getString("icon.element.sell");
-
-                case ELEMENT_INFO:
-                    return resourceBundle.getString("icon.element.info");
-
-                case ELEMENT_HIDE:
-                    return resourceBundle.getString("icon.element.hide");
-
-                case ELEMENT_SHOW:
-                    return resourceBundle.getString("icon.element.show");
-
-                case RESTORE:
-                    return resourceBundle.getString("icon.restore");
-            }
-            return null;
-        }
-    }
 
     public static Button setIconButton(Button button, Node graphic) {
         button.getStyleClass().add("no-background-button");
@@ -54,6 +20,7 @@ public class Icon {
     public static Button createIconButton(Node graphic) {
         Button button = new Button("", graphic);
         button.getStyleClass().add("no-background-button");
+        button.getStyleClass().add("highlight-onhover-button");
         button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         return button;
     }
@@ -83,26 +50,26 @@ public class Icon {
     }
 
     public static Group createSVGIcon(String path) {
-        return createSVGIcon(path, DEFAULT_ICON_COLOR);
+        return createSVGIcon(path, IconGraphic.DEFAULT_ICON_COLOR);
     }
 
-    public static Group createSVGIcon(IconPath path, String fill, String hoverFill, int size) {
-        return createSVGIcon(path.getSVGPath(), fill, hoverFill, size);
+    public static Group createSVGIcon(IconGraphic icon, String fill, String hoverFill, int size) {
+        return createSVGIcon(icon.getSVGPath(), fill, hoverFill, size);
     }
 
-    public static Group createSVGIcon(IconPath path, String fill, String hoverFill) {
-        return createSVGIcon(path, fill, hoverFill, DEFAULT_ICON_SIZE);
+    public static Group createSVGIcon(IconGraphic icon, String fill, String hoverFill) {
+        return createSVGIcon(icon, fill, hoverFill, DEFAULT_ICON_SIZE);
     }
 
-    public static Group createSVGIcon(IconPath path, String fill) {
-        return createSVGIcon(path, fill, fill);
+    public static Group createSVGIcon(IconGraphic icon, String fill) {
+        return createSVGIcon(icon, fill, fill);
     }
 
-    public static Group createSVGIcon(IconPath path, String fill, int size) {
-        return createSVGIcon(path, fill, fill, size);
+    public static Group createSVGIcon(IconGraphic icon, String fill, int size) {
+        return createSVGIcon(icon, fill, fill, size);
     }
 
-    public static Group createSVGIcon(IconPath path) {
-        return createSVGIcon(path, DEFAULT_ICON_COLOR);
+    public static Group createSVGIcon(IconGraphic icon) {
+        return createSVGIcon(icon, icon.getColor(), icon.getHoverColor());
     }
 }

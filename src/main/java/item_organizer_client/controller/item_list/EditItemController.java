@@ -9,7 +9,7 @@ import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.Icon;
-import item_organizer_client.utils.MyAlerts;
+import item_organizer_client.utils.IconGraphic;
 import item_organizer_client.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -72,7 +72,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent(), sellNullAlert);
 
         for (Button button : new Button[]{idReset, nameReset, categoryReset, amountReset, safeAmountReset, buyPriceReset, sellPriceReset}) {
-            Icon.setIconButton(button, Icon.createSVGIcon(Icon.IconPath.RESTORE,
+            Icon.setIconButton(button, Icon.createSVGIcon(IconGraphic.RESTORE,
                     "-icon-color",
                     "-icon-hover-color",
                     12));
