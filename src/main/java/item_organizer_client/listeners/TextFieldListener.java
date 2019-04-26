@@ -56,8 +56,8 @@ public class TextFieldListener extends TextInputControlListener {
         });
     }
 
-    public static ChangeListener<Boolean> checkIdIfExistListener(TextField textField, ItemService itemService, Integer exclude,
-                                                                 Parent parent, Label duplicateAlert) {
+    public static ChangeListener<Boolean> checkItemIdIfExistListener(TextField textField, ItemService itemService, Integer exclude,
+                                                                     Parent parent, Label duplicateAlert) {
         return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
             if (!newValue) {
                 if (textField.getText().matches("\\d{4}")) {
@@ -75,9 +75,31 @@ public class TextFieldListener extends TextInputControlListener {
         });
     }
 
-    public static ChangeListener<Boolean> checkIdIfExistListener(TextField textField, ItemService itemService,
-                                                                 Parent parent, Label duplicateAlert) {
-        return checkIdIfExistListener(textField, itemService, null, parent, duplicateAlert);
+    public static ChangeListener<Boolean> checkItemIdIfExistListener(TextField textField, ItemService itemService,
+                                                                     Parent parent, Label duplicateAlert) {
+        return checkItemIdIfExistListener(textField, itemService, null, parent, duplicateAlert);
+    }
+
+    public static ChangeListener<Boolean> checkItemNameIfExistListener(TextField textField, ItemService itemService, String exclude,
+                                                                       Parent parent, Label duplicateAlert) {
+        return handleListener(textField.focusedProperty(), (observable, oldValue, newValue) -> {
+            if (!newValue) {
+                if (exclude != null) {
+                    if (exclude.equals(textField.getText())) {
+                        return;
+                    }
+                }
+
+                if (itemService.findByName(textField.getText()) != null) {
+                    ((Pane) parent).getChildren().add(duplicateAlert);
+                }
+            }
+        });
+    }
+
+    public static ChangeListener<Boolean> checkItemNameIfExistListener(TextField textField, ItemService itemService,
+                                                                       Parent parent, Label duplicateAlert) {
+        return checkItemNameIfExistListener(textField, itemService, null, parent, duplicateAlert);
     }
 
     public static TextFieldListener onlyReturn() {

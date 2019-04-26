@@ -6,12 +6,10 @@ import item_organizer_client.database.service.TransactionService;
 import item_organizer_client.listeners.*;
 import item_organizer_client.model.Category;
 import item_organizer_client.model.Price;
-import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import org.apache.commons.lang3.ArrayUtils;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import tornadofx.control.DateTimePicker;
 
@@ -43,7 +41,7 @@ public abstract class SideBarMenuViewController extends Controller {
 
     protected void setIdTextFieldListeners(TextField idText, int digits, ItemService itemService, Parent parent, Label nullAlert, Label duplicateAlert, Label... alerts) {
         setIdTextFieldListeners(idText, digits, parent, nullAlert, duplicateAlert, alerts);
-        TextFieldListener.checkIdIfExistListener(idText, itemService, parent, duplicateAlert);
+        TextFieldListener.checkItemIdIfExistListener(idText, itemService, parent, duplicateAlert);
     }
 
     protected void setIdComboBoxListeners(ComboBox<String> searchText, TransactionService transactionService, Parent parent, Label idNotExistAlert, Label... alerts) {
@@ -67,6 +65,11 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.minCharsAmountListener(nameText, 3, minAlert);
         TextFieldListener.isNullListener(nameText, nullAlert);
         TextFieldListener.removeAlertsListener(nameText, parent, ArrayUtils.addAll(new Label[]{nullAlert, minAlert}, alerts));
+    }
+
+    protected void setNameTextFieldListeners(TextField nameText, ItemService itemService, Parent parent, Label nullAlert, Label minAlert, Label duplicateAlert, Label... alerts) {
+        setNameTextFieldListeners(nameText, parent, nullAlert, minAlert, ArrayUtils.addAll(new Label[]{duplicateAlert}, alerts));
+        TextFieldListener.checkItemNameIfExistListener(nameText, itemService, parent, duplicateAlert);
     }
 
     protected void setCategoryComboBoxListeners(ComboBox<String> categoryText, CategoryService categoryService, Parent parent,

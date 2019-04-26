@@ -68,13 +68,15 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
     @Override
     protected void initFields() {
-        setIdTextFieldListeners(idText, Item.ID_DIGITS, itemService, idText.getParent(), idNullAlert, idDuplicateAlert, idMaxAlert);
-        setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
-                nameMaxAlert, nameDuplicateAlert);
-        setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
-                categoryNullAlert, categoryMinAlert, categoryMaxAlert);
+        setIdTextFieldListeners(idText, Item.ID_DIGITS, itemService, idText.getParent(), idNullAlert, idDuplicateAlert,
+                idMaxAlert);
+        setNameTextFieldListeners(nameText, itemService, nameText.getParent(), nameNullAlert, nameMinAlert, nameDuplicateAlert,
+                nameMaxAlert);
+        setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(), categoryNullAlert,
+                categoryMinAlert, categoryMaxAlert);
         setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
-        setAmountSpinnerListeners(safeAmountText, Item.INITIAL_SAFE_AMOUNT_VALUE, safeAmountText.getParent(), safeAmountNullAlert);
+        setAmountSpinnerListeners(safeAmountText, Item.INITIAL_SAFE_AMOUNT_VALUE, safeAmountText.getParent(),
+                safeAmountNullAlert);
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent().getParent(), buyNullAlert, sellPriceSmallerInfo);
         setPriceTypeListeners(buyPriceText, buyPriceType, buyPriceText.getParent().getParent(), buyPricePerItemPane,
                 buyPricePerItemText, amountText);

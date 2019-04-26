@@ -64,16 +64,18 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         setItemSearchComboBox(searchText, itemService.getAllTitles(), itemNotExistAlert);
 
         setIdTextFieldListeners(idText, Item.ID_DIGITS, idText.getParent(), idNullAlert, idDuplicateAlert, idMaxAlert);
-        setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert,
-                nameMaxAlert, nameDuplicateAlert);
+        setNameTextFieldListeners(nameText, nameText.getParent(), nameNullAlert, nameMinAlert, nameMaxAlert,
+                nameDuplicateAlert);
         setCategoryComboBoxListeners(categoryText, categoryService, categoryText.getParent(),
                 categoryNullAlert, categoryMinAlert, categoryMaxAlert);
         setAmountSpinnerListeners(amountText, Item.INITIAL_AMOUNT_VALUE, amountText.getParent(), amountNullAlert);
-        setAmountSpinnerListeners(safeAmountText, Item.INITIAL_SAFE_AMOUNT_VALUE, safeAmountText.getParent(), safeAmountNullAlert);
+        setAmountSpinnerListeners(safeAmountText, Item.INITIAL_SAFE_AMOUNT_VALUE, safeAmountText.getParent(),
+                safeAmountNullAlert);
         setPriceTextFieldListeners(buyPriceText, buyPriceText.getParent(), buyNullAlert);
         setPriceTextFieldListeners(sellPriceText, sellPriceText.getParent(), sellNullAlert);
 
-        for (Button button : new Button[]{idReset, nameReset, categoryReset, amountReset, safeAmountReset, buyPriceReset, sellPriceReset}) {
+        for (Button button : new Button[]{idReset, nameReset, categoryReset, amountReset, safeAmountReset,
+                buyPriceReset, sellPriceReset}) {
             Icon.setIconButton(button, Icon.createSVGIcon(IconGraphic.RESTORE,
                     "-icon-color",
                     "-icon-hover-color",
@@ -156,11 +158,12 @@ public class EditItemController extends SideBarMenuViewController implements Ini
     public void submit(ActionEvent event) {
     }
 
-    private ChangeListener<Boolean> checkIdIfExistListener;
+    private ChangeListener<Boolean> checkDuplicatedIdListener, checkDuplicatedNameListener;
 
     /**
      * @param step 0 - search item, 1 - details
      */
+    @SuppressWarnings({"ConstantConditions", "AccessStaticViaInstance"})
     private void goToStep(int step) {
         clearAlerts();
         editItemPane.getChildren().removeAll(searchInputPane, editValuePane);
@@ -175,12 +178,19 @@ public class EditItemController extends SideBarMenuViewController implements Ini
                 headerPane.getChildren().add(selectedItemPane);
                 editPane.setBottom(footerPane);
 
-                if (checkIdIfExistListener != null) {
-                    idText.focusedProperty().removeListener(checkIdIfExistListener);
+                if (checkDuplicatedIdListener != null) {
+                    idText.focusedProperty().removeListener(checkDuplicatedIdListener);
                 }
-                checkIdIfExistListener = TextFieldListener.onlyReturn().checkIdIfExistListener(idText,
+                checkDuplicatedIdListener = TextFieldListener.onlyReturn().checkItemIdIfExistListener(idText,
                         itemService, selectedItem.getId(), idText.getParent(), idDuplicateAlert);
-                idText.focusedProperty().addListener(checkIdIfExistListener);
+                idText.focusedProperty().addListener(checkDuplicatedIdListener);
+
+                if (checkDuplicatedNameListener != null) {
+                    nameText.focusedProperty().removeListener(checkDuplicatedNameListener);
+                }
+                checkDuplicatedNameListener = TextFieldListener.onlyReturn().checkItemNameIfExistListener(nameText,
+                        itemService, selectedItem.getName(), nameText.getParent(), nameDuplicateAlert);
+                nameText.focusedProperty().addListener(checkDuplicatedNameListener);
 
                 selectedItemTitle.setText(selectedItem.toTitle());
                 idText.setText(Utils.fillWithZeros(selectedItem.getId(), 4));
