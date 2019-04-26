@@ -104,7 +104,13 @@
                       </rowConstraints>
                       <children>
                           <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Wprowadź dane" GridPane.rowIndex="1" />
-                          <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                          <VBox spacing="2.0" GridPane.rowIndex="2">
+                              <children>
+                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk" />
+                                  <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="amountNullAlert" styleClass="alert-label" text="Wprowadź liczbę sztuk" />
+                              </children>
+                          </VBox>
                           <VBox spacing="2.0" GridPane.rowIndex="3">
                               <children>
                                   <Label styleClass="property-label" text="Cena zakupu" />
@@ -127,13 +133,6 @@
                                   <Label fx:id="buyNullAlert" styleClass="alert-label" text="Wprowadź cene zakupu" />
                               </children>
                           </VBox>
-                          <VBox spacing="2.0" GridPane.rowIndex="2">
-                              <children>
-                                  <Label styleClass="property-label" text="Zakupiona liczba sztuk" />
-                                  <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="amountNullAlert" styleClass="alert-label" text="Wprowadź liczbę sztuk" />
-                              </children>
-                          </VBox>
                           <VBox spacing="2.0" GridPane.rowIndex="4">
                               <children>
                                   <Label styleClass="property-label" text="Cena sprzedaży (za sztukę)" />
@@ -141,6 +140,7 @@
                                   <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene sprzedaży" />
                               </children>
                           </VBox>
+                          <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                       </children>
                   </GridPane>
                   <VBox fx:id="detailsPane" layoutX="24.0" layoutY="205.0">

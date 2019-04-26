@@ -16,6 +16,22 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="editPane" maxHeight="1.7976931348623157E308" minWidth="200.0" prefWidth="300.0" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.EditItemController">
+    <top>
+        <VBox fx:id="headerPane" styleClass="header">
+            <children>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Edytuj produkt" />
+                <HBox fx:id="selectedItemPane" spacing="12.0">
+                    <children>
+                        <Label fx:id="selectedItemTitle" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="0002. Kubek" HBox.hgrow="ALWAYS" />
+                        <Hyperlink maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeSelectedItem" text="Zmień produkt" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="8.0" top="12.0" />
+            </padding>
+        </VBox>
+    </top>
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <content>
@@ -64,7 +80,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="ID" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="idReset" mnemonicParsing="false" onAction="#resetId" text="Przywróć" />
+                                              <Button fx:id="idReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetId" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <TextField fx:id="numberText" />
@@ -81,7 +97,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Nazwa" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="nameReset" mnemonicParsing="false" onAction="#resetName" text="Przywróć" />
+                                              <Button fx:id="nameReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetName" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <TextField fx:id="nameText" />
@@ -99,7 +115,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Kategoria" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="categoryReset" mnemonicParsing="false" onAction="#resetCategory" text="Przywróć" />
+                                              <Button fx:id="categoryReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetCategory" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <ComboBox fx:id="categoryText" editable="true" maxWidth="1.7976931348623157E308" />
@@ -116,7 +132,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Sztuk" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="amountReset" mnemonicParsing="false" onAction="#resetAmount" text="Przywróć" />
+                                              <Button fx:id="amountReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetAmount" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
@@ -131,7 +147,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Bezpieczna liczba sztuk" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="safeAmountReset" mnemonicParsing="false" onAction="#resetSafeAmount" text="Przywróć" />
+                                              <Button fx:id="safeAmountReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetSafeAmount" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <Spinner fx:id="safeAmountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
@@ -143,7 +159,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Cena zakupu" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="buyPriceReset" mnemonicParsing="false" onAction="#resetBuyPrice" text="Przywróć" />
+                                              <Button fx:id="buyPriceReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetBuyPrice" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <TextField fx:id="buyPriceText" minWidth="50.0" prefWidth="50.0" text="0.00" />
@@ -158,7 +174,7 @@
                                       <HBox alignment="CENTER_LEFT">
                                           <children>
                                               <Label maxWidth="1.7976931348623157E308" styleClass="property-label" text="Cena sprzedaży" HBox.hgrow="ALWAYS" />
-                                              <Button fx:id="sellPriceReset" mnemonicParsing="false" onAction="#resetSellPrice" text="Przywróć" />
+                                              <Button fx:id="sellPriceReset" focusTraversable="false" mnemonicParsing="false" onAction="#resetSellPrice" text="Przywróć" />
                                           </children>
                                       </HBox>
                                       <TextField fx:id="sellPriceText" text="0.00" />
@@ -181,22 +197,6 @@
             </BorderPane.margin>
         </ScrollPane>
     </center>
-    <top>
-      <VBox fx:id="headerPane" styleClass="header">
-         <children>
-            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top" text="Edytuj produkt" />
-            <HBox fx:id="selectedItemPane" spacing="12.0">
-               <children>
-                  <Label fx:id="selectedItemTitle" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="0002. Kubek" HBox.hgrow="ALWAYS" />
-                  <Hyperlink maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeSelectedItem" text="Zmień produkt" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="8.0" top="12.0" />
-         </padding>
-      </VBox>
-    </top>
     <bottom>
         <HBox fx:id="footerPane" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" spacing="12.0" BorderPane.alignment="CENTER">
             <children>

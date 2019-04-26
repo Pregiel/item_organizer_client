@@ -9,6 +9,7 @@ import item_organizer_client.model.Price;
 import item_organizer_client.model.type.PriceType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -175,6 +176,10 @@ public class SellItemElementController extends SideBarMenuViewController impleme
                 sellItemPane.getChildren().addAll(searchInputPane);
                 selectedItemId.setText("");
                 selectedItemName.setText("");
+                Platform.runLater(() -> {
+                    searchText.requestFocus();
+                    searchText.getEditor().selectAll();
+                });
                 break;
             case 1:
                 sellItemPane.getChildren().addAll(searchPane, detailsInputPane);
@@ -196,10 +201,12 @@ public class SellItemElementController extends SideBarMenuViewController impleme
                         return;
                     }
                 }
+                Platform.runLater(() -> amountText.requestFocus());
                 break;
 
             case 2:
                 sellItemPane.getChildren().addAll(searchPane, detailsPane);
+                sellItemController.getAddItemButton().requestFocus();
                 break;
         }
         setItemTitle();

@@ -18,6 +18,7 @@ import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class BuyItemController extends SideBarMenuViewController implements Init
 
     public VBox newItemPane;
     public DateTimePicker dateText;
+    public Button addItemButton;
     private List<BuyItemElementController> controllerList;
 
     @Override
@@ -211,5 +213,9 @@ public class BuyItemController extends SideBarMenuViewController implements Init
         } else {
             addItem(null);
         }
+    }
+
+    public Button getAddItemButton() {
+        return addItemButton;
     }
 }

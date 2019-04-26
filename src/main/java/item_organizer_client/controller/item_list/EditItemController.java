@@ -15,6 +15,7 @@ import item_organizer_client.utils.Icon;
 import item_organizer_client.utils.IconGraphic;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -60,6 +61,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
 
     private Item selectedItem;
     private ChangeListener<Boolean> checkDuplicatedIdListener, checkDuplicatedNameListener;
+    private int step;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,6 +123,9 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         resetSafeAmount(null);
         resetBuyPrice(null);
         resetSellPrice(null);
+
+        if (step == 1)
+            numberText.requestFocus();
     }
 
     public void resetId(ActionEvent event) {
@@ -305,6 +310,7 @@ public class EditItemController extends SideBarMenuViewController implements Ini
      */
     @SuppressWarnings({"ConstantConditions", "AccessStaticViaInstance"})
     private void goToStep(int step) {
+        this.step = step;
         clearAlerts();
         editItemPane.getChildren().removeAll(searchInputPane, editValuePane);
         editPane.setBottom(null);
@@ -312,6 +318,10 @@ public class EditItemController extends SideBarMenuViewController implements Ini
         switch (step) {
             case 0:
                 editItemPane.getChildren().addAll(searchInputPane);
+                Platform.runLater(() -> {
+                    searchText.requestFocus();
+                    searchText.getEditor().selectAll();
+                });
                 break;
             case 1:
                 editItemPane.getChildren().addAll(editValuePane);
@@ -348,6 +358,8 @@ public class EditItemController extends SideBarMenuViewController implements Ini
                 if (lastedSellPrice != null) {
                     sellPriceText.setText(lastedSellPrice.priceFormat());
                 }
+
+                Platform.runLater(() -> numberText.requestFocus());
                 break;
         }
     }

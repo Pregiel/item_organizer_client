@@ -9,6 +9,7 @@ import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -65,7 +66,6 @@ public class AddItemController extends SideBarMenuViewController implements Init
 
         initFields();
         clearAll(null);
-        clearAlerts();
     }
 
     @Override
@@ -87,6 +87,8 @@ public class AddItemController extends SideBarMenuViewController implements Init
     }
 
     public void clearAll(ActionEvent event) {
+        clearAlerts();
+
         numberText.setText("");
         nameText.setText("");
         categoryText.setValue("");
@@ -95,6 +97,8 @@ public class AddItemController extends SideBarMenuViewController implements Init
         dateText.setValue(LocalDate.now());
         buyPriceText.setText("0.00");
         sellPriceText.setText("0.00");
+
+        Platform.runLater(() -> numberText.requestFocus());
     }
 
     @Override

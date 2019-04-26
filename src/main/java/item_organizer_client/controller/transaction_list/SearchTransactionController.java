@@ -7,6 +7,7 @@ import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.database.service.ItemService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.list.ItemList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -61,10 +62,6 @@ public class SearchTransactionController extends SideBarMenuViewController imple
         setDateDatePickerListeners(dateToText, false);
         setPriceTextFieldListeners(priceFromText, false);
         setPriceTextFieldListeners(priceToText, false);
-
-//        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), numberText,
-//                nameText, categoryText, amountFromText, amountToText, buyPriceFromText, buyPriceToText,
-//                sellPriceFromText, sellPriceToText);
     }
 
     @Override
@@ -78,6 +75,8 @@ public class SearchTransactionController extends SideBarMenuViewController imple
         dateToText.getEditor().setText("");
         priceFromText.setText("");
         priceToText.setText("");
+
+        Platform.runLater(() -> idText.requestFocus());
     }
 
     public void addNewContainItem(ActionEvent event) {

@@ -35,6 +35,7 @@
                           <RowConstraints valignment="CENTER" />
                       </rowConstraints>
                       <children>
+                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Wybierz produkt" />
                           <VBox spacing="2.0" GridPane.rowIndex="1">
                               <children>
                         <ComboBox fx:id="searchText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
@@ -44,7 +45,6 @@
                                   <Insets />
                               </GridPane.margin>
                           </VBox>
-                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Wybierz produkt" />
                           <Button mnemonicParsing="false" onAction="#nextStepSearch" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                       </children>
                   </GridPane>
@@ -104,7 +104,12 @@
                       </rowConstraints>
                       <children>
                           <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="title-top-secondary" text="Wprowadź dane" GridPane.rowIndex="1" />
-                          <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                          <VBox spacing="2.0" GridPane.rowIndex="2">
+                              <children>
+                                  <Label styleClass="property-label" text="Sprzedana liczba sztuk" />
+                                  <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                              </children>
+                          </VBox>
                           <VBox spacing="2.0" GridPane.rowIndex="3">
                               <children>
                                   <Label styleClass="property-label" text="Cena" />
@@ -127,12 +132,7 @@
                                   <Label fx:id="sellNullAlert" styleClass="alert-label" text="Wprowadź cene " />
                               </children>
                           </VBox>
-                          <VBox spacing="2.0" GridPane.rowIndex="2">
-                              <children>
-                                  <Label styleClass="property-label" text="Sprzedana liczba sztuk" />
-                                  <Spinner fx:id="amountText" editable="true" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-                              </children>
-                          </VBox>
+                          <Button mnemonicParsing="false" onAction="#nextStepDetails" prefWidth="60.0" text="Dalej" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                       </children>
                   </GridPane>
                   <VBox fx:id="detailsPane" layoutX="24.0" layoutY="205.0">

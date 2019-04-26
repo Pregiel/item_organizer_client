@@ -12,6 +12,7 @@ import item_organizer_client.model.type.PriceType;
 import item_organizer_client.model.type.TransactionType;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -137,6 +138,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
         switch (step) {
             case 0:
                 infoItemPane.getChildren().addAll(searchInputPane);
+                Platform.runLater(() -> searchText.requestFocus());
                 break;
             case 1:
                 infoItemPane.getChildren().addAll(detailsPane);
@@ -185,7 +187,7 @@ public class InfoAboutItemController extends SideBarMenuViewController implement
     public void nextStepSearch(ActionEvent event) {
         try {
             String text = searchText.getEditor().getText();
-            if (text.substring(0,4).matches("\\d{4}")) {
+            if (text.substring(0, 4).matches("\\d{4}")) {
                 selectedItem = itemService.findByNumber(Integer.parseInt(text.substring(0, 4)));
             } else {
                 selectedItem = itemService.findByName(text);

@@ -5,6 +5,7 @@ import item_organizer_client.controller.SideBarMenuViewController;
 import item_organizer_client.database.service.CategoryService;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.list.ItemList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -24,7 +25,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
     @Autowired
     private CategoryService categoryService;
 
-    public TextField idText, nameText, buyPriceFromText, buyPriceToText, sellPriceFromText, sellPriceToText;
+    public TextField numberText, nameText, buyPriceFromText, buyPriceToText, sellPriceFromText, sellPriceToText;
     public Spinner<Integer> amountFromText, amountToText;
     public ComboBox<String> categoryText;
 
@@ -47,7 +48,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
 
     @Override
     protected void initFields() {
-        setIdTextFieldListeners(idText, Item.ID_DIGITS, false);
+        setIdTextFieldListeners(numberText, Item.ID_DIGITS, false);
         setNameTextFieldListeners(nameText);
         setCategoryComboBoxListeners(categoryText, categoryService);
         setAmountSpinnerListeners(amountFromText, false);
@@ -57,7 +58,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
         setPriceTextFieldListeners(sellPriceFromText, false);
         setPriceTextFieldListeners(sellPriceToText, false);
 
-        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), idText,
+        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), numberText,
                 nameText, categoryText, amountFromText, amountToText, buyPriceFromText, buyPriceToText,
                 sellPriceFromText, sellPriceToText);
     }
@@ -68,7 +69,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
     }
 
     public void clearAll(ActionEvent event) {
-        idText.setText("");
+        numberText.setText("");
         nameText.setText("");
         categoryText.setValue("");
         amountFromText.getEditor().setText("");
@@ -77,6 +78,8 @@ public class SearchItemController extends SideBarMenuViewController implements I
         buyPriceToText.setText("");
         sellPriceFromText.setText("");
         sellPriceToText.setText("");
+
+        Platform.runLater(() -> numberText.requestFocus());
     }
 
     public void submit(ActionEvent event) {
@@ -85,7 +88,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
 
     public void saveValues() {
         savedValues.clear();
-        savedValues.put("numberText", idText.getText());
+        savedValues.put("numberText", numberText.getText());
         savedValues.put("nameText", nameText.getText());
         savedValues.put("categoryText", categoryText.getEditor().getText());
         savedValues.put("amountFromText", amountFromText.getEditor().getText());
@@ -97,7 +100,7 @@ public class SearchItemController extends SideBarMenuViewController implements I
     }
 
     public void backupValues() {
-        idText.setText(savedValues.get("numberText"));
+        numberText.setText(savedValues.get("numberText"));
         nameText.setText(savedValues.get("nameText"));
         categoryText.getEditor().setText(savedValues.get("categoryText"));
         amountFromText.getEditor().setText(savedValues.get("amountFromText"));

@@ -8,6 +8,7 @@ import item_organizer_client.model.TransactionItem;
 import item_organizer_client.model.element.TransactionItemInfoTransactionTableElement;
 import item_organizer_client.utils.MyAlerts;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -70,6 +71,7 @@ public class InfoAboutTransactionController extends SideBarMenuViewController im
         switch (step) {
             case 0:
                 infoItemPane.getChildren().addAll(searchInputPane);
+                Platform.runLater(() -> searchText.requestFocus());
                 break;
             case 1:
                 infoItemPane.getChildren().addAll(detailsPane);

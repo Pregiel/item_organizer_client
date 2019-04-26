@@ -34,7 +34,7 @@
                   <VBox spacing="4.0">
                      <children>
                         <Label styleClass="property-label" text="Id" />
-                        <TextField fx:id="idText" />
+                        <TextField fx:id="numberText" />
                      </children>
                      <GridPane.margin>
                         <Insets />
