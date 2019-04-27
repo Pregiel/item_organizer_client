@@ -2,7 +2,6 @@ package item_organizer_client.utils;
 
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
@@ -39,7 +38,7 @@ public class TableColumnFormatter {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.toLocalDateTime().format(Utils.getDateFormatter()));
+                    setText(item.toLocalDateTime().format(Utils.getDateTimeFormatter()));
                 }
             }
         };

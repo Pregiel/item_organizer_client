@@ -30,8 +30,6 @@ public class TransactionListController extends SideBarController implements Init
     public Button homeButton, searchButton, infoButton;
     public SplitPane splitPane;
 
-    private TransactionList transactionList;
-
     private static TransactionListController instance;
 
     public static TransactionListController getInstance() {
@@ -47,12 +45,8 @@ public class TransactionListController extends SideBarController implements Init
         super.initialize(url, resourceBundle);
         setPreferences(Preferences.userRoot().node(this.getClass().getName()));
 
-        transactionList = TransactionList.getInstance();
-        transactionList.init();
 
         setTableItems();
-
-        transactionList.addListener(this::setTableItems);
 
         transactionTableView.setRowFactory(param -> {
             TableRow<TransactionTableElement> row = new TableRow<>();
@@ -85,14 +79,19 @@ public class TransactionListController extends SideBarController implements Init
     }
 
     private void setTableItems() {
-        FilteredList<TransactionTableElement> filteredItemList
-                = new FilteredList<>(FXCollections.observableList(transactionList.getTransactionList().stream()
-                .map(TransactionTableElement::new).sorted().collect(Collectors.toList())), transactionTableElement -> true);
+        TransactionList.getInstance().init();
 
-        SortedList<TransactionTableElement> sortedItemList = new SortedList<>(filteredItemList);
-        sortedItemList.comparatorProperty().bind(transactionTableView.comparatorProperty());
+        TransactionList.getInstance().setFilteredTransactionList(new FilteredList<>(FXCollections.observableList(
+                TransactionList.getInstance().getTransactionList().stream().map(TransactionTableElement::new)
+                        .sorted().collect(Collectors.toList())), transactionTableElement -> true));
 
-        transactionTableView.setItems(sortedItemList);
+        SortedList<TransactionTableElement> sortedList
+                = new SortedList<>(TransactionList.getInstance().getFilteredTransactionList());
+        sortedList.comparatorProperty().bind(transactionTableView.comparatorProperty());
+
+        transactionTableView.setItems(sortedList);
+
+        TransactionList.getInstance().addListener(this::setTableItems);
     }
 
     public void goHome(ActionEvent event) {

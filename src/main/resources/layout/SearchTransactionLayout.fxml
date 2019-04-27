@@ -99,7 +99,7 @@
                                 <Label styleClass="property-label" text="Zawiera" />
                                 <VBox fx:id="containPane" spacing="4.0">
                            <children>
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addNewContainItem" text="+" VBox.vgrow="ALWAYS" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addNewElement" text="+" VBox.vgrow="ALWAYS" />
                            </children></VBox>
                             </children>
                         </VBox>

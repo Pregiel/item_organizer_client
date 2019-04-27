@@ -78,7 +78,7 @@ public class InfoAboutTransactionController extends SideBarMenuViewController im
 
                 selectedTransactionId.setText(String.valueOf(selectedTransaction.getId()));
                 selectedTransactionType.setText(selectedTransaction.getType().toString());
-                selectedTransactionDate.setText(selectedTransaction.getDate().toLocalDateTime().format(Utils.getDateFormatter()));
+                selectedTransactionDate.setText(selectedTransaction.getDate().toLocalDateTime().format(Utils.getDateTimeFormatter()));
 
                 BigDecimal price = BigDecimal.ZERO;
                 for (TransactionItem transactionItem : selectedTransaction.getTransactionItems()) {

@@ -30,6 +30,11 @@ public class ItemServiceImpl implements ItemService {
 //    }
 
     @Override
+    public Item findById(Integer id) {
+        return itemRepository.findById(Item.class, id);
+    }
+
+    @Override
     public Item findByNumber(Integer number) {
         List<Item> list = itemRepository.findBy(Item.class, "number", number);
         return list.size() > 0 ? list.get(0) : null;

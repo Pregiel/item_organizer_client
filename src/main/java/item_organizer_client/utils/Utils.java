@@ -64,10 +64,12 @@ public class Utils {
         }
     }
 
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    public static final String dateTimeRegex = "[\\d]{2}.[\\d]{2}.[\\d]{4} [\\d]{2}:[\\d]{2}";
+    public static final String dateRegex = "[\\d]{2}.[\\d]{2}.[\\d]{4}";
 
-    public static DateTimeFormatter getDateFormatter() {
-        return dateFormatter;
+    public static DateTimeFormatter getDateTimeFormatter() {
+        return dateTimeFormatter;
     }
 
     public static <T> List<T> convertSetToList(Set<T> set) {

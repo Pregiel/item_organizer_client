@@ -15,7 +15,9 @@ public interface ItemService {
 //        return Repos.addAll(itemList);
 //    }
 
-    Item findByNumber(Integer id);
+    Item findById(Integer id);
+
+    Item findByNumber(Integer number);
 
     Item findByName(String name);
 
