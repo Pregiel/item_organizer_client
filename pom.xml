@@ -109,6 +109,11 @@
             <artifactId>springboot-javafx-support</artifactId>
             <version>2.1.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
 
     </dependencies>
@@ -116,12 +121,12 @@
 
     <repositories>
         <repository>
-            <number>mvnrepository</number>
+            <id>mvnrepository</id>
             <name>mvnrepository</name>
             <url>http://central.maven.org/maven2/</url>
         </repository>
         <repository>
-            <number>hibernatesqlite-maven</number>
+            <id>hibernatesqlite-maven</id>
             <url>https://hibernate-sqlite.googlecode.com/svn/trunk/mavenrepo</url>
         </repository>
     </repositories>

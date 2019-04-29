@@ -48,7 +48,7 @@ public class NotificationController extends Controller implements Initializable 
                 controller.getTagText().setText(notificationElement.getTag().toText());
                 controller.getMessageText().setText(notificationElement.getMessage());
                 controller.getCloseButton().setOnAction(event ->
-                        NotificationList.getInstance().getNotificationList().remove(notificationElement));
+                        NotificationList.getInstance().remove(notificationElement));
 
                 elementsPane.getChildren().add(node);
             } catch (IOException e) {
@@ -62,5 +62,11 @@ public class NotificationController extends Controller implements Initializable 
             NotificationList.getInstance().getNotificationList().clear();
         }
         elementsPane.getChildren().clear();
+    }
+
+    public void reset(ActionEvent event) {
+        NotificationList.getInstance().resetIgnoredFile();
+        NotificationList.getInstance().check();
+        refresh();
     }
 }

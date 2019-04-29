@@ -7,11 +7,14 @@ import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
 import item_organizer_client.model.element.NotificationElement;
 import item_organizer_client.model.type.PriceType;
+import item_organizer_client.utils.JSONFileUtils;
 import item_organizer_client.utils.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +45,19 @@ public class NotificationList {
             }
             return "";
         }
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case WARNING:
+                    return "WARNING";
+                case DANGER:
+                    return "DANGER";
+                case INFO:
+                    return "INFO";
+            }
+            return "NONE";
+        }
     }
 
     public enum NotificationTag {
@@ -55,6 +71,17 @@ public class NotificationList {
                     return Utils.getString("notification.tag.itemPrice");
             }
             return "";
+        }
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case ITEM_PRICE:
+                    return "ITEM_PRICE";
+                case ITEM_AMOUNT:
+                    return "ITEM_AMOUNT";
+            }
+            return "NONE";
         }
     }
 
@@ -101,33 +128,42 @@ public class NotificationList {
         for (Item item : ItemList.getInstance().getItemList()) {
             if (item.getAmount().compareTo(item.getSafeAmount()) < 0) {
                 if (item.getAmount().compareTo(0) > 0) {
-                    notificationList.add(new NotificationElement(
-                            NotificationType.WARNING,
-                            NotificationTag.ITEM_AMOUNT,
-                            Utils.getString("notification.amountLessThanSafe", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoView(item)));
+                    if (!checkIfIgnored(item, NotificationType.WARNING, NotificationTag.ITEM_AMOUNT)) {
+                        notificationList.add(new NotificationElement(
+                                item,
+                                NotificationType.WARNING,
+                                NotificationTag.ITEM_AMOUNT,
+                                Utils.getString("notification.amountLessThanSafe", item.toTitle()),
+                                () -> ItemListController.getInstance().showInfoView(item)));
+                    }
                 } else {
-                    notificationList.add(new NotificationElement(
-                            NotificationType.DANGER,
-                            NotificationTag.ITEM_AMOUNT,
-                            Utils.getString("notification.amountOut", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoView(item)));
+                    if (!checkIfIgnored(item, NotificationType.DANGER, NotificationTag.ITEM_AMOUNT)) {
+                        notificationList.add(new NotificationElement(
+                                item,
+                                NotificationType.DANGER,
+                                NotificationTag.ITEM_AMOUNT,
+                                Utils.getString("notification.amountOut", item.toTitle()),
+                                () -> ItemListController.getInstance().showInfoView(item)));
+                    }
                 }
             }
 
-            BigDecimal buyPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.BUY))
-                    .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
+            if (!checkIfIgnored(item, NotificationType.INFO, NotificationTag.ITEM_PRICE)) {
+                BigDecimal buyPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.BUY))
+                        .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
 
-            BigDecimal sellPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.SELL))
-                    .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
+                BigDecimal sellPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.SELL))
+                        .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
 
-            if (buyPrice != null && sellPrice != null) {
-                if (sellPrice.compareTo(buyPrice) < 0) {
-                    notificationList.add(new NotificationElement(
-                            NotificationType.INFO,
-                            NotificationTag.ITEM_PRICE,
-                            Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
-                            () -> ItemListController.getInstance().showInfoView(item)));
+                if (buyPrice != null && sellPrice != null) {
+                    if (sellPrice.compareTo(buyPrice) < 0) {
+                        notificationList.add(new NotificationElement(
+                                item,
+                                NotificationType.INFO,
+                                NotificationTag.ITEM_PRICE,
+                                Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
+                                () -> ItemListController.getInstance().showInfoView(item)));
+                    }
                 }
             }
         }
@@ -135,6 +171,37 @@ public class NotificationList {
 
     public ObservableList<NotificationElement> getNotificationList() {
         return notificationList;
+    }
+
+    private static final String IGNORED_FILE_PATH = "cfg/ignored_notifications.json";
+
+    public void remove(NotificationElement element) {
+        notificationList.remove(element);
+
+        addToIgnoredFile(element);
+    }
+
+    private void addToIgnoredFile(NotificationElement element) {
+        JSONObject ignoredElement = new JSONObject();
+        ignoredElement.put("item_id", element.getItem().getId().toString());
+        ignoredElement.put("type", element.getType().toString());
+        ignoredElement.put("tag", element.getTag().toString());
+
+        if (JSONFileUtils.checkIfJSONArrayContainsJSONObject(JSONFileUtils.getJSONArrayFromFile(IGNORED_FILE_PATH), ignoredElement)) {
+            JSONFileUtils.putJSONObjectToFile(IGNORED_FILE_PATH, ignoredElement);
+        }
+    }
+
+    private boolean checkIfIgnored(Item item, NotificationType type, NotificationTag tag) {
+        JSONObject element = new JSONObject();
+        element.put("item_id", item.getId().toString());
+        element.put("type", type.toString());
+        element.put("tag", tag.toString());
+        return JSONFileUtils.getJSONArrayFromFile(IGNORED_FILE_PATH).contains(element);
+    }
+
+    public void resetIgnoredFile() {
+        JSONFileUtils.clearJSONFile(IGNORED_FILE_PATH);
     }
 
     public void setNotificationController(NotificationController notificationController) {
