@@ -25,10 +25,6 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.addAll(items);
     }
 
-//    public List<Item> addAll(List<Item> itemList) {
-//        return addAll(itemList.toArray(new Item[0]));
-//    }
-
     @Override
     public Item findById(Integer id) {
         return itemRepository.findById(Item.class, id);
@@ -74,12 +70,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> updateAll(List<Item> itemList) {
         return itemRepository.updateAll(itemList);
-    }
-
-    @Override
-    public Item updateId(Item item, Integer id) {
-        itemRepository.updateId(item, id);
-        return findByNumber(id);
     }
 
 }

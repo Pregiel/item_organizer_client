@@ -46,6 +46,10 @@ public class MyAlerts {
         return showConfirmationDialog(title, content, null, null);
     }
 
+    public static boolean showConfirmationDialog(String title, String content, Runnable runnableOnOk) {
+        return showConfirmationDialog(title, content, runnableOnOk, null);
+    }
+
     public static boolean showConfirmationDialog(String title, String content, Runnable runnableOnOk, Runnable runnableOnCancel) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);

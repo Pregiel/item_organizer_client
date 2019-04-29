@@ -35,6 +35,9 @@ public class Item implements Comparable<Item> {
     @Column(name = "safe_amount")
     private Integer safeAmount;
 
+    @Column(name = "hidden")
+    private Boolean hidden;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<Price> prices;
 
@@ -50,6 +53,7 @@ public class Item implements Comparable<Item> {
         this.category = category;
         this.amount = amount;
         this.safeAmount = safeAmount;
+        this.hidden = false;
     }
 
     public Item(Item item) {
@@ -59,6 +63,7 @@ public class Item implements Comparable<Item> {
         this.category = item.category;
         this.amount = item.amount;
         this.safeAmount = item.safeAmount;
+        this.hidden = item.hidden;
         this.prices = item.prices;
         this.transactionItems = item.transactionItems;
     }
@@ -109,6 +114,14 @@ public class Item implements Comparable<Item> {
 
     public void setSafeAmount(Integer safeAmount) {
         this.safeAmount = safeAmount;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 
     public Set<Price> getPrices() {

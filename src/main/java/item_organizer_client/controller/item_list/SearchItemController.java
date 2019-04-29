@@ -58,9 +58,9 @@ public class SearchItemController extends SideBarMenuViewController implements I
         setPriceTextFieldListeners(sellPriceFromText, false);
         setPriceTextFieldListeners(sellPriceToText, false);
 
-        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(), numberText,
-                nameText, categoryText, amountFromText, amountToText, buyPriceFromText, buyPriceToText,
-                sellPriceFromText, sellPriceToText);
+        ItemList.getInstance().setUpSearchViewFilters(ItemListController.getInstance().getHeaderSearchText(),
+                ItemListController.getInstance().showHiddenProductsCheckBox, numberText, nameText, categoryText,
+                amountFromText, amountToText, buyPriceFromText, buyPriceToText, sellPriceFromText, sellPriceToText);
     }
 
     @Override

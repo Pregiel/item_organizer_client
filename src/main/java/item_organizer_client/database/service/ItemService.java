@@ -11,10 +11,6 @@ public interface ItemService {
 
     List<Item> addAll(Item... items);
 
-//    public static List<Item> addAll(List<Item> itemList) {
-//        return Repos.addAll(itemList);
-//    }
-
     Item findById(Integer id);
 
     Item findByNumber(Integer number);
@@ -32,6 +28,4 @@ public interface ItemService {
     Item update(Item item);
 
     List<Item> updateAll(List<Item> itemList);
-
-    Item updateId(Item item, Integer id);
 }

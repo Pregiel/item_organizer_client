@@ -13,6 +13,9 @@
 	-icon-hover-background-color: rgba(220,220,220,5);
 
     -menu-separator: #dbdbdb;
+
+    -row-hidden-color: #a1a1a1;
+    -row-odd-hidden-color: #aaaaaa;
 }
 
 .background {
@@ -68,6 +71,15 @@
 
 .table-row-cell:selected .alert-danger,
 .table-row-cell:selected .alert-warning,
-.table-row-cell:selected .alert-info {
+.table-row-cell:selected .alert-info,
+.row-hidden:selected,
+ .row-hidden:odd:selected{
     -fx-background-color: -fx-table-cell-border-color, -fx-background;
+}
+
+.row-hidden {
+    -fx-background-color: -row-hidden-color;
+}
+.row-hidden:odd {
+    -fx-background-color: -row-odd-hidden-color;
 }

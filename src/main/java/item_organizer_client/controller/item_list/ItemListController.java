@@ -12,6 +12,7 @@ import item_organizer_client.model.element.ItemTableElement;
 import item_organizer_client.model.list.NotificationList;
 import item_organizer_client.utils.TableColumnFormatter;
 import item_organizer_client.utils.Utils;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -39,8 +40,8 @@ public class ItemListController extends SideBarController implements Initializab
     public SplitPane splitPane;
     public TableColumn<ItemTableElement, Integer> idColumn, amountColumn;
     public TableColumn<ItemTableElement, Price> buyPriceColumn, sellPriceColumn;
-    public Label headerTitleText;
-    public Label headerAmountText;
+    public Label headerTitleText, headerAmountText;
+    public CheckBox showHiddenProductsCheckBox;
     public CustomTextField headerSearchText;
 
     private static ItemListController instance;
@@ -60,38 +61,47 @@ public class ItemListController extends SideBarController implements Initializab
 
         setTableItems();
 
-        itemTableView.setRowFactory(new Callback<TableView<ItemTableElement>, TableRow<ItemTableElement>>() {
-            @Override
-            public TableRow<ItemTableElement> call(TableView<ItemTableElement> param) {
-                TableRow<ItemTableElement> row = new TableRow<>();
-
-                row.setOnMouseClicked(event -> {
-                    ItemTableElement itemTableElement = row.getItem();
-                    if (row.isEmpty()) {
-                        itemTableView.getSelectionModel().clearSelection();
-                    } else if (event.getClickCount() == 2) {
-                        Item item = new Item(itemTableElement);
-                        switch (ItemListController.this.getCurrentView()) {
-                            case NONE:
-                            case SEARCH_ITEM:
-                            case ADD_ITEM:
-                            case INFO_ITEM:
-                                showInfoView(item);
-                                break;
-                            case EDIT_ITEM:
-                                showEditView(item);
-                                break;
-                            case BUY_ITEM:
-                                showBuyView(item);
-                                break;
-                            case SELL_ITEM:
-                                showSellView(item);
-                                break;
+        itemTableView.setRowFactory(param -> {
+            TableRow<ItemTableElement> row = new TableRow<ItemTableElement>() {
+                @Override
+                protected void updateItem(ItemTableElement item, boolean empty) {
+                    super.updateItem(item, empty);
+                    getStyleClass().remove("row-hidden");
+                    if (!empty) {
+                        if (item.getHidden()) {
+                            getStyleClass().add("row-hidden");
                         }
                     }
-                });
-                return row;
-            }
+                }
+            };
+
+            row.setOnMouseClicked(event -> {
+                ItemTableElement itemTableElement = row.getItem();
+                if (row.isEmpty()) {
+                    itemTableView.getSelectionModel().clearSelection();
+                } else if (event.getClickCount() == 2) {
+                    Item item = new Item(itemTableElement);
+                    switch (ItemListController.this.getCurrentView()) {
+                        case NONE:
+                        case SEARCH_ITEM:
+                        case ADD_ITEM:
+                        case INFO_ITEM:
+                            ItemListController.this.showInfoView(item);
+                            break;
+                        case EDIT_ITEM:
+                            ItemListController.this.showEditView(item);
+                            break;
+                        case BUY_ITEM:
+                            ItemListController.this.showBuyView(item);
+                            break;
+                        case SELL_ITEM:
+                            ItemListController.this.showSellView(item);
+                            break;
+                    }
+                }
+            });
+
+            return row;
         });
 
         idColumn.setCellFactory(TableColumnFormatter.idFormat());
@@ -101,7 +111,7 @@ public class ItemListController extends SideBarController implements Initializab
                 super.updateItem(price, empty);
                 ItemTableElement item = (ItemTableElement) getTableRow().getItem();
                 getStyleClass().removeAll("alert-info");
-                if (item == null ||price == null || empty) {
+                if (item == null || price == null || empty) {
                     setText(null);
                 } else {
                     setText(price.priceFormat());
@@ -118,7 +128,7 @@ public class ItemListController extends SideBarController implements Initializab
                 super.updateItem(price, empty);
                 ItemTableElement item = (ItemTableElement) getTableRow().getItem();
                 getStyleClass().removeAll("alert-info");
-                if (item == null ||price == null || empty) {
+                if (item == null || price == null || empty) {
                     setText(null);
                 } else {
                     setText(price.priceFormat());
@@ -160,7 +170,7 @@ public class ItemListController extends SideBarController implements Initializab
         headerSearchText.setRight(searchClearButton);
         headerSearchText.getRight().setVisible(false);
 
-        ItemList.getInstance().setUpSearchBoxFilters(headerSearchText);
+        ItemList.getInstance().setUpSearchBoxFilters(headerSearchText, showHiddenProductsCheckBox);
 
         headerSearchText.textProperty().addListener((observable, oldValue, newValue) ->
                 headerSearchText.getRight().setVisible(newValue.length() > 0));
@@ -169,11 +179,6 @@ public class ItemListController extends SideBarController implements Initializab
 
         itemTableView.getItems().addListener((InvalidationListener) c -> {
             headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
-            if (itemTableView.getItems().size() == ItemList.getInstance().getItemList().size()) {
-                headerTitleText.setText(Utils.getString("item_list.header.all_items"));
-            } else {
-                headerTitleText.setText(Utils.getString("item_list.header.founded"));
-            }
         });
 
         getButtonMap().put(MenuView.NONE, homeButton);
@@ -189,7 +194,7 @@ public class ItemListController extends SideBarController implements Initializab
         Utils.setTableColumnWidthProperty(itemTableView, getPreferences());
     }
 
-    private void setTableItems() {
+    public void setTableItems() {
         ItemList.getInstance().init();
 
         ItemList.getInstance().setFilteredItemList(new FilteredList<>(FXCollections.observableList(ItemList.getInstance().getItemList().stream()
@@ -261,5 +266,13 @@ public class ItemListController extends SideBarController implements Initializab
 
     public CustomTextField getHeaderSearchText() {
         return headerSearchText;
+    }
+
+    public CheckBox getShowHiddenProductsCheckBox() {
+        return showHiddenProductsCheckBox;
+    }
+
+    public TableView<ItemTableElement> getItemTableView() {
+        return itemTableView;
     }
 }
