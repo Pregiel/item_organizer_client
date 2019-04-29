@@ -16,13 +16,23 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 @Component
-public class MainController implements Initializable {
+public class MainController extends Controller implements Initializable {
     @Autowired
     private ItemService itemService;
 
@@ -34,9 +44,12 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setPreferences(Preferences.userRoot().node(this.getClass().getName()));
         ItemOrganizerDatabase.configureSessionFactory();
         showItemList(null);
         NotificationList.getInstance().setNotificationCount(notificationCount);
+
+        makeBackup();
     }
 
     public void showItemList(ActionEvent event) {
@@ -73,5 +86,25 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
         mainPane.setCenter(currentNode);
+    }
+
+    private static final String DATABASE_PATH = "database.db";
+    private static final String DATABASE_BACKUP_PATH = "backup/database_%s.db";
+
+    private void makeBackup() {
+        File folder = new File("backup/");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+//        List<File> listOfFiles = Arrays.stream(Objects.requireNonNull(folder.listFiles())).filter(
+//                file -> file.getName().matches("database.*.db")).collect(Collectors.toList());
+
+        try {
+            Files.copy(new File(DATABASE_PATH).toPath(),
+                    new File(String.format(DATABASE_BACKUP_PATH,
+                            Instant.now().toEpochMilli())).toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
