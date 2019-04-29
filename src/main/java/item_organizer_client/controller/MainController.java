@@ -100,9 +100,10 @@ public class MainController extends Controller implements Initializable {
 //                file -> file.getName().matches("database.*.db")).collect(Collectors.toList());
 
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             Files.copy(new File(DATABASE_PATH).toPath(),
                     new File(String.format(DATABASE_BACKUP_PATH,
-                            Instant.now().toEpochMilli())).toPath());
+                            formatter.format(LocalDateTime.now()))).toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
