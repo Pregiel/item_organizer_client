@@ -125,30 +125,46 @@ public class NotificationList {
             notificationList.clear();
         }
 
+        JSONArray fileContent = JSONFileUtils.getJSONArrayFromFile(IGNORED_FILE_PATH);
+        JSONFileUtils.clearJSONFile(IGNORED_FILE_PATH);
+
+
         for (Item item : ItemList.getInstance().getItemList()) {
+            NotificationElement element = null;
             if (item.getAmount().compareTo(item.getSafeAmount()) < 0) {
                 if (item.getAmount().compareTo(0) > 0) {
-                    if (!checkIfIgnored(item, NotificationType.WARNING, NotificationTag.ITEM_AMOUNT)) {
-                        notificationList.add(new NotificationElement(
-                                item,
-                                NotificationType.WARNING,
-                                NotificationTag.ITEM_AMOUNT,
-                                Utils.getString("notification.amountLessThanSafe", item.toTitle()),
-                                () -> ItemListController.getInstance().showInfoView(item)));
+                    element = new NotificationElement(
+                            item,
+                            NotificationType.WARNING,
+                            NotificationTag.ITEM_AMOUNT,
+                            Utils.getString("notification.amountLessThanSafe", item.toTitle()),
+                            () -> ItemListController.getInstance().showInfoView(item));
+                    if (!checkIfIgnored(fileContent, element)) {
+                        notificationList.add(element);
+                    } else {
+                        addToIgnoredFile(element);
                     }
                 } else {
-                    if (!checkIfIgnored(item, NotificationType.DANGER, NotificationTag.ITEM_AMOUNT)) {
-                        notificationList.add(new NotificationElement(
-                                item,
-                                NotificationType.DANGER,
-                                NotificationTag.ITEM_AMOUNT,
-                                Utils.getString("notification.amountOut", item.toTitle()),
-                                () -> ItemListController.getInstance().showInfoView(item)));
+                    element = new NotificationElement(
+                            item,
+                            NotificationType.DANGER,
+                            NotificationTag.ITEM_AMOUNT,
+                            Utils.getString("notification.amountOut", item.toTitle()),
+                            () -> ItemListController.getInstance().showInfoView(item));
+                    if (!checkIfIgnored(fileContent, element)) {
+                        notificationList.add(element);
                     }
                 }
             }
 
-            if (!checkIfIgnored(item, NotificationType.INFO, NotificationTag.ITEM_PRICE)) {
+            element = new NotificationElement(
+                    item,
+                    NotificationType.INFO,
+                    NotificationTag.ITEM_PRICE,
+                    Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
+                    () -> ItemListController.getInstance().showInfoView(item));
+
+            if (!checkIfIgnored(fileContent, element)) {
                 BigDecimal buyPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.BUY))
                         .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
 
@@ -157,12 +173,7 @@ public class NotificationList {
 
                 if (buyPrice != null && sellPrice != null) {
                     if (sellPrice.compareTo(buyPrice) < 0) {
-                        notificationList.add(new NotificationElement(
-                                item,
-                                NotificationType.INFO,
-                                NotificationTag.ITEM_PRICE,
-                                Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
-                                () -> ItemListController.getInstance().showInfoView(item)));
+                        notificationList.add(element);
                     }
                 }
             }
@@ -192,12 +203,15 @@ public class NotificationList {
         }
     }
 
-    private boolean checkIfIgnored(Item item, NotificationType type, NotificationTag tag) {
+    private boolean checkIfIgnored(JSONArray fileContent, NotificationElement notificationElement) {
+        if (notificationElement.getItem().getHidden()) {
+            return true;
+        }
         JSONObject element = new JSONObject();
-        element.put("item_id", item.getId().toString());
-        element.put("type", type.toString());
-        element.put("tag", tag.toString());
-        return JSONFileUtils.getJSONArrayFromFile(IGNORED_FILE_PATH).contains(element);
+        element.put("item_id", notificationElement.getItem().getId().toString());
+        element.put("type", notificationElement.getType().toString());
+        element.put("tag", notificationElement.getTag().toString());
+        return fileContent.contains(element);
     }
 
     public void resetIgnoredFile() {

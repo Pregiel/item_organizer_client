@@ -207,6 +207,8 @@ public class ItemListController extends SideBarController implements Initializab
 
         NotificationList.getInstance().check();
 
+        ItemList.getInstance().bindPredicate();
+
         ItemList.getInstance().addListener(this::setTableItems);
     }
 

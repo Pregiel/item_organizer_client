@@ -13,16 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JSONFileUtils {
-    public class JSONValue {
-        private String key;
-        private Object value;
-
-        public JSONValue(String key, Object value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public static JSONArray getJSONArrayFromFile(String path) {
         JSONParser jsonParser = new JSONParser();
         JSONArray fileContent;
@@ -38,6 +28,10 @@ public class JSONFileUtils {
     public static void putJSONObjectToFile(String path, JSONObject jsonObject) {
         JSONArray fileContent = getJSONArrayFromFile(path);
 
+        putJSONObjectToFile(path, jsonObject, fileContent);
+    }
+
+    public static void putJSONObjectToFile(String path, JSONObject jsonObject, JSONArray fileContent) {
         fileContent.add(jsonObject);
         try (FileWriter file = new FileWriter(path)) {
             file.write(fileContent.toString());
@@ -63,15 +57,12 @@ public class JSONFileUtils {
 
             for (Object objectValue : jsonObject.entrySet()) {
                 Map.Entry<String, Object> value = (Map.Entry<String, Object>) objectValue;
-                System.out.println(value.getKey() + " " + value.getValue() + "/" + object.get(value.getKey()));
                 if (object.get(value.getKey()).equals(value.getValue())) {
                     matched++;
                 }
             }
 
-            System.out.println(matched);
             if (matched == jsonObject.entrySet().size()) {
-                System.out.println(matched);
                 return false;
             }
         }

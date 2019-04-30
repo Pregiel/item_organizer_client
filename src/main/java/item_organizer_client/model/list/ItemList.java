@@ -6,9 +6,11 @@ import item_organizer_client.model.Item;
 import item_organizer_client.model.element.ItemTableElement;
 import item_organizer_client.utils.Utils;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -82,6 +84,15 @@ public class ItemList {
         this.filteredItemList = filteredItemList;
     }
 
+    private ObservableValue<? extends Predicate<? super ItemTableElement>> binding;
+
+    public void bindPredicate() {
+        if (binding != null) {
+            filteredItemList.predicateProperty().unbind();
+            filteredItemList.predicateProperty().bind(binding);
+        }
+    }
+
     public void setUpSearchBoxFilters(TextField searchBoxField, CheckBox showHiddenProductsCheckBox) {
         ObjectProperty<Predicate<ItemTableElement>> searchBoxFilter = new SimpleObjectProperty<>();
         searchBoxFilter.bind(Bindings.createObjectBinding(() -> item -> {
@@ -108,10 +119,11 @@ public class ItemList {
             return true;
         }, showHiddenProductsCheckBox.selectedProperty()));
 
-        filteredItemList.predicateProperty().unbind();
-        filteredItemList.predicateProperty().bind(Bindings.createObjectBinding(() ->
+        binding = Bindings.createObjectBinding(() ->
                         searchBoxFilter.get().and(showHiddenProductsFilter.get()),
-                searchBoxFilter, showHiddenProductsFilter));
+                searchBoxFilter, showHiddenProductsFilter);
+
+        bindPredicate();
     }
 
     public void setUpSearchViewFilters(TextField searchBoxField, CheckBox showHiddenProductsCheckBox, TextField idText,
@@ -216,13 +228,13 @@ public class ItemList {
             return false;
         }, sellPriceToText.textProperty()));
 
-        filteredItemList.predicateProperty().unbind();
-        filteredItemList.predicateProperty().bind(Bindings.createObjectBinding(() ->
+
+        binding = Bindings.createObjectBinding(() ->
                         searchBoxFilter.get().and(showHiddenProductsFilter.get()).and(idFilter.get()).and(nameFilter.get()).and(categoryFilter.get()).and(amountFromFilter.get())
                                 .and(amountToFilter.get()).and(buyPriceFromFilter.get()).and(buyPriceToFilter.get())
                                 .and(sellPriceFromFilter.get()).and(sellPriceToFilter.get()),
                 searchBoxFilter, showHiddenProductsFilter, idFilter, nameFilter, categoryFilter, amountFromFilter,
-                amountToFilter, buyPriceFromFilter, buyPriceToFilter, sellPriceFromFilter, sellPriceToFilter));
+                amountToFilter, buyPriceFromFilter, buyPriceToFilter, sellPriceFromFilter, sellPriceToFilter);
     }
 
     public void updateItem(Item item) {
