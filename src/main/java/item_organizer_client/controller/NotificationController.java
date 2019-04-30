@@ -1,7 +1,9 @@
 package item_organizer_client.controller;
 
 import de.felixroske.jfxsupport.FXMLController;
+import item_organizer_client.controller.item_list.ItemListController;
 import item_organizer_client.model.element.NotificationElement;
+import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.list.NotificationList;
 import item_organizer_client.utils.SpringFXMLLoader;
 import javafx.event.ActionEvent;
@@ -34,25 +36,28 @@ public class NotificationController extends Controller implements Initializable 
     public void refresh() {
         elementsPane.getChildren().clear();
         for (NotificationElement notificationElement : NotificationList.getInstance().getNotificationList()) {
-            try {
-                FXMLLoader loader
-                        = new SpringFXMLLoader(getClass().getResource("/layout/NotificationElementLayout.fxml"));
+            if (ItemListController.getInstance().getShowHiddenProductsCheckBox().isSelected() ||
+                    (!ItemListController.getInstance().getShowHiddenProductsCheckBox().isSelected() && !notificationElement.getItem().getHidden())) {
+                try {
+                    FXMLLoader loader
+                            = new SpringFXMLLoader(getClass().getResource("/layout/NotificationElementLayout.fxml"));
 
-                Node node = loader.load();
-                node.getStyleClass().add(notificationElement.getType().getStyle(elementsPane.getChildren().size()));
-                node.setCursor(Cursor.HAND);
-                node.setOnMouseClicked(event -> notificationElement.getOnClick().run());
+                    Node node = loader.load();
+                    node.getStyleClass().add(notificationElement.getType().getStyle(elementsPane.getChildren().size()));
+                    node.setCursor(Cursor.HAND);
+                    node.setOnMouseClicked(event -> notificationElement.getOnClick().run());
 
-                NotificationElementController controller = loader.getController();
+                    NotificationElementController controller = loader.getController();
 
-                controller.getTagText().setText(notificationElement.getTag().toText());
-                controller.getMessageText().setText(notificationElement.getMessage());
-                controller.getCloseButton().setOnAction(event ->
-                        NotificationList.getInstance().remove(notificationElement));
+                    controller.getTagText().setText(notificationElement.getTag().toText());
+                    controller.getMessageText().setText(notificationElement.getMessage());
+                    controller.getCloseButton().setOnAction(event ->
+                            NotificationList.getInstance().remove(notificationElement));
 
-                elementsPane.getChildren().add(node);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    elementsPane.getChildren().add(node);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

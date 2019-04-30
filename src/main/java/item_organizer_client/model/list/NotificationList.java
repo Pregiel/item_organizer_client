@@ -104,9 +104,7 @@ public class NotificationList {
     public void init() {
         notificationList = FXCollections.observableArrayList();
         notificationList.addListener((ListChangeListener<NotificationElement>) c -> {
-            if (notificationCount != null) {
-                notificationCount.setText(String.valueOf(notificationList.size()));
-            }
+            refreshNotificationCount();
 
             if (notificationController != null) {
                 notificationController.refresh();
@@ -130,7 +128,7 @@ public class NotificationList {
 
 
         for (Item item : ItemList.getInstance().getItemList()) {
-            NotificationElement element = null;
+            NotificationElement element;
             if (item.getAmount().compareTo(item.getSafeAmount()) < 0) {
                 if (item.getAmount().compareTo(0) > 0) {
                     element = new NotificationElement(
@@ -204,9 +202,6 @@ public class NotificationList {
     }
 
     private boolean checkIfIgnored(JSONArray fileContent, NotificationElement notificationElement) {
-        if (notificationElement.getItem().getHidden()) {
-            return true;
-        }
         JSONObject element = new JSONObject();
         element.put("item_id", notificationElement.getItem().getId().toString());
         element.put("type", notificationElement.getType().toString());
@@ -224,8 +219,18 @@ public class NotificationList {
 
     public void setNotificationCount(Label notificationCount) {
         this.notificationCount = notificationCount;
-        if (notificationList != null) {
-            notificationCount.setText(String.valueOf(notificationList.size()));
+        refreshNotificationCount();
+    }
+
+    public void refreshNotificationCount() {
+        if (notificationList != null && notificationCount != null) {
+            notificationCount.setText(String.valueOf(notificationList.stream().filter(
+                    element -> (ItemListController.getInstance().getShowHiddenProductsCheckBox().isSelected()
+                            || (!ItemListController.getInstance().getShowHiddenProductsCheckBox().isSelected() && !element.getItem().getHidden()))).count()));
         }
+    }
+
+    public NotificationController getNotificationController() {
+        return notificationController;
     }
 }

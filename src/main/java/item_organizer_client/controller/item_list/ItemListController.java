@@ -181,6 +181,14 @@ public class ItemListController extends SideBarController implements Initializab
             headerAmountText.setText("(" + itemTableView.getItems().size() + ")");
         });
 
+        showHiddenProductsCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            NotificationList.getInstance().refreshNotificationCount();
+            if (NotificationList.getInstance().getNotificationController() != null) {
+                NotificationList.getInstance().getNotificationController().refresh();
+            }
+            ItemListController.getInstance().setTableItems();
+        });
+
         getButtonMap().put(MenuView.NONE, homeButton);
         getButtonMap().put(MenuView.SEARCH_ITEM, searchButton);
         getButtonMap().put(MenuView.ADD_ITEM, addButton);

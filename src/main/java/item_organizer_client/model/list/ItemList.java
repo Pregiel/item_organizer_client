@@ -242,5 +242,9 @@ public class ItemList {
         ItemListController.getInstance().getItemTableView().refresh();
         ItemListController.getInstance().getShowHiddenProductsCheckBox().fire();
         ItemListController.getInstance().getShowHiddenProductsCheckBox().fire();
+        NotificationList.getInstance().check();
+        if (NotificationList.getInstance().getNotificationController() != null) {
+            NotificationList.getInstance().getNotificationController().refresh();
+        }
     }
 }
