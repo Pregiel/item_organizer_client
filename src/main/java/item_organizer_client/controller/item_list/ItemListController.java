@@ -7,6 +7,7 @@ import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.Item;
 import item_organizer_client.model.Price;
+import item_organizer_client.model.element.NotificationElement;
 import item_organizer_client.model.list.ItemList;
 import item_organizer_client.model.element.ItemTableElement;
 import item_organizer_client.model.list.NotificationList;
@@ -115,7 +116,8 @@ public class ItemListController extends SideBarController implements Initializab
                     setText(null);
                 } else {
                     setText(price.priceFormat());
-                    if (price.compareTo(item.getSellPrice()) > 0) {
+                    if (price.compareTo(item.getSellPrice()) > 0 && !NotificationList.getInstance().checkIfIgnored(
+                            new NotificationElement(item, NotificationList.NotificationType.INFO, NotificationList.NotificationTag.ITEM_PRICE))) {
                         getStyleClass().add("alert-info");
                     }
                 }
@@ -132,7 +134,8 @@ public class ItemListController extends SideBarController implements Initializab
                     setText(null);
                 } else {
                     setText(price.priceFormat());
-                    if (price.compareTo(item.getBuyPrice()) < 0) {
+                    if (price.compareTo(item.getBuyPrice()) < 0 && !NotificationList.getInstance().checkIfIgnored(
+                            new NotificationElement(item, NotificationList.NotificationType.INFO, NotificationList.NotificationTag.ITEM_PRICE))) {
                         getStyleClass().add("alert-info");
                     }
                 }
@@ -149,10 +152,12 @@ public class ItemListController extends SideBarController implements Initializab
                     setText(null);
                 } else {
                     setText(String.valueOf(amount));
-                    if (amount <= 0) {
+                    if (amount <= 0 && !NotificationList.getInstance().checkIfIgnored(
+                            new NotificationElement(item, NotificationList.NotificationType.DANGER, NotificationList.NotificationTag.ITEM_AMOUNT))) {
                         getStyleClass().add("alert-danger");
                     } else {
-                        if (amount < item.getSafeAmount()) {
+                        if (amount < item.getSafeAmount() && amount > 0 && !NotificationList.getInstance().checkIfIgnored(
+                                new NotificationElement(item, NotificationList.NotificationType.WARNING, NotificationList.NotificationTag.ITEM_AMOUNT))) {
                             getStyleClass().add("alert-warning");
                         }
                     }

@@ -73,5 +73,6 @@ public class NotificationController extends Controller implements Initializable 
         NotificationList.getInstance().resetIgnoredFile();
         NotificationList.getInstance().check();
         refresh();
+        ItemListController.getInstance().getItemTableView().refresh();
     }
 }

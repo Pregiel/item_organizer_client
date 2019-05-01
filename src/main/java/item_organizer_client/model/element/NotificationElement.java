@@ -18,6 +18,14 @@ public class NotificationElement {
         this.onClick = onClick;
     }
 
+    public NotificationElement(Item item, NotificationList.NotificationType type, NotificationList.NotificationTag tag) {
+        this.item = item;
+        this.type = type;
+        this.tag = tag;
+        this.message = "";
+        this.onClick = () -> {};
+    }
+
     public Item getItem() {
         return item;
     }

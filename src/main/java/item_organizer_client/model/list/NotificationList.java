@@ -188,6 +188,7 @@ public class NotificationList {
         notificationList.remove(element);
 
         addToIgnoredFile(element);
+        ItemListController.getInstance().getItemTableView().refresh();
     }
 
     private void addToIgnoredFile(NotificationElement element) {
@@ -201,7 +202,11 @@ public class NotificationList {
         }
     }
 
-    private boolean checkIfIgnored(JSONArray fileContent, NotificationElement notificationElement) {
+    public boolean checkIfIgnored(NotificationElement notificationElement) {
+        return checkIfIgnored(JSONFileUtils.getJSONArrayFromFile(IGNORED_FILE_PATH), notificationElement);
+    }
+
+    public boolean checkIfIgnored(JSONArray fileContent, NotificationElement notificationElement) {
         JSONObject element = new JSONObject();
         element.put("item_id", notificationElement.getItem().getId().toString());
         element.put("type", notificationElement.getType().toString());
