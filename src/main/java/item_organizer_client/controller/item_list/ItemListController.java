@@ -111,15 +111,10 @@ public class ItemListController extends SideBarController implements Initializab
             protected void updateItem(Price price, boolean empty) {
                 super.updateItem(price, empty);
                 ItemTableElement item = (ItemTableElement) getTableRow().getItem();
-                getStyleClass().removeAll("alert-info");
                 if (item == null || price == null || empty) {
                     setText(null);
                 } else {
                     setText(price.priceFormat());
-                    if (price.compareTo(item.getSellPrice()) > 0 && !NotificationList.getInstance().checkIfIgnored(
-                            new NotificationElement(item, NotificationList.NotificationType.INFO, NotificationList.NotificationTag.ITEM_PRICE))) {
-                        getStyleClass().add("alert-info");
-                    }
                 }
             }
         });
@@ -130,6 +125,7 @@ public class ItemListController extends SideBarController implements Initializab
                 super.updateItem(price, empty);
                 ItemTableElement item = (ItemTableElement) getTableRow().getItem();
                 getStyleClass().removeAll("alert-info");
+                setTooltip(null);
                 if (item == null || price == null || empty) {
                     setText(null);
                 } else {
@@ -137,6 +133,7 @@ public class ItemListController extends SideBarController implements Initializab
                     if (price.compareTo(item.getBuyPrice()) < 0 && !NotificationList.getInstance().checkIfIgnored(
                             new NotificationElement(item, NotificationList.NotificationType.INFO, NotificationList.NotificationTag.ITEM_PRICE))) {
                         getStyleClass().add("alert-info");
+                        setTooltip(new Tooltip(Utils.getString("notification.sellSmallerThanBuy", item.toTitle())));
                     }
                 }
             }
@@ -148,6 +145,7 @@ public class ItemListController extends SideBarController implements Initializab
                 super.updateItem(amount, empty);
                 ItemTableElement item = (ItemTableElement) getTableRow().getItem();
                 getStyleClass().removeAll("alert-danger", "alert-warning");
+                setTooltip(null);
                 if (item == null || amount == null || empty) {
                     setText(null);
                 } else {
@@ -155,10 +153,12 @@ public class ItemListController extends SideBarController implements Initializab
                     if (amount <= 0 && !NotificationList.getInstance().checkIfIgnored(
                             new NotificationElement(item, NotificationList.NotificationType.DANGER, NotificationList.NotificationTag.ITEM_AMOUNT))) {
                         getStyleClass().add("alert-danger");
+                        setTooltip(new Tooltip(Utils.getString("notification.amountOut", item.toTitle())));
                     } else {
                         if (amount < item.getSafeAmount() && amount > 0 && !NotificationList.getInstance().checkIfIgnored(
                                 new NotificationElement(item, NotificationList.NotificationType.WARNING, NotificationList.NotificationTag.ITEM_AMOUNT))) {
                             getStyleClass().add("alert-warning");
+                            setTooltip(new Tooltip(Utils.getString("notification.amountLessThanSafe", item.toTitle())));
                         }
                     }
                 }
