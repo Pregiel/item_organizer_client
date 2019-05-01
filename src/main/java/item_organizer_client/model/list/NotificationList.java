@@ -151,6 +151,8 @@ public class NotificationList {
                             () -> ItemListController.getInstance().showInfoView(item));
                     if (!checkIfIgnored(fileContent, element)) {
                         notificationList.add(element);
+                    } else {
+                        addToIgnoredFile(element);
                     }
                 }
             }
@@ -162,16 +164,18 @@ public class NotificationList {
                     Utils.getString("notification.sellSmallerThanBuy", item.toTitle()),
                     () -> ItemListController.getInstance().showInfoView(item));
 
-            if (!checkIfIgnored(fileContent, element)) {
-                BigDecimal buyPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.BUY))
-                        .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
+            BigDecimal buyPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.BUY))
+                    .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
 
-                BigDecimal sellPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.SELL))
-                        .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
+            BigDecimal sellPrice = item.getPrices().stream().filter(price -> price.getType().equals(PriceType.SELL))
+                    .sorted(Comparator.comparing(Price::getDate).reversed()).collect(Collectors.toList()).get(0).getValue();
 
-                if (buyPrice != null && sellPrice != null) {
-                    if (sellPrice.compareTo(buyPrice) < 0) {
+            if (buyPrice != null && sellPrice != null) {
+                if (sellPrice.compareTo(buyPrice) < 0) {
+                    if (!checkIfIgnored(fileContent, element)) {
                         notificationList.add(element);
+                    } else {
+                        addToIgnoredFile(element);
                     }
                 }
             }
