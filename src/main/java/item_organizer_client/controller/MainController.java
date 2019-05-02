@@ -39,8 +39,19 @@ public class MainController extends Controller implements Initializable {
     public BorderPane mainPane;
 
     private Node currentNode;
+    private MainView currentView;
 
     public Label notificationCount;
+
+    private static MainController instance;
+
+    public static MainController getInstance() {
+        return instance;
+    }
+
+    public MainController() {
+        instance = this;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -53,11 +64,11 @@ public class MainController extends Controller implements Initializable {
     }
 
     public void showItemList(ActionEvent event) {
-        setupStage("/layout/ItemListLayout.fxml");
+        setupStage(MainView.ITEM_LIST);
     }
 
     public void showTransactionList(ActionEvent event) {
-        setupStage("/layout/TransactionListLayout.fxml");
+        setupStage(MainView.TRANSACTION_LIST);
     }
 
     public void showSummary(ActionEvent event) {
@@ -77,11 +88,12 @@ public class MainController extends Controller implements Initializable {
         }
     }
 
-    private void setupStage(String fxml) {
+    private void setupStage(MainView mainView) {
         SearchItemController.clearSavedValues();
         SearchTransactionController.clearSavedValues();
         try {
-            currentNode = new SpringFXMLLoader(getClass().getResource(fxml)).load();
+            currentNode = new SpringFXMLLoader(getClass().getResource(mainView.getView())).load();
+            currentView = mainView;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,5 +119,9 @@ public class MainController extends Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public MainView getCurrentView() {
+        return currentView;
     }
 }

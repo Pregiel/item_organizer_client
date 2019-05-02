@@ -3,6 +3,8 @@ package item_organizer_client.controller.item_list;
 import de.felixroske.jfxsupport.FXMLController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import item_organizer_client.controller.MainController;
+import item_organizer_client.controller.MainView;
 import item_organizer_client.controller.MenuView;
 import item_organizer_client.controller.SideBarController;
 import item_organizer_client.model.Item;
@@ -254,6 +256,10 @@ public class ItemListController extends SideBarController implements Initializab
     }
 
     private void changeView(MenuView menuView) {
+        if (MainController.getInstance().getCurrentView() != MainView.ITEM_LIST) {
+            MainController.getInstance().showItemList(null);
+        }
+
         if (!getCurrentView().equals(menuView)) {
             showView(menuView);
         }

@@ -11,11 +11,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -62,7 +65,15 @@ public class NotificationController extends Controller implements Initializable 
         }
     }
 
-    public void clearAll(ActionEvent event) {
+    public void removeAll(ActionEvent event) {
+        List<Button> buttonList = new ArrayList<>();
+        for (Node node : elementsPane.getChildren()) {
+            buttonList.add((Button) node.lookup("#closeButton"));
+        }
+        buttonList.forEach(Button::fire);
+    }
+
+    public void clearPane() {
         if (NotificationList.getInstance().getNotificationList() != null) {
             NotificationList.getInstance().getNotificationList().clear();
         }

@@ -118,7 +118,7 @@ public class NotificationList {
         }
 
         if (notificationController != null) {
-            notificationController.clearAll(null);
+            notificationController.clearPane();
         } else {
             notificationList.clear();
         }
