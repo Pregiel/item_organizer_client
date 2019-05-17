@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 @FXMLController
 @Component
-public class InfoAboutItemController extends SideBarMenuViewController implements Initializable {
+public class InfoAboutItemController extends SideBarMenuViewController {
     @Autowired
     private ItemService itemService;
 

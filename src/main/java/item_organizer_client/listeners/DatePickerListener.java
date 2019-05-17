@@ -30,16 +30,13 @@ public class DatePickerListener extends TextInputControlListener {
         return selectAllOnFocusListener(datePicker.getEditor());
     }
 
-    public static ChangeListener<LocalDateTime> fillTimeOnActionListener(DateTimePicker dateTimePicker, int hour, int minute) {
+    public static ChangeListener<LocalDateTime> fillTimeOnActionListener(DateTimePicker dateTimePicker, int hour, int minute, int second) {
         dateTimePicker.setOnAction(event -> {
             if (!dateTimePicker.getEditor().getText().matches(
                     ".*" + Utils.dateRegex + " " + Utils.fillWithZeros(hour, 2) + ":" + Utils.fillWithZeros(minute, 2))) {
                 LocalDateTime time = dateTimePicker.getDateTimeValue();
                 if (time != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.clear();
-                    calendar.set(time.getYear(), time.getMonthValue() - 1, time.getDayOfMonth(), hour, minute, minute);
-                    dateTimePicker.setDateTimeValue(LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()));
+                    dateTimePicker.setDateTimeValue(Utils.localDateToLocalDateTime(time.toLocalDate(), hour, minute, second));
                 }
             }
         });

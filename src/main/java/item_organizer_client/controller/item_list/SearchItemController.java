@@ -21,7 +21,7 @@ import java.util.prefs.Preferences;
 
 @FXMLController
 @Component
-public class SearchItemController extends SideBarMenuViewController implements Initializable {
+public class SearchItemController extends SideBarMenuViewController {
     @Autowired
     private CategoryService categoryService;
 

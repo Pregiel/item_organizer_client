@@ -1,8 +1,10 @@
 package item_organizer_client.controller;
 
+import javafx.fxml.Initializable;
+
 import java.util.prefs.Preferences;
 
-public class Controller {
+public abstract class Controller implements Initializable {
     private Preferences preferences;
 
     public Preferences getPreferences() {

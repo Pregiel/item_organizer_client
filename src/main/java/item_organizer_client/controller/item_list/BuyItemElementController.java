@@ -28,7 +28,7 @@ import java.util.prefs.Preferences;
 @FXMLController
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class BuyItemElementController extends SideBarMenuViewController implements Initializable {
+public class BuyItemElementController extends SideBarMenuViewController {
     @Autowired
     private ItemService itemService;
 

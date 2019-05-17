@@ -125,15 +125,15 @@ public abstract class SideBarMenuViewController extends Controller {
         TextFieldListener.autoTrimListener(priceText);
     }
 
-    protected void setDateDatePickerListeners(DateTimePicker dateText, boolean fillOnLostFocus, int fillHour, int fillMinute) {
+    protected void setDateDatePickerListeners(DateTimePicker dateText, boolean fillOnLostFocus, int fillHour, int fillMinute, int fillSecond) {
         DatePickerListener.selectAllOnFocusListener(dateText);
-        DatePickerListener.fillTimeOnActionListener(dateText, fillHour, fillMinute);
+        DatePickerListener.fillTimeOnActionListener(dateText, fillHour, fillMinute, fillSecond);
         if (fillOnLostFocus)
             DatePickerListener.autoFillDateListener(dateText);
     }
 
     protected void setDateDatePickerListeners(DateTimePicker dateText) {
-        setDateDatePickerListeners(dateText, true, 12, 0);
+        setDateDatePickerListeners(dateText, true, 12, 0, 0);
     }
 
 

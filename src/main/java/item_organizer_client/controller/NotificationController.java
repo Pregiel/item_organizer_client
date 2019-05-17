@@ -23,8 +23,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 @FXMLController
-@Component
-public class NotificationController extends Controller implements Initializable {
+public class NotificationController extends Controller {
 
     public VBox elementsPane;
 

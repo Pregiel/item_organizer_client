@@ -65,8 +65,8 @@ public class SearchTransactionController extends SideBarMenuViewController imple
     @Override
     protected void initFields() {
         setIdTextFieldListeners(idText, Item.ID_DIGITS, false);
-        setDateDatePickerListeners(dateFromText, false, 0, 0);
-        setDateDatePickerListeners(dateToText, false, 23, 59);
+        setDateDatePickerListeners(dateFromText, false, 0, 0, 0);
+        setDateDatePickerListeners(dateToText, false, 23, 59, 59);
         setPriceTextFieldListeners(priceFromText, false);
         setPriceTextFieldListeners(priceToText, false);
 

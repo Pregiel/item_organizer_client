@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public abstract class SideBarController extends Controller implements Initializable {
+public abstract class SideBarController extends Controller {
     private MenuView currentView;
     private Node currentNode;
     private Controller currentController;

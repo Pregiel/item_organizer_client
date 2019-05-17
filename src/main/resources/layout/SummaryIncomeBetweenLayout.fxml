@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import tornadofx.control.DateTimePicker?>
+
+<BorderPane maxWidth="1.7976931348623157E308" stylesheets="@style/MenuViewStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.summary.SummaryIncomeBetweenController">
+   <padding>
+      <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+   </padding>
+   <bottom>
+      <Button fx:id="submitButton" mnemonicParsing="false" onAction="#show" text="Pokaż" BorderPane.alignment="CENTER_RIGHT">
+         <BorderPane.margin>
+            <Insets top="6.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+   <top>
+      <Label styleClass="title-top-secondary" text="Dochód/koszty między A i B" BorderPane.alignment="CENTER_LEFT">
+         <padding>
+            <Insets bottom="4.0" />
+         </padding>
+      </Label>
+   </top>
+   <center>
+      <GridPane vgap="8.0" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="property-label" text="Zwróć:" wrapText="true">
+               <padding>
+                  <Insets right="4.0" />
+               </padding>
+            </Label>
+            <VBox fx:id="returnTypePane" GridPane.columnIndex="1">
+               <children>
+                  <Hyperlink fx:id="returnTypeText" styleClass="property-label" text="dochód" />
+                  <ComboBox fx:id="returnTypeComboBox" maxWidth="-Infinity" prefWidth="125.0" />
+               </children>
+            </VBox>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="property-label" text="A =" wrapText="true" GridPane.rowIndex="1">
+               <padding>
+                  <Insets right="4.0" />
+               </padding>
+            </Label>
+            <VBox fx:id="dateFromPane" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Hyperlink fx:id="dateFromText" styleClass="property-label" text="01.01.2019 00:00" />
+                  <DateTimePicker fx:id="dateFromPicker" format="dd.MM.yyyy HH:mm" />
+               </children>
+            </VBox>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="property-label" text="B =" wrapText="true" GridPane.rowIndex="2">
+               <padding>
+                  <Insets right="4.0" />
+               </padding>
+            </Label>
+            <VBox fx:id="dateToPane" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Hyperlink fx:id="dateToText" styleClass="property-label" text="30.01.2019 23:59" />
+                  <DateTimePicker fx:id="dateToPicker" format="dd.MM.yyyy HH:mm" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

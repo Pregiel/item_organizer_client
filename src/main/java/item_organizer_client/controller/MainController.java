@@ -32,7 +32,7 @@ import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 @Component
-public class MainController extends Controller implements Initializable {
+public class MainController extends Controller {
     @Autowired
     private ItemService itemService;
 
@@ -72,7 +72,16 @@ public class MainController extends Controller implements Initializable {
     }
 
     public void showSummary(ActionEvent event) {
-        System.out.println(itemService.findByName("Kubek czar"));
+        if (mainPane.getRight() == null) {
+            try {
+                Node node = new SpringFXMLLoader(getClass().getResource("/layout/SummaryLayout.fxml")).load();
+                mainPane.setRight(node);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mainPane.setRight(null);
+        }
     }
 
     public void showNotification(ActionEvent event) {

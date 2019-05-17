@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 @FXMLController
 @Component
-public class ItemListController extends SideBarController implements Initializable {
+public class ItemListController extends SideBarController {
     public TableView<ItemTableElement> itemTableView;
     public AnchorPane itemMainPane;
     public Button homeButton, searchButton, addButton, buyButton, sellButton, infoButton, editButton;

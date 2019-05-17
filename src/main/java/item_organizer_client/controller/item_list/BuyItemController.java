@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
 
 @FXMLController
 @Component
-public class BuyItemController extends SideBarMenuViewController implements Initializable {
+public class BuyItemController extends SideBarMenuViewController {
     @Autowired
     private ItemService itemService;
     @Autowired

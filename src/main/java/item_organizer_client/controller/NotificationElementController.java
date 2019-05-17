@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 @FXMLController
 @Component
-public class NotificationElementController implements Initializable {
+public class NotificationElementController extends Controller {
     public Label tagText;
     public Button closeButton;
     public Label messageText;
