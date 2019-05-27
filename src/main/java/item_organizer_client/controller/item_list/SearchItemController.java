@@ -82,10 +82,6 @@ public class SearchItemController extends SideBarMenuViewController {
         Platform.runLater(() -> numberText.requestFocus());
     }
 
-    public void submit(ActionEvent event) {
-
-    }
-
     public void saveValues() {
         savedValues.clear();
         savedValues.put("numberText", numberText.getText());

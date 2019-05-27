@@ -126,11 +126,6 @@ public class SearchTransactionController extends SideBarMenuViewController imple
         }
     }
 
-    public void submit(ActionEvent event) {
-        System.out.println(
-                transactionGroup.getSelectedToggle().getUserData());
-    }
-
     public void saveValues() {
         savedValues.clear();
         savedValues.put("numberText", idText.getText());

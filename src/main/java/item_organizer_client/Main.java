@@ -7,8 +7,17 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @SpringBootApplication
 public class Main extends Application {
+    private static final DateTimeFormatter logDateTime = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
     private ItemOrganizer itemOrganizer;
 
     private static String[] savedArgs;
@@ -25,6 +34,21 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         savedArgs = args;
+
+        LocalDateTime now = LocalDateTime.now();
+        String logName = "logs/log_" + now.format(logDateTime) + ".txt";
+
+        new File("logs").mkdirs();
+        PrintStream out = null;
+        try {
+            out = new PrintStream(new FileOutputStream(logName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.setOut(out);
+        System.setErr(out);
+
         Application.launch(Main.class, args);
     }
 }

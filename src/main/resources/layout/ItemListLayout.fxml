@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
-<AnchorPane fx:id="itemMainPane" minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.ItemListController">
+<AnchorPane fx:id="itemMainPane" minWidth="300.0" stylesheets="@style/ItemListStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.item_list.ItemListController">
     <children>
         <SplitPane fx:id="splitPane" layoutX="60.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>

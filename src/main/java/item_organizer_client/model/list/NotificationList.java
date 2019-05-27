@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -110,6 +111,8 @@ public class NotificationList {
                 notificationController.refresh();
             }
         });
+
+        new File("cfg").mkdirs();
     }
 
     public void check() {

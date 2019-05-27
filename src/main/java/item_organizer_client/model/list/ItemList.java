@@ -235,6 +235,8 @@ public class ItemList {
                                 .and(sellPriceFromFilter.get()).and(sellPriceToFilter.get()),
                 searchBoxFilter, showHiddenProductsFilter, idFilter, nameFilter, categoryFilter, amountFromFilter,
                 amountToFilter, buyPriceFromFilter, buyPriceToFilter, sellPriceFromFilter, sellPriceToFilter);
+
+        bindPredicate();
     }
 
     public void updateItem(Item item) {

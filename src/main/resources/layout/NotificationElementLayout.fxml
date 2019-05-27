@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="100.0" stylesheets="@style/NotificationFXMLStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.NotificationElementController">
+<BorderPane maxWidth="1.7976931348623157E308" minHeight="75.0" minWidth="100.0" stylesheets="@style/NotificationFXMLStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="item_organizer_client.controller.NotificationElementController">
    <top>
       <HBox BorderPane.alignment="CENTER">
          <children>
